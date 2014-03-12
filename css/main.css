@@ -158,14 +158,14 @@ blockquote p {
 @media (min-width: 768px) {
     .col_right {
         float: right;
-        padding-top: 33px;
+        padding-top: 20px;
     }
 }
 
 @media (max-width: 767px) {
     .col_right {
         float: left;
-        padding-top: 33px;
+        padding-top: 20px;
     }
 }
 
