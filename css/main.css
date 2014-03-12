@@ -79,13 +79,17 @@ p {
     margin-right: 8px;
 }
 
+.fb_iframe_widget iframe {
+    max-height: 20px !important;
+}
 .IN-widget {
     vertical-align: top !important;
-    margin-right: 8px;
+    margin-right: 30px;
 }
 
 .twitter-share-button {
-    width: 87px !important;
+    width: 105px !important;
+    margin-right: 2px;
 }
 
 .content {
