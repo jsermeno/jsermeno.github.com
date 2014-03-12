@@ -2,7 +2,7 @@ body {
     position: relative;
     font-family: merriweather, serif;
     color: #333333;
-    padding-bottom: 300px;
+    padding-bottom: 350px;
     font-size: 14px;
     -webkit-font-smoothing: antialiased;
 }
@@ -51,9 +51,17 @@ p {
     margin-bottm: 1.7em;
 }
 
-.post_header img {
-    width: 400px;
-    height: 400px;
+@media (min-width: 768px) {
+    .post_header img {
+        width: 400px;
+        height: 400px;
+    }
+}
+@media (max-width: 767px) {
+    .post_header img {
+        width: 150px;
+        height: 150px;
+    }
 }
 
 .more_wrapper {
@@ -66,7 +74,8 @@ p {
 }
     
 .google_plus {
-    display: inline;
+    display: inline-block;
+    vertical-align: top;
 }
 
 .share_buttons {
@@ -75,8 +84,9 @@ p {
 }
 
 .fb_iframe_widget {
-    top: -6px;
+    vertical-align: top;
     margin-right: 8px;
+    margin-bottom: 15px;
 }
 
 .fb_iframe_widget iframe {
@@ -85,11 +95,13 @@ p {
 .IN-widget {
     vertical-align: top !important;
     margin-right: 30px;
+    margin-bottom: 15px;
 }
 
 .twitter-share-button {
     width: 105px !important;
     margin-right: 2px;
+    margin-bottom: 15px;
 }
 
 .content {
@@ -102,7 +114,7 @@ p {
 
 #footer {
     background: #3d3d3d;
-    height: 250px;
+    height: 300px;
     bottom: 0;
     width: 100%;
     position: absolute;
@@ -117,7 +129,8 @@ p {
 }
 
 #about {
-    width: 320px;
+    width: 280px;
+    padding-bottom: 25px;
 }
  
 .green {
@@ -142,13 +155,22 @@ blockquote p {
     float: left;
 }
 
-.col_right {
-    float: right;
-    padding-top: 33px;
+@media (min-width: 768px) {
+    .col_right {
+        float: right;
+        padding-top: 33px;
+    }
+}
+
+@media (max-width: 767px) {
+    .col_right {
+        float: left;
+        padding-top: 33px;
+    }
 }
 
 #rss_link {
-    padding: 20px;
+    padding: 20px 20px 20px 0px;
 }
 
 #rss_link img {
