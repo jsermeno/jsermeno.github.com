@@ -4,7 +4,7 @@
 	<title type="text" xml:lang="en">Catchvar - Journey to a mobile indie game</title>
 	<link type="application/atom+xml" href="http://www.catchvar.com/feed/" rel="self"/>
  	<link type="text" href="http://www.catchvar.com" rel="alternate"/>
-	<updated>2014-03-16T17:33:53-07:00</updated>
+	<updated>2014-03-16T17:58:53-07:00</updated>
 	<id>http://www.catchvar.com</id>
 	<author>
 		<name>Catchvar</name>
@@ -14,14 +14,20 @@
 	
 	<entry>
 		<title>Setup Riak and Erlang Client on Mac OS X</title>
-                <link href="http://www.catchvar.com/2014/03/16/setup-riak-and-erlang-client-on-mac-osx.html"/>
+                <link href="http://www.catchvar.com/setup-riak-and-erlang-client-on-mac-osx.html"/>
 		<updated>2014-03-16T00:00:00-07:00</updated>
-		<id>http://www.catchvar.com/2014/03/16/setup-riak-and-erlang-client-on-mac-osx</id>
+		<id>http://www.catchvar.com/setup-riak-and-erlang-client-on-mac-osx</id>
                 <content type="html">&lt;p class=&quot;post_header&quot;&gt;
-    &lt;img src=&quot;/images/setup_riak_and_erlang_client_on_mac_osx.png&quot; alt=&quot;post header image&quot; /&gt;
+    &lt;a href=&quot;/setup-riak-and-erlang-client-on-mac-osx.html&quot;&gt;
+        &lt;img src=&quot;/images/setup_riak_and_erlang_client_on_mac_osx.png&quot; alt=&quot;post header image&quot; /&gt;
+    &lt;/a&gt;
 &lt;/p&gt;
 
 &lt;h2&gt;Setup Riak and Erlang Client on Mac OS X&lt;/h2&gt;
+
+&lt;p class=&quot;date&quot;&gt;
+    Mar 16, 2014
+&lt;/p&gt;
 
 &lt;p&gt;In the past I&amp;#39;ve been a big fan of PostgreSQL. It&amp;#39;s rock solid and performant. I&amp;#39;ve used it to scale to hundreds of thousands of users without even coming close to breaking a sweat. The downside is that horizontal scaling is a pain. That typically means that you end up scaling vertically as long as you can. In addition, you don&amp;#39;t get availability and fault-tolerance for free. It requires extra time and work.&lt;/p&gt;
 
@@ -157,14 +163,20 @@ cat dev1/etc/app.config
 	
 	<entry>
 		<title>Catchvar - Game Design and The Ideal World</title>
-                <link href="http://www.catchvar.com/2014/03/09/game-design-and-the-ideal-world.html"/>
+                <link href="http://www.catchvar.com/game-design-and-the-ideal-world.html"/>
 		<updated>2014-03-09T00:00:00-08:00</updated>
-		<id>http://www.catchvar.com/2014/03/09/game-design-and-the-ideal-world</id>
+		<id>http://www.catchvar.com/game-design-and-the-ideal-world</id>
                 <content type="html">&lt;p class=&quot;post_header&quot;&gt;
-    &lt;img src=&quot;/images/game_design_and_the_ideal_world.png&quot; alt=&quot;post header image&quot; /&gt;
+    &lt;a href=&quot;/game-design-and-the-ideal-world.html&quot;&gt;
+        &lt;img src=&quot;/images/game_design_and_the_ideal_world.png&quot; alt=&quot;post header image&quot; /&gt;
+    &lt;/a&gt;
 &lt;/p&gt;
 
 &lt;h2&gt;Game Design and The Ideal World&lt;/h2&gt;
+
+&lt;p class=&quot;date&quot;&gt;
+    Mar 9, 2014
+&lt;/p&gt;
 
 &lt;p&gt;I don&amp;#39;t believe that people ask &lt;strong&gt;why&lt;/strong&gt; people play games often enough.&lt;/p&gt;
 
