@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <title>Setup Riak and Erlang Client on Mac OS X</title>
+
+        <!-- Bootstrap -->
+        <link href="/css/bootstrap.min.css" rel="stylesheet" />
+        <link href="/css/main.css" rel="stylesheet" />
+        <link rel="shortcut icon" type="image/x-icon" href="/images/favicon.ico" />
+
+        <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+        <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+        <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+        <![endif]-->
+
+        <!-- Fonts -->
+        <script src="//use.edgefonts.net/merriweather.js"></script>
+    </head>
+    <body>
+        <!-- Main page -->
+        <div id="header">
+            <div class="container" itemscope itemtype="http://schema.org/Organization">
+                <a itemprop="url" href="/" id="logo_link">
+                    <img id="logo" src="/images/catchvar_logo.png" alt="logo" itemprop="logo"/>
+                </a>
+            </div>
+        </div>
+
+        <div class="container">
+            <div class="content">
+                <p class="post_header">
+    <img src="/images/setup_riak_and_erlang_client_on_mac_osx.png" alt="post header image" />
+</p>
+
+<h2>Setup Riak and Erlang Client on Mac OS X</h2>
+
+<p>In the past I&#39;ve been a big fan of PostgreSQL. It&#39;s rock solid and performant. I&#39;ve used it to scale to hundreds of thousands of users without even coming close to breaking a sweat. The downside is that horizontal scaling is a pain. That typically means that you end up scaling vertically as long as you can. In addition, you don&#39;t get availability and fault-tolerance for free. It requires extra time and work.</p>
+
+<p>I wanted a database that emphasized availability, fault-tolerance, and scalability with little cost to the developer. As an indie game developer this may lead to reduced costs since an equivalent larger machine is usually much more expensive than several smaller machines. Riak&#39;s masterless design was appealing to me, and it looked like it fit my needs better than anything else out there. Of course, when choosing a new technology there is always a chance you&#39;ll regret it, but there is only one way to find out!</p>
+
+<p>I found the documentation for Riak to be pretty good. However, there were a couple of gotchas. I found people with the same problem who were unable to find an answer around the various corners of google search, so I thought I&#39;d make this short post on how to setup Riak from source.</p>
+
+<!--***-->
+
+<p>You can refer to <a href="http://docs.basho.com/riak/latest/ops/building/installing/mac-osx/#Installing-From-Source">Installing From Source</a> and the <a href="http://docs.basho.com/riak/latest/quickstart/">Quickstart</a> from the Riak site for the most up to date versions and instructions. This post assumes you already have the Xcode tools from the <a href="https://developer.apple.com/">Apple Develop&#39;s Website</a>.</p>
+
+<p>Let&#39;s get the source code.</p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">wget http://s3.amazonaws.com/downloads.basho.com/riak/1.4/1.4.8/riak-1.4.8.tar.gz
+tar zxvf riak-1.4.8.tar.gz
+</code></pre></div>
+<h3>Build Erlang</h3>
+
+<p>Now we need to build it. This is where we&#39;ll add a few additional steps. First, you need a specific version of Erlang (R15B01), and it also needs to be built as 64-bit. I&#39;m using kerl to manage my erlang versions and it has been working out pretty great so far. It&#39;s a simple version manager similar to nvm or rbenv for node and ruby respectively, if you have ever used those.</p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">curl -O https://raw.github.com/spawngrid/kerl/master/kerl
+chmod a+x kerl
+</code></pre></div>
+<p>Then you need to add it to your path. I have a directory called <code>~/Workspace/path</code> that I have setup just for occasions like this. That way I don&#39;t have to add them to a place like <code>/usr/bin</code>. You can add this to your path by doing something like this.</p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">mkdir ~/Workspace
+mkdir ~/Workspace/path
+mv kerl ~/Workspace/path
+</code></pre></div>
+<p>Edit your <code>~/.bash_profile</code> to include this line:</p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">export PATH=$PATH:$HOME/Workspace/path
+</code></pre></div>
+<p>In order to build our Erlang installations as 64-bit you need to create a <code>~/.kerlrc</code> file with these contents:</p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">KERL_CONFIGURE_OPTIONS=&quot;--disable-hipe --enable-smp-support --enable-threads
+                        --enable-kernel-poll  --enable-darwin-64bit&quot;
+</code></pre></div>
+<p>Now we can install Erlang R15B01.</p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">kerl build R15B01 r15b01-64
+kerl install r15b01-64 ~/erl/r15b01-64
+. ~/erl/r15b01-64/activate
+</code></pre></div>
+<p>With kerl you&#39;ll need to call that activate command for every shell you open. What I do is add <code>. ~/erl/r15b01-64/activate</code> to my <code>~/.bash_profile</code>. The period in front of the command is important. Just calling activate without it won&#39;t work. At this point you should be able to do</p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">erl
+</code></pre></div>
+<p>and see an erlang shell that looks like this.</p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">Erlang R15B01 (erts-5.9.1) [source] [64-bit] [smp:4:4] [async-threads:0] [kernel-poll:false]
+
+Eshell V5.9.1  (abort with ^G)
+1&gt;
+</code></pre></div>
+<p>type <code>halt().</code> to exit the shell.</p>
+
+<h3>Get GCC-4.2</h3>
+
+<p>The second thing we have to do is get gcc-4.2 and make sure we build riak with it.</p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">brew tap homebrew/dupes
+brew install apple-gcc42
+</code></pre></div>
+<p>We&#39;re going to change the default xcode cc, gcc, c++, and g++. Make sure you backup their current locations. For reference these were my file locations.</p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">cc      =&gt;  /usr/bin/clang
+gcc     =&gt;  /usr/bin/gcc
+c++     =&gt;  /usr/bin/clang++
+g++     =&gt;  /usr/bin/g++
+</code></pre></div>
+<p>Again, make sure you back up the ones you need to.</p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">mv /usr/bin/gcc /usr/bin/gcc.bk
+mv /usr/bin/g++ /usr/bin/g++.bk
+</code></pre></div>
+<p>To point them to gcc-4.2 run these commands</p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">cd /usr/bin
+sudo rm cc gcc c++ g++
+sudo ln -s /usr/local/bin/gcc-4.2 cc
+sudo ln -s /usr/local/bin/gcc-4.2 gcc
+sudo ln -s /usr/local/bin/c++-4.2 c++
+sudo ln -s /usr/local/bin/g++-4.2 g++
+</code></pre></div>
+<p>If your gcc-4.2 is in a different location you can find that location by running these commands.</p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">which gcc-4.2
+which c++-4.2
+which g++-4.2
+</code></pre></div>
+<h3>Setup Riak</h3>
+
+<p>Now we&#39;re set to follow the Riak instructions for setup. They are explained in more detail in the <a href="http://docs.basho.com/riak/latest/quickstart/">Riak Quickstart</a>.</p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">cd riak-1.4.8
+make all
+make devrel DEVNODES=5
+cd dev
+ulimit -n 4096
+for node in `ls`; do $node/bin/riak start; done
+for node in `ls`; do $node/bin/riak ping; done
+for n in {2..5}; do dev$n/bin/riak-admin cluster join dev1@127.0.0.1; done
+dev1/bin/riak-admin plan
+dev1/bin/riak-admin commit
+dev1/bin/riak-admin member-status
+</code></pre></div>
+<p>Now we have a Riak cluster! </p>
+
+<p>Any errors are available by running something like <code>dev1/bin/riak console</code>. <code>dev1</code> is for the first node. It would be <code>dev2</code> for the second node and so forth. If you didn&#39;t use gcc-4.2 and a R15B01 64-bit build of Erlang you might have received an error that looked like this:</p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">16:55:17.552 [error] Error loading &quot;erlang_js_drv&quot;: &quot;dlopen(/Users/catchvar/Workspace/riak-1.4.8/dev/dev1/bin/../lib/erlang_js-1.2.2/priv/erlang_js_drv.so, 2): no suitable image found.  Did find:\n\t/Users/catchvar/Workspace/riak-1.4.8/dev/dev1/bin/../lib/erlang_js-1.2.2/priv/erlang_js_drv.so: mach-o, but wrong architecture&quot;
+
+16:55:17.552 [error] CRASH REPORT Process erlang_js_sup with 0 neighbours exited with reason: bad return value: {error,{load_error,&quot;Failed to load erlang_js_drv.so&quot;}} in gen_server:init_it/6 line 332
+16:55:17.552 [error] CRASH REPORT Process &lt;0.115.0&gt; with 0 neighbours exited with reason: bad return value: {error,{load_error,&quot;Failed to load erlang_js_drv.so&quot;}} in erlang_js:start(normal, []) in application_master:init/4 line 138
+16:55:17.552 [info] Application erlang_js exited with reason: bad return value: {error,{load_error,&quot;Failed to load erlang_js_drv.so&quot;}} in erlang_js:start(normal, [])
+{&quot;Kernel pid terminated&quot;,application_controller,&quot;{application_start_failure,erlang_js,},{erlang_js,start,[normal,[]]}}}&quot;}
+</code></pre></div>
+<h3>Setup Erlang Client</h3>
+
+<p>Not everybody is using Erlang. If you&#39;re using another language you can find a list of clients <a href="http://docs.basho.com/riak/latest/dev/using/libraries/">here</a>. Setup for the erlang-riak-client is pretty straightforward. The only problem I ran into is that it doesn&#39;t support Erlang 17.0-RC2, and won&#39;t build if you&#39;re using that version of Erlang. Keep using R15B01 and you should be good.</p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">cd /path/to/your/erlang/project
+cd deps
+git clone git://github.com/basho/riak-erlang-client.git
+cd riak-erlang-client
+make
+</code></pre></div>
+<p>When you run Erlang you need to add riak-erlang-client to it&#39;s code path. I have a shell script called <code>debug.sh</code> in my <code>/ebin</code> folder with the following contents:</p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">erl -pa `pwd` ../deps/*/ebin ../deps/riak-erlang-client/deps/*/ebin -boot start_sasl -s rinoa_app
+</code></pre></div>
+<p>Run <code>debug.sh</code>, press enter and you can test out a connection to the Riak cluster.</p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">sh debug.sh
+{ok, Pid} = riakc_pb_socket:start_link(&quot;127.0.0.1&quot;, 10017).
+riakc_pb_socket:ping(Pid).
+</code></pre></div>
+<p>To figure out if your port is different than 10017:</p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">cd riak-1.4.8/dev
+cat dev1/etc/app.config
+</code></pre></div>
+<p>Towards the top you&#39;ll see some configuration that looks like this:</p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">%% pb is a list of IP addresses and TCP ports that the Riak
+%% Protocol Buffers interface will bind.
+{pb, [ {&quot;127.0.0.1&quot;, 10017 } ]}
+</code></pre></div>
+<p>That&#39;s it. I hope that was helpful to someone.</p>
+
+
+<div class="share_buttons">
+  <script type="IN/Share" data-url="http://www.catchvar.com/2014/03/16/setup-riak-and-erlang-client-on-mac-osx.html" data-counter="right"></script>
+
+  <a href="https://twitter.com/share"
+    class="twitter-share-button"
+    data-url="http://www.catchvar.com/2014/03/16/setup-riak-and-erlang-client-on-mac-osx.html"
+    data-via="twitterapi"
+    data-lang="en">
+  </a>
+
+  <div class="google_plus">
+    <div class="g-plusone"
+      data-href="http://www.catchvar.com/2014/03/16/setup-riak-and-erlang-client-on-mac-osx.html"
+      data-size="medium"
+      data-annotation="bubble">
+    </div>
+  </div>
+
+  <div class="fb-like" 
+    data-href="http://www.catchvar.com/2014/03/16/setup-riak-and-erlang-client-on-mac-osx.html" 
+    data-layout="button_count" 
+    data-action="like" 
+    data-show-faces="false" 
+    data-width="90"
+    data-share="false">
+  </div>
+</div>
+
+
+<p class="bottom"></p>
+
+
+
+<div id="disqus_thread"></div>
+<script type="text/javascript">
+    /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+    var disqus_shortname = 'catchvar'; // required: replace example with your forum shortname
+
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+
+
+            </div>
+        </div>
+
+        <div id="footer">
+            <div class="container content">
+                <div class="col_left">
+                    <h2>About</h2>
+                    <p id="about">
+                    Catchvar is where I'll share my journey to create a mobile indie game from <span class="green">start</span> to <span class="green">finish</span> on all things game design, client, server, and networking.
+                    </p>
+                </div>
+                <div class="col_right">
+                    <p>
+                        <a id="rss_link" href="/feed/index.xml"><img src="/images/rss_icon.png" alt="rss icon" /><span>RSS Feed</span>
+                        </a>
+                    </p>
+                    <p>
+                        <a href="https://twitter.com/catchvar" class="twitter-follow-button" data-show-count="false">Follow @catchvar</a>
+    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) return;
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/en_US/all.js#xfbml=1&appId=604216856328704";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+<script type="text/javascript">
+(function(){
+    var twitterWidgets = document.createElement('script');
+    twitterWidgets.type = 'text/javascript';
+    twitterWidgets.async = true;
+    twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+    document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+</script>
+
+<script type="text/javascript">
+(function() {
+    var po = document.createElement('script');
+    po.type = 'text/javascript'; po.async = true;
+    po.src = 'https://apis.google.com/js/plusone.js';
+    var s = document.getElementsByTagName('script')[0];
+    s.parentNode.insertBefore(po, s);
+})();
+</script>
+
+<script src="//platform.linkedin.com/in.js" type="text/javascript">
+  lang: en_US
+</script>
+
+
+        <script>
+            (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+            m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+            })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+            ga('create', 'UA-48849049-1', 'catchvar.com');
+            ga('send', 'pageview');
+
+        </script>
+    </body>
+</html>

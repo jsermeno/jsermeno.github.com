@@ -24,9 +24,9 @@
     <body>
         <!-- Main page -->
         <div id="header">
-            <div class="container">
-                <a href="/" id="logo_link">
-                    <img id="logo" src="/images/catchvar_logo.png" alt="logo" />
+            <div class="container" itemscope itemtype="http://schema.org/Organization">
+                <a itemprop="url" href="/" id="logo_link">
+                    <img id="logo" src="/images/catchvar_logo.png" alt="logo" itemprop="logo"/>
                 </a>
             </div>
         </div>
@@ -34,6 +34,52 @@
         <div class="container">
             <div class="content">
                 <ul id="posts">
+    
+    <li>
+        <p class="post_header">
+    <img src="/images/setup_riak_and_erlang_client_on_mac_osx.png" alt="post header image" />
+</p>
+
+<h2>Setup Riak and Erlang Client on Mac OS X</h2>
+
+<p>In the past I&#39;ve been a big fan of PostgreSQL. It&#39;s rock solid and performant. I&#39;ve used it to scale to hundreds of thousands of users without even coming close to breaking a sweat. The downside is that horizontal scaling is a pain. That typically means that you end up scaling vertically as long as you can. In addition, you don&#39;t get availability and fault-tolerance for free. It requires extra time and work.</p>
+
+<p>I wanted a database that emphasized availability, fault-tolerance, and scalability with little cost to the developer. As an indie game developer this may lead to reduced costs since an equivalent larger machine is usually much more expensive than several smaller machines. Riak&#39;s masterless design was appealing to me, and it looked like it fit my needs better than anything else out there. Of course, when choosing a new technology there is always a chance you&#39;ll regret it, but there is only one way to find out!</p>
+
+<p>I found the documentation for Riak to be pretty good. However, there were a couple of gotchas. I found people with the same problem who were unable to find an answer around the various corners of google search, so I thought I&#39;d make this short post on how to setup Riak from source.</p>
+
+        <div class="more_wrapper">
+            <a class="more_link sans" href="/2014/03/16/setup-riak-and-erlang-client-on-mac-osx.html">Keep Reading</a>
+        </div>
+        <div class="share_buttons">
+  <script type="IN/Share" data-url="http://www.catchvar.com/2014/03/16/setup-riak-and-erlang-client-on-mac-osx.html" data-counter="right"></script>
+
+  <a href="https://twitter.com/share"
+    class="twitter-share-button"
+    data-url="http://www.catchvar.com/2014/03/16/setup-riak-and-erlang-client-on-mac-osx.html"
+    data-via="twitterapi"
+    data-lang="en">
+  </a>
+
+  <div class="google_plus">
+    <div class="g-plusone"
+      data-href="http://www.catchvar.com/2014/03/16/setup-riak-and-erlang-client-on-mac-osx.html"
+      data-size="medium"
+      data-annotation="bubble">
+    </div>
+  </div>
+
+  <div class="fb-like" 
+    data-href="http://www.catchvar.com/2014/03/16/setup-riak-and-erlang-client-on-mac-osx.html" 
+    data-layout="button_count" 
+    data-action="like" 
+    data-show-faces="false" 
+    data-width="90"
+    data-share="false">
+  </div>
+</div>
+
+    </li>
     
     <li>
         <p class="post_header">

@@ -2,14 +2,23 @@ body {
     position: relative;
     font-family: merriweather, serif;
     color: #333333;
-    padding-bottom: 350px;
     font-size: 14px;
     -webkit-font-smoothing: antialiased;
+}
+
+@media (max-width: 767px) {
+    body {
+        padding-bottom: 450px; 
+    }
 }
 
 @media (min-width: 768px) {
     .container {
         max-width: 738px;
+    }
+
+    body {
+        padding-bottom: 350px;
     }
 }
 
@@ -120,6 +129,18 @@ p {
     position: absolute;
 
     color: #ffffff;
+}
+
+@media (max-width: 767px) {
+    #footer {
+        height: 400px; 
+    }
+}
+
+@media (min-width: 768px) {
+    #footer {
+        height: 300px; 
+    }
 }
 
 #footer h2 {

@@ -4,13 +4,156 @@
 	<title type="text" xml:lang="en">Catchvar - Journey to a mobile indie game</title>
 	<link type="application/atom+xml" href="http://www.catchvar.com/feed/" rel="self"/>
  	<link type="text" href="http://www.catchvar.com" rel="alternate"/>
-	<updated>2014-03-12T16:58:28-07:00</updated>
+	<updated>2014-03-16T17:20:31-07:00</updated>
 	<id>http://www.catchvar.com</id>
 	<author>
 		<name>Catchvar</name>
 	</author>
 	<rights>Copyright (c) 2014, Catchvar; all rights reserved.</rights>
 	
+	
+	<entry>
+		<title>Setup Riak and Erlang Client on Mac OS X</title>
+                <link href="http://www.catchvar.com/2014/03/16/setup-riak-and-erlang-client-on-mac-osx.html"/>
+		<updated>2014-03-16T00:00:00-07:00</updated>
+		<id>http://www.catchvar.com/2014/03/16/setup-riak-and-erlang-client-on-mac-osx</id>
+                <content type="html">&lt;p class=&quot;post_header&quot;&gt;
+    &lt;img src=&quot;/images/setup_riak_and_erlang_client_on_mac_osx.png&quot; alt=&quot;post header image&quot; /&gt;
+&lt;/p&gt;
+
+&lt;h2&gt;Setup Riak and Erlang Client on Mac OS X&lt;/h2&gt;
+
+&lt;p&gt;In the past I&amp;#39;ve been a big fan of PostgreSQL. It&amp;#39;s rock solid and performant. I&amp;#39;ve used it to scale to hundreds of thousands of users without even coming close to breaking a sweat. The downside is that horizontal scaling is a pain. That typically means that you end up scaling vertically as long as you can. In addition, you don&amp;#39;t get availability and fault-tolerance for free. It requires extra time and work.&lt;/p&gt;
+
+&lt;p&gt;I wanted a database that emphasized availability, fault-tolerance, and scalability with little cost to the developer. As an indie game developer this may lead to reduced costs since an equivalent larger machine is usually much more expensive than several smaller machines. Riak&amp;#39;s masterless design was appealing to me, and it looked like it fit my needs better than anything else out there. Of course, when choosing a new technology there is always a chance you&amp;#39;ll regret it, but there is only one way to find out!&lt;/p&gt;
+
+&lt;p&gt;I found the documentation for Riak to be pretty good. However, there were a couple of gotchas. I found people with the same problem who were unable to find an answer around the various corners of google search, so I thought I&amp;#39;d make this short post on how to setup Riak from source.&lt;/p&gt;
+
+&lt;!--***--&gt;
+
+&lt;p&gt;You can refer to &lt;a href=&quot;http://docs.basho.com/riak/latest/ops/building/installing/mac-osx/#Installing-From-Source&quot;&gt;Installing From Source&lt;/a&gt; and the &lt;a href=&quot;http://docs.basho.com/riak/latest/quickstart/&quot;&gt;Quickstart&lt;/a&gt; from the Riak site for the most up to date versions and instructions. This post assumes you already have the Xcode tools from the &lt;a href=&quot;https://developer.apple.com/&quot;&gt;Apple Develop&amp;#39;s Website&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;Let&amp;#39;s get the source code.&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;text language-text&quot; data-lang=&quot;text&quot;&gt;wget http://s3.amazonaws.com/downloads.basho.com/riak/1.4/1.4.8/riak-1.4.8.tar.gz
+tar zxvf riak-1.4.8.tar.gz
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;h3&gt;Build Erlang&lt;/h3&gt;
+
+&lt;p&gt;Now we need to build it. This is where we&amp;#39;ll add a few additional steps. First, you need a specific version of Erlang (R15B01), and it also needs to be built as 64-bit. I&amp;#39;m using kerl to manage my erlang versions and it has been working out pretty great so far. It&amp;#39;s a simple version manager similar to nvm or rbenv for node and ruby respectively, if you have ever used those.&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;text language-text&quot; data-lang=&quot;text&quot;&gt;curl -O https://raw.github.com/spawngrid/kerl/master/kerl
+chmod a+x kerl
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;Then you need to add it to your path. I have a directory called &lt;code&gt;~/Workspace/path&lt;/code&gt; that I have setup just for occasions like this. That way I don&amp;#39;t have to add them to a place like &lt;code&gt;/usr/bin&lt;/code&gt;. You can add this to your path by doing something like this.&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;text language-text&quot; data-lang=&quot;text&quot;&gt;mkdir ~/Workspace
+mkdir ~/Workspace/path
+mv kerl ~/Workspace/path
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;Edit your &lt;code&gt;~/.bash_profile&lt;/code&gt; to include this line:&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;text language-text&quot; data-lang=&quot;text&quot;&gt;export PATH=$PATH:$HOME/Workspace/path
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;In order to build our Erlang installations as 64-bit you need to create a &lt;code&gt;~/.kerlrc&lt;/code&gt; file with these contents:&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;text language-text&quot; data-lang=&quot;text&quot;&gt;KERL_CONFIGURE_OPTIONS=&amp;quot;--disable-hipe --enable-smp-support --enable-threads
+                        --enable-kernel-poll  --enable-darwin-64bit&amp;quot;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;Now we can install Erlang R15B01.&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;text language-text&quot; data-lang=&quot;text&quot;&gt;kerl build R15B01 r15b01-64
+kerl install r15b01-64 ~/erl/r15b01-64
+. ~/erl/r15b01-64/activate
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;With kerl you&amp;#39;ll need to call that activate command for every shell you open. What I do is add &lt;code&gt;. ~/erl/r15b01-64/activate&lt;/code&gt; to my &lt;code&gt;~/.bash_profile&lt;/code&gt;. The period in front of the command is important. Just calling activate without it won&amp;#39;t work. At this point you should be able to do&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;text language-text&quot; data-lang=&quot;text&quot;&gt;erl
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;and see an erlang shell that looks like this.&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;text language-text&quot; data-lang=&quot;text&quot;&gt;Erlang R15B01 (erts-5.9.1) [source] [64-bit] [smp:4:4] [async-threads:0] [kernel-poll:false]
+
+Eshell V5.9.1  (abort with ^G)
+1&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;type &lt;code&gt;halt().&lt;/code&gt; to exit the shell.&lt;/p&gt;
+
+&lt;h3&gt;Get GCC-4.2&lt;/h3&gt;
+
+&lt;p&gt;The second thing we have to do is get gcc-4.2 and make sure we build riak with it.&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;text language-text&quot; data-lang=&quot;text&quot;&gt;brew tap homebrew/dupes
+brew install apple-gcc42
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;We&amp;#39;re going to change the default xcode cc, gcc, c++, and g++. Make sure you backup their current locations. For reference these were my file locations.&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;text language-text&quot; data-lang=&quot;text&quot;&gt;cc      =&amp;gt;  /usr/bin/clang
+gcc     =&amp;gt;  /usr/bin/gcc
+c++     =&amp;gt;  /usr/bin/clang++
+g++     =&amp;gt;  /usr/bin/g++
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;Again, make sure you back up the ones you need to.&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;text language-text&quot; data-lang=&quot;text&quot;&gt;mv /usr/bin/gcc /usr/bin/gcc.bk
+mv /usr/bin/g++ /usr/bin/g++.bk
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;To point them to gcc-4.2 run these commands&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;text language-text&quot; data-lang=&quot;text&quot;&gt;cd /usr/bin
+sudo rm cc gcc c++ g++
+sudo ln -s /usr/local/bin/gcc-4.2 cc
+sudo ln -s /usr/local/bin/gcc-4.2 gcc
+sudo ln -s /usr/local/bin/c++-4.2 c++
+sudo ln -s /usr/local/bin/g++-4.2 g++
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;If your gcc-4.2 is in a different location you can find that location by running these commands.&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;text language-text&quot; data-lang=&quot;text&quot;&gt;which gcc-4.2
+which c++-4.2
+which g++-4.2
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;h3&gt;Setup Riak&lt;/h3&gt;
+
+&lt;p&gt;Now we&amp;#39;re set to follow the Riak instructions for setup. They are explained in more detail in the &lt;a href=&quot;http://docs.basho.com/riak/latest/quickstart/&quot;&gt;Riak Quickstart&lt;/a&gt;.&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;text language-text&quot; data-lang=&quot;text&quot;&gt;cd riak-1.4.8
+make all
+make devrel DEVNODES=5
+cd dev
+ulimit -n 4096
+for node in `ls`; do $node/bin/riak start; done
+for node in `ls`; do $node/bin/riak ping; done
+for n in {2..5}; do dev$n/bin/riak-admin cluster join dev1@127.0.0.1; done
+dev1/bin/riak-admin plan
+dev1/bin/riak-admin commit
+dev1/bin/riak-admin member-status
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;Now we have a Riak cluster! &lt;/p&gt;
+
+&lt;p&gt;Any errors are available by running something like &lt;code&gt;dev1/bin/riak console&lt;/code&gt;. &lt;code&gt;dev1&lt;/code&gt; is for the first node. It would be &lt;code&gt;dev2&lt;/code&gt; for the second node and so forth. If you didn&amp;#39;t use gcc-4.2 and a R15B01 64-bit build of Erlang you might have received an error that looked like this:&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;text language-text&quot; data-lang=&quot;text&quot;&gt;16:55:17.552 [error] Error loading &amp;quot;erlang_js_drv&amp;quot;: &amp;quot;dlopen(/Users/catchvar/Workspace/riak-1.4.8/dev/dev1/bin/../lib/erlang_js-1.2.2/priv/erlang_js_drv.so, 2): no suitable image found.  Did find:\n\t/Users/catchvar/Workspace/riak-1.4.8/dev/dev1/bin/../lib/erlang_js-1.2.2/priv/erlang_js_drv.so: mach-o, but wrong architecture&amp;quot;
+
+16:55:17.552 [error] CRASH REPORT Process erlang_js_sup with 0 neighbours exited with reason: bad return value: {error,{load_error,&amp;quot;Failed to load erlang_js_drv.so&amp;quot;}} in gen_server:init_it/6 line 332
+16:55:17.552 [error] CRASH REPORT Process &amp;lt;0.115.0&amp;gt; with 0 neighbours exited with reason: bad return value: {error,{load_error,&amp;quot;Failed to load erlang_js_drv.so&amp;quot;}} in erlang_js:start(normal, []) in application_master:init/4 line 138
+16:55:17.552 [info] Application erlang_js exited with reason: bad return value: {error,{load_error,&amp;quot;Failed to load erlang_js_drv.so&amp;quot;}} in erlang_js:start(normal, [])
+{&amp;quot;Kernel pid terminated&amp;quot;,application_controller,&amp;quot;{application_start_failure,erlang_js,},{erlang_js,start,[normal,[]]}}}&amp;quot;}
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;h3&gt;Setup Erlang Client&lt;/h3&gt;
+
+&lt;p&gt;Not everybody is using Erlang. If you&amp;#39;re using another language you can find a list of clients &lt;a href=&quot;http://docs.basho.com/riak/latest/dev/using/libraries/&quot;&gt;here&lt;/a&gt;. Setup for the erlang-riak-client is pretty straightforward. The only problem I ran into is that it doesn&amp;#39;t support Erlang 17.0-RC2, and won&amp;#39;t build if you&amp;#39;re using that version of Erlang. Keep using R15B01 and you should be good.&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;text language-text&quot; data-lang=&quot;text&quot;&gt;cd /path/to/your/erlang/project
+cd deps
+git clone git://github.com/basho/riak-erlang-client.git
+cd riak-erlang-client
+make
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;When you run Erlang you need to add riak-erlang-client to it&amp;#39;s code path. I have a shell script called &lt;code&gt;debug.sh&lt;/code&gt; in my &lt;code&gt;/ebin&lt;/code&gt; folder with the following contents:&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;text language-text&quot; data-lang=&quot;text&quot;&gt;erl -pa `pwd` ../deps/*/ebin ../deps/riak-erlang-client/deps/*/ebin -boot start_sasl -s rinoa_app
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;Run &lt;code&gt;debug.sh&lt;/code&gt;, press enter and you can test out a connection to the Riak cluster.&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;text language-text&quot; data-lang=&quot;text&quot;&gt;sh debug.sh
+{ok, Pid} = riakc_pb_socket:start_link(&amp;quot;127.0.0.1&amp;quot;, 10017).
+riakc_pb_socket:ping(Pid).
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;To figure out if your port is different than 10017:&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;text language-text&quot; data-lang=&quot;text&quot;&gt;cd riak-1.4.8/dev
+cat dev1/etc/app.config
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;Towards the top you&amp;#39;ll see some configuration that looks like this:&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;text language-text&quot; data-lang=&quot;text&quot;&gt;%% pb is a list of IP addresses and TCP ports that the Riak
+%% Protocol Buffers interface will bind.
+{pb, [ {&amp;quot;127.0.0.1&amp;quot;, 10017 } ]}
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;That&amp;#39;s it. I hope that was helpful to someone.&lt;/p&gt;
+</content>
+	</entry>
 	
 	<entry>
 		<title>Catchvar - Game Design and The Ideal World</title>
