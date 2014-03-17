@@ -210,3 +210,12 @@ blockquote p {
     color: #787878;
     margin-top: 0;
 }
+
+.post_link {
+    color: #333333;
+}
+
+.post_link:hover {
+    color: #787878;
+    text-decoration: none;
+}

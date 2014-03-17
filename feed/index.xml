@@ -4,7 +4,7 @@
 	<title type="text" xml:lang="en">Catchvar - Journey to a mobile indie game</title>
 	<link type="application/atom+xml" href="http://www.catchvar.com/feed/" rel="self"/>
  	<link type="text" href="http://www.catchvar.com" rel="alternate"/>
-	<updated>2014-03-16T17:58:53-07:00</updated>
+	<updated>2014-03-16T18:03:44-07:00</updated>
 	<id>http://www.catchvar.com</id>
 	<author>
 		<name>Catchvar</name>
@@ -23,7 +23,11 @@
     &lt;/a&gt;
 &lt;/p&gt;
 
+&lt;p&gt;&lt;a class=&quot;post_link&quot; href=&quot;/setup-riak-and-erlang-client-on-mac-osx.html&quot;&gt;&lt;/p&gt;
+
 &lt;h2&gt;Setup Riak and Erlang Client on Mac OS X&lt;/h2&gt;
+
+&lt;p&gt;&lt;/a&gt;&lt;/p&gt;
 
 &lt;p class=&quot;date&quot;&gt;
     Mar 16, 2014
@@ -172,7 +176,11 @@ cat dev1/etc/app.config
     &lt;/a&gt;
 &lt;/p&gt;
 
+&lt;p&gt;&lt;a class=&quot;post_link&quot; href=&quot;/game-design-and-the-ideal-world.html&quot;&gt;&lt;/p&gt;
+
 &lt;h2&gt;Game Design and The Ideal World&lt;/h2&gt;
+
+&lt;p&gt;&lt;/a&gt;&lt;/p&gt;
 
 &lt;p class=&quot;date&quot;&gt;
     Mar 9, 2014
