@@ -4,7 +4,7 @@
 	<title type="text" xml:lang="en">Catchvar - Journey to a mobile indie game</title>
 	<link type="application/atom+xml" href="http://www.catchvar.com/feed/" rel="self"/>
  	<link type="text" href="http://www.catchvar.com" rel="alternate"/>
-	<updated>2014-03-16T18:03:44-07:00</updated>
+	<updated>2014-03-18T09:17:48-07:00</updated>
 	<id>http://www.catchvar.com</id>
 	<author>
 		<name>Catchvar</name>
@@ -121,8 +121,8 @@ ulimit -n 4096
 for node in `ls`; do $node/bin/riak start; done
 for node in `ls`; do $node/bin/riak ping; done
 for n in {2..5}; do dev$n/bin/riak-admin cluster join dev1@127.0.0.1; done
-dev1/bin/riak-admin plan
-dev1/bin/riak-admin commit
+dev1/bin/riak-admin cluster plan
+dev1/bin/riak-admin cluster commit
 dev1/bin/riak-admin member-status
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 &lt;p&gt;Now we have a Riak cluster! &lt;/p&gt;

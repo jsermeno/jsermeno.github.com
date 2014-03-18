@@ -137,8 +137,8 @@ ulimit -n 4096
 for node in `ls`; do $node/bin/riak start; done
 for node in `ls`; do $node/bin/riak ping; done
 for n in {2..5}; do dev$n/bin/riak-admin cluster join dev1@127.0.0.1; done
-dev1/bin/riak-admin plan
-dev1/bin/riak-admin commit
+dev1/bin/riak-admin cluster plan
+dev1/bin/riak-admin cluster commit
 dev1/bin/riak-admin member-status
 </code></pre></div>
 <p>Now we have a Riak cluster! </p>
