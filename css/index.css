@@ -1,0 +1,13 @@
+.post_header img {
+    width: 100px;
+    height: 100px;
+}
+
+h2 {
+    font-size: 24px;
+}
+
+#posts li {
+    width: 350px;
+    float: left;
+}

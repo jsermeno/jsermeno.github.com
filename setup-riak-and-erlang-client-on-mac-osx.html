@@ -10,6 +10,7 @@
         <link href="/css/bootstrap.min.css" rel="stylesheet" />
         <link href="/css/main.css" rel="stylesheet" />
         <link rel="shortcut icon" type="image/x-icon" href="/images/favicon.ico" />
+        <link href="/css/post.css" rel="stylesheet" />
 
         <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
         <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -35,7 +36,7 @@
             <div class="content">
                 <p class="post_header">
     <a href="/setup-riak-and-erlang-client-on-mac-osx.html">
-        <img src="/images/setup_riak_and_erlang_client_on_mac_osx.png" alt="post header image" />
+        <img src="/images/setup_riak_and_erlang_client_on_mac_osx.png" alt="setup riak and erlang client on mac osx header image" />
     </a>
 </p>
 
@@ -49,58 +50,60 @@
     Mar 16, 2014
 </p>
 
+<!--***-->
+
 <p>In the past I&#39;ve been a big fan of PostgreSQL. It&#39;s rock solid and performant. I&#39;ve used it to scale to hundreds of thousands of users without even coming close to breaking a sweat. The downside is that horizontal scaling is a pain. That typically means that you end up scaling vertically as long as you can. In addition, you don&#39;t get availability and fault-tolerance for free. It requires extra time and work.</p>
 
 <p>I wanted a database that emphasized availability, fault-tolerance, and scalability with little cost to the developer. As an indie game developer this may lead to reduced costs since an equivalent larger machine is usually much more expensive than several smaller machines. Riak&#39;s masterless design was appealing to me, and it looked like it fit my needs better than anything else out there. Of course, when choosing a new technology there is always a chance you&#39;ll regret it, but there is only one way to find out!</p>
 
 <p>I found the documentation for Riak to be pretty good. However, there were a couple of gotchas. I found people with the same problem who were unable to find an answer around the various corners of google search, so I thought I&#39;d make this short post on how to setup Riak from source.</p>
 
-<!--***-->
-
 <p>You can refer to <a href="http://docs.basho.com/riak/latest/ops/building/installing/mac-osx/#Installing-From-Source">Installing From Source</a> and the <a href="http://docs.basho.com/riak/latest/quickstart/">Quickstart</a> from the Riak site for the most up to date versions and instructions. This post assumes you already have the Xcode tools from the <a href="https://developer.apple.com/">Apple Develop&#39;s Website</a>.</p>
 
 <p>Let&#39;s get the source code.</p>
-<div class="highlight"><pre><code class="text language-text" data-lang="text">wget http://s3.amazonaws.com/downloads.basho.com/riak/1.4/1.4.8/riak-1.4.8.tar.gz
+<div class="highlight"><pre><code class="sh language-sh" data-lang="sh">wget http://s3.amazonaws.com/downloads.basho.com/riak/1.4/1.4.8/riak-1.4.8.tar.gz
 tar zxvf riak-1.4.8.tar.gz
 </code></pre></div>
 <h3>Build Erlang</h3>
 
 <p>Now we need to build it. This is where we&#39;ll add a few additional steps. First, you need a specific version of Erlang (R15B01), and it also needs to be built as 64-bit. I&#39;m using kerl to manage my erlang versions and it has been working out pretty great so far. It&#39;s a simple version manager similar to nvm or rbenv for node and ruby respectively, if you have ever used those.</p>
-<div class="highlight"><pre><code class="text language-text" data-lang="text">curl -O https://raw.github.com/spawngrid/kerl/master/kerl
+<div class="highlight"><pre><code class="sh language-sh" data-lang="sh">curl -O https://raw.github.com/spawngrid/kerl/master/kerl
 chmod a+x kerl
 </code></pre></div>
 <p>Then you need to add it to your path. I have a directory called <code>~/Workspace/path</code> that I have setup just for occasions like this. That way I don&#39;t have to add them to a place like <code>/usr/bin</code>. You can add this to your path by doing something like this.</p>
-<div class="highlight"><pre><code class="text language-text" data-lang="text">mkdir ~/Workspace
+<div class="highlight"><pre><code class="sh language-sh" data-lang="sh">mkdir ~/Workspace
 mkdir ~/Workspace/path
 mv kerl ~/Workspace/path
 </code></pre></div>
 <p>Edit your <code>~/.bash_profile</code> to include this line:</p>
-<div class="highlight"><pre><code class="text language-text" data-lang="text">export PATH=$PATH:$HOME/Workspace/path
+<div class="highlight"><pre><code class="sh language-sh" data-lang="sh"><span class="nb">export </span><span class="nv">PATH</span><span class="o">=</span><span class="nv">$PATH</span>:<span class="nv">$HOME</span>/Workspace/path
 </code></pre></div>
 <p>In order to build our Erlang installations as 64-bit you need to create a <code>~/.kerlrc</code> file with these contents:</p>
-<div class="highlight"><pre><code class="text language-text" data-lang="text">KERL_CONFIGURE_OPTIONS=&quot;--disable-hipe --enable-smp-support --enable-threads
-                        --enable-kernel-poll  --enable-darwin-64bit&quot;
+<div class="highlight"><pre><code class="sh language-sh" data-lang="sh"><span class="nv">KERL_CONFIGURE_OPTIONS</span><span class="o">=</span><span class="s2">&quot;--disable-hipe --enable-smp-support --enable-threads</span>
+<span class="s2">                        --enable-kernel-poll  --enable-darwin-64bit&quot;</span>
 </code></pre></div>
 <p>Now we can install Erlang R15B01.</p>
-<div class="highlight"><pre><code class="text language-text" data-lang="text">kerl build R15B01 r15b01-64
+<div class="highlight"><pre><code class="sh language-sh" data-lang="sh">kerl build R15B01 r15b01-64
 kerl install r15b01-64 ~/erl/r15b01-64
 . ~/erl/r15b01-64/activate
 </code></pre></div>
 <p>With kerl you&#39;ll need to call that activate command for every shell you open. What I do is add <code>. ~/erl/r15b01-64/activate</code> to my <code>~/.bash_profile</code>. The period in front of the command is important. Just calling activate without it won&#39;t work. At this point you should be able to do</p>
-<div class="highlight"><pre><code class="text language-text" data-lang="text">erl
+<div class="highlight"><pre><code class="sh language-sh" data-lang="sh">erl
 </code></pre></div>
 <p>and see an erlang shell that looks like this.</p>
-<div class="highlight"><pre><code class="text language-text" data-lang="text">Erlang R15B01 (erts-5.9.1) [source] [64-bit] [smp:4:4] [async-threads:0] [kernel-poll:false]
+<div class="highlight"><pre><code class="sh language-sh" data-lang="sh">Erlang R15B01 <span class="o">(</span>erts-5.9.1<span class="o">)</span> <span class="o">[</span><span class="nb">source</span><span class="o">]</span> <span class="o">[</span>64-bit<span class="o">]</span> <span class="o">[</span>smp:4:4<span class="o">]</span> <span class="o">[</span>async-threads:0<span class="o">]</span> <span class="o">[</span>kernel-poll:false<span class="o">]</span>
 
-Eshell V5.9.1  (abort with ^G)
+Eshell V5.9.1  <span class="o">(</span>abort with ^G<span class="o">)</span>
 1&gt;
 </code></pre></div>
 <p>type <code>halt().</code> to exit the shell.</p>
 
 <h3>Get GCC-4.2</h3>
 
+<p><strong>Update</strong>: You don&#39;t need gcc-4.2 for the latest riak on the latest Mac OS X. But I&#39;ll leave this here in case someone wants it anyways for some reason.</p>
+
 <p>The second thing we have to do is get gcc-4.2 and make sure we build riak with it.</p>
-<div class="highlight"><pre><code class="text language-text" data-lang="text">brew tap homebrew/dupes
+<div class="highlight"><pre><code class="sh language-sh" data-lang="sh">brew tap homebrew/dupes
 brew install apple-gcc42
 </code></pre></div>
 <p>We&#39;re going to change the default xcode cc, gcc, c++, and g++. Make sure you backup their current locations. For reference these were my file locations.</p>
@@ -110,11 +113,11 @@ c++     =&gt;  /usr/bin/clang++
 g++     =&gt;  /usr/bin/g++
 </code></pre></div>
 <p>Again, make sure you back up the ones you need to.</p>
-<div class="highlight"><pre><code class="text language-text" data-lang="text">mv /usr/bin/gcc /usr/bin/gcc.bk
+<div class="highlight"><pre><code class="sh language-sh" data-lang="sh">mv /usr/bin/gcc /usr/bin/gcc.bk
 mv /usr/bin/g++ /usr/bin/g++.bk
 </code></pre></div>
 <p>To point them to gcc-4.2 run these commands</p>
-<div class="highlight"><pre><code class="text language-text" data-lang="text">cd /usr/bin
+<div class="highlight"><pre><code class="sh language-sh" data-lang="sh"><span class="nb">cd</span> /usr/bin
 sudo rm cc gcc c++ g++
 sudo ln -s /usr/local/bin/gcc-4.2 cc
 sudo ln -s /usr/local/bin/gcc-4.2 gcc
@@ -122,21 +125,21 @@ sudo ln -s /usr/local/bin/c++-4.2 c++
 sudo ln -s /usr/local/bin/g++-4.2 g++
 </code></pre></div>
 <p>If your gcc-4.2 is in a different location you can find that location by running these commands.</p>
-<div class="highlight"><pre><code class="text language-text" data-lang="text">which gcc-4.2
+<div class="highlight"><pre><code class="sh language-sh" data-lang="sh">which gcc-4.2
 which c++-4.2
 which g++-4.2
 </code></pre></div>
 <h3>Setup Riak</h3>
 
 <p>Now we&#39;re set to follow the Riak instructions for setup. They are explained in more detail in the <a href="http://docs.basho.com/riak/latest/quickstart/">Riak Quickstart</a>.</p>
-<div class="highlight"><pre><code class="text language-text" data-lang="text">cd riak-1.4.8
+<div class="highlight"><pre><code class="sh language-sh" data-lang="sh"><span class="nb">cd </span>riak-1.4.8
 make all
-make devrel DEVNODES=5
-cd dev
-ulimit -n 4096
-for node in `ls`; do $node/bin/riak start; done
-for node in `ls`; do $node/bin/riak ping; done
-for n in {2..5}; do dev$n/bin/riak-admin cluster join dev1@127.0.0.1; done
+make devrel <span class="nv">DEVNODES</span><span class="o">=</span>5
+<span class="nb">cd </span>dev
+<span class="nb">ulimit</span> -n 4096
+<span class="k">for </span>node in <span class="sb">`</span>ls<span class="sb">`</span><span class="p">;</span> <span class="k">do</span> <span class="nv">$node</span>/bin/riak start<span class="p">;</span> <span class="k">done</span>
+<span class="k">for </span>node in <span class="sb">`</span>ls<span class="sb">`</span><span class="p">;</span> <span class="k">do</span> <span class="nv">$node</span>/bin/riak ping<span class="p">;</span> <span class="k">done</span>
+<span class="k">for </span>n in <span class="o">{</span>2..5<span class="o">}</span><span class="p">;</span> <span class="k">do </span>dev<span class="nv">$n</span>/bin/riak-admin cluster join dev1@127.0.0.1<span class="p">;</span> <span class="k">done</span>
 dev1/bin/riak-admin cluster plan
 dev1/bin/riak-admin cluster commit
 dev1/bin/riak-admin member-status
@@ -154,28 +157,28 @@ dev1/bin/riak-admin member-status
 <h3>Setup Erlang Client</h3>
 
 <p>Not everybody is using Erlang. If you&#39;re using another language you can find a list of clients <a href="http://docs.basho.com/riak/latest/dev/using/libraries/">here</a>. Setup for the erlang-riak-client is pretty straightforward. The only problem I ran into is that it doesn&#39;t support Erlang 17.0-RC2, and won&#39;t build if you&#39;re using that version of Erlang. Keep using R15B01 and you should be good.</p>
-<div class="highlight"><pre><code class="text language-text" data-lang="text">cd /path/to/your/erlang/project
-cd deps
+<div class="highlight"><pre><code class="sh language-sh" data-lang="sh"><span class="nb">cd</span> /path/to/your/erlang/project
+<span class="nb">cd </span>deps
 git clone git://github.com/basho/riak-erlang-client.git
-cd riak-erlang-client
+<span class="nb">cd </span>riak-erlang-client
 make
 </code></pre></div>
 <p>When you run Erlang you need to add riak-erlang-client to it&#39;s code path. I have a shell script called <code>debug.sh</code> in my <code>/ebin</code> folder with the following contents:</p>
-<div class="highlight"><pre><code class="text language-text" data-lang="text">erl -pa `pwd` ../deps/*/ebin ../deps/riak-erlang-client/deps/*/ebin -boot start_sasl -s rinoa_app
+<div class="highlight"><pre><code class="sh language-sh" data-lang="sh">erl -pa <span class="sb">`</span><span class="nb">pwd</span><span class="sb">`</span> ../deps/*/ebin ../deps/riak-erlang-client/deps/*/ebin -boot start_sasl -s rinoa_app
 </code></pre></div>
 <p>Run <code>debug.sh</code>, press enter and you can test out a connection to the Riak cluster.</p>
-<div class="highlight"><pre><code class="text language-text" data-lang="text">sh debug.sh
-{ok, Pid} = riakc_pb_socket:start_link(&quot;127.0.0.1&quot;, 10017).
-riakc_pb_socket:ping(Pid).
+<div class="highlight"><pre><code class="sh language-sh" data-lang="sh">sh debug.sh
+</code></pre></div><div class="highlight"><pre><code class="erlang language-erlang" data-lang="erlang"><span class="p">{</span><span class="n">ok</span><span class="p">,</span> <span class="nv">Pid</span><span class="p">}</span> <span class="o">=</span> <span class="nn">riakc_pb_socket</span><span class="p">:</span><span class="nf">start_link</span><span class="p">(</span><span class="s">&quot;127.0.0.1&quot;</span><span class="p">,</span> <span class="mi">10017</span><span class="p">).</span>
+<span class="nn">riakc_pb_socket</span><span class="p">:</span><span class="nf">ping</span><span class="p">(</span><span class="nv">Pid</span><span class="p">).</span>
 </code></pre></div>
 <p>To figure out if your port is different than 10017:</p>
-<div class="highlight"><pre><code class="text language-text" data-lang="text">cd riak-1.4.8/dev
+<div class="highlight"><pre><code class="sh language-sh" data-lang="sh"><span class="nb">cd </span>riak-1.4.8/dev
 cat dev1/etc/app.config
 </code></pre></div>
 <p>Towards the top you&#39;ll see some configuration that looks like this:</p>
-<div class="highlight"><pre><code class="text language-text" data-lang="text">%% pb is a list of IP addresses and TCP ports that the Riak
-%% Protocol Buffers interface will bind.
-{pb, [ {&quot;127.0.0.1&quot;, 10017 } ]}
+<div class="highlight"><pre><code class="erlang language-erlang" data-lang="erlang"><span class="c">%% pb is a list of IP addresses and TCP ports that the Riak</span>
+<span class="c">%% Protocol Buffers interface will bind.</span>
+<span class="p">{</span><span class="n">pb</span><span class="p">,</span> <span class="p">[</span> <span class="p">{</span><span class="s">&quot;127.0.0.1&quot;</span><span class="p">,</span> <span class="mi">10017</span> <span class="p">}</span> <span class="p">]}</span>
 </code></pre></div>
 <p>That&#39;s it. I hope that was helpful to someone.</p>
 

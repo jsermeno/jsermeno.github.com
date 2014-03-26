@@ -4,7 +4,7 @@
 	<title type="text" xml:lang="en">Catchvar - Journey to a mobile indie game</title>
 	<link type="application/atom+xml" href="http://www.catchvar.com/feed/" rel="self"/>
  	<link type="text" href="http://www.catchvar.com" rel="alternate"/>
-	<updated>2014-03-18T09:17:48-07:00</updated>
+	<updated>2014-03-25T18:41:41-07:00</updated>
 	<id>http://www.catchvar.com</id>
 	<author>
 		<name>Catchvar</name>
@@ -13,13 +13,256 @@
 	
 	
 	<entry>
+		<title>Cocos2d-x HTTPS and your own certificate authority</title>
+                <link href="http://www.catchvar.com/cocos2d-x-https-and-your-own-certificate-authority.html"/>
+		<updated>2014-03-25T00:00:00-07:00</updated>
+		<id>http://www.catchvar.com/cocos2d-x-https-and-your-own-certificate-authority</id>
+                <content type="html">&lt;p class=&quot;post_header&quot;&gt;
+    &lt;a href=&quot;/cocos2d-x-https-and-your-own-certificate-authority.html&quot;&gt;
+        &lt;img src=&quot;/images/cocos2d_x_https_and_your_own_certificate_authority.png&quot; alt=&quot;cocos2d-x https and creating your own certificate authority header image&quot;/&gt;
+    &lt;/a&gt;
+&lt;/p&gt;
+
+&lt;p&gt;&lt;a class=&quot;post_link&quot; href=&quot;/cocos2d-x-https-and-your-own-certificate-authority.html&quot;&gt;&lt;/p&gt;
+
+&lt;h2&gt;Cocos2d-x HTTPS and your own certificate authority&lt;/h2&gt;
+
+&lt;p&gt;&lt;/a&gt;&lt;/p&gt;
+
+&lt;p class=&quot;date&quot;&gt;
+    Mar 25, 2014
+&lt;/p&gt;
+
+&lt;!--***--&gt;
+
+&lt;p&gt;Security in mobile games is usually left by the wayside. Usually, it&amp;#39;s just the lowest priority item on the list when it comes to getting a game out by a deadline. After the fact, you can ask anyone if the game should have security feature X and they&amp;#39;ll be shocked that it doesn&amp;#39;t already exist. Ask the same person before a deadline if you should have the same security feature, or a sparkling unicorn riding across the bottom of the settings page, and they&amp;#39;ll choose the sparking unicorn unless they&amp;#39;re a security nut.&lt;/p&gt;
+
+&lt;p&gt;This isn&amp;#39;t always entirely without merit. However, in the context of a real-time multiplayer game where players constantly interact with each other security becomes more important. You don&amp;#39;t want one bad seed ruining the experience for all the other players. Using HTTPS is one aspect that can improve the security of your game. We don&amp;#39;t need to buy an expensive certificate from a certificate authority either. If you&amp;#39;re distributing a mobile game you can distribute the certificate chain with the game.&lt;/p&gt;
+
+&lt;h3&gt;Create your own certificate authority&lt;/h3&gt;
+
+&lt;p&gt;This is the part that I had the most trouble with. There are tutorials galore out there, however the ones I ran into failed to provide certificates that actually worked. Hopefully it can be a little easier for you. Use &lt;a href=&quot;https://github.com/jsermeno/easycert_openssl.git&quot;&gt;easycert openssl&lt;/a&gt; on github to create your certificates.&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;sh language-sh&quot; data-lang=&quot;sh&quot;&gt;&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;curl -O https://raw.github.com/jsermeno/kerl/master/easycert
+&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;chmod a+x easycert
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;Then add this file to your path. You can edit your &lt;code&gt;~/.bash_profile&lt;/code&gt; and do something like this:&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;sh language-sh&quot; data-lang=&quot;sh&quot;&gt;&lt;span class=&quot;nb&quot;&gt;export &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;PATH&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$PATH&lt;/span&gt;:~/Workspace/path/easycert
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;Next we&amp;#39;ll create a necessary configuration file. Make any necessary changes to the following config and copy it into your shell.&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;sh language-sh&quot; data-lang=&quot;sh&quot;&gt;&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;cat &amp;gt; ~/.easycertrc &lt;span class=&quot;s&quot;&gt;&amp;lt;&amp;lt; EOF&lt;/span&gt;
+&lt;span class=&quot;s&quot;&gt;EASYCERT_COUNTRY=&amp;quot;US&amp;quot;&lt;/span&gt;
+&lt;span class=&quot;s&quot;&gt;EASYCERT_STATE=&amp;quot;California&amp;quot;&lt;/span&gt;
+&lt;span class=&quot;s&quot;&gt;EASYCERT_LOCALITY=&amp;quot;Mountain View&amp;quot;&lt;/span&gt;
+&lt;span class=&quot;s&quot;&gt;EASYCERT_ORGANIZATION=&amp;quot;Catchvar&amp;quot;&lt;/span&gt;
+&lt;span class=&quot;s&quot;&gt;EASYCERT_UNIT=&amp;quot;Studio&amp;quot;&lt;/span&gt;
+&lt;span class=&quot;s&quot;&gt;EASYCERT_COMMON_NAME=&amp;quot;localhost&amp;quot;&lt;/span&gt;
+&lt;span class=&quot;s&quot;&gt;EASYCERT_EMAIL=&amp;quot;youremailaddress@gmail.com&amp;quot;&lt;/span&gt;
+&lt;span class=&quot;s&quot;&gt;EASYCERT_UNSTRUCTURED=&amp;quot;Catchvar&amp;quot;&lt;/span&gt;
+&lt;span class=&quot;s&quot;&gt;EOF&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;When a client makes a request it will check the domain against the &lt;code&gt;EASYCERT_COMMON_NAME&lt;/code&gt; property so make sure this property reflects your own domain. For development, localhost works. You&amp;#39;ll need seperate certificates for production. The other important property is &lt;code&gt;EASYCERT_ORGANIZATION&lt;/code&gt;. You just need to know that this must be the same among all your certificates. Easycert will do that for you, so don&amp;#39;t worry.&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;sh language-sh&quot; data-lang=&quot;sh&quot;&gt;&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;easycert create-all ~/.ca
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;This command tells easycert to create your certificates at &lt;code&gt;~/.ca&lt;/code&gt;. It will create a root certificate, an intermediate certificate, and a server certificate. The root certificate and the intermediate certificate make up the certificate chain. The certificate chain will be what clients use to verify your server. &lt;/p&gt;
+
+&lt;p&gt;You&amp;#39;ll be prompted several times during this process. You&amp;#39;ll be asked for two separate passphrases for the root and intermediate keys. You will need to enter each passpharse twice to verify that it&amp;#39;s really what you wanted to enter.&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;sh language-sh&quot; data-lang=&quot;sh&quot;&gt;Generating directory structure... /Users/catchvar/.cert
+Generating directory structure... /Users/catchvar/.cert/intermediate
+Generating ca root key...
+Generating RSA private key, 4096 bit long modulus
+................................................................................................................................................................++
+.....................................................................................................++
+e is 65537 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;0x10001&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+Enter pass phrase &lt;span class=&quot;k&quot;&gt;for&lt;/span&gt; /Users/catchvar/.cert/private/ca.key.pem:
+Verifying - Enter pass phrase &lt;span class=&quot;k&quot;&gt;for&lt;/span&gt; /Users/catchvar/.cert/private/ca.key.pem:
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;When generating the certificates you&amp;#39;ll need to re-enter these passphrases.&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;sh language-sh&quot; data-lang=&quot;sh&quot;&gt;Enter pass phrase &lt;span class=&quot;k&quot;&gt;for&lt;/span&gt; /Users/catchvar/.cert/private/ca.key.pem:
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;Then you&amp;#39;ll be asked to confirm the certificate info. The defaults will be what you entered into the configuration above. If you want to use the defaults just press enter and quickly get through that section.&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;sh language-sh&quot; data-lang=&quot;sh&quot;&gt;You are about to be asked to enter information that will be incorporated
+into your certificate request.
+What you are about to enter is what is called a Distinguished Name or a DN.
+There are quite a few fields but you can leave some blank
+For some fields there will be a default value,
+If you enter &lt;span class=&quot;s1&quot;&gt;&amp;#39;.&amp;#39;&lt;/span&gt;, the field will be left blank.
+-----
+Country Name &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;2 letter code&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;US&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt;:
+State or Province Name &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;full name&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;California&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt;:
+Locality Name &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;eg, city&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;Mountain View&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt;:
+Organization Name &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;eg, company&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;Catchvar&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt;:
+Organizational Unit Name &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;eg, section&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;Studio&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt;:
+Common Name &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;eg, YOUR name&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;localhost&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt;:
+Email Address &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;youremailaddress@gmail.com&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt;:
+generating intermediate key...
+Generating RSA private key, 4096 bit long modulus
+.......................++
+...........................++
+e is 65537 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;0x10001&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;You&amp;#39;ll need to to the same serveral times. Once for each certificate that is generated. When asked if you want to sign the certificate and commit just type &lt;code&gt;y&lt;/code&gt;. The end will look like this.&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;sh language-sh&quot; data-lang=&quot;sh&quot;&gt;1 out of 1 certificate requests certified, commit? &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;y/n&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt;y
+Write out database with 1 new entries
+Data Base Updated
+Verifying server certificate...&lt;span class=&quot;o&quot;&gt;{}&lt;/span&gt;
+/Users/jsermeno/.cert/intermediate/certs/localhost.cert.pem: OK
+&lt;span class=&quot;k&quot;&gt;done&lt;/span&gt;.
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;Now you can get the paths for where your certificates are stored.&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;sh language-sh&quot; data-lang=&quot;sh&quot;&gt;&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;easycert find ~/.ca
+ca:                /Users/catchvar/.ca/certs/ca.cert.pem
+intermediate:      /Users/catchvar/.ca/intermediate/certs/intermediate.cert.pem
+server key:        /Users/catchvar/.ca/intermediate/private/localhost.key.pem
+server:            /Users/catchvar/.ca/intermediate/certs/localhost.cert.pem
+ca-chain:          /Users/catchvar/.ca/intermediate/certs/ca-chain.cert.pem
+&lt;span class=&quot;k&quot;&gt;done&lt;/span&gt;.
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;Easycert verifies your certificates, but for added measure you can verify that your certificates are working properly with the following command.&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;sh language-sh&quot; data-lang=&quot;sh&quot;&gt;openssl verify -verbose -purpose sslserver -CAfile ~/.ca/intermediate/certs/ca-chain.cert.pem ~/.ca/intermediate/certs/localhost.cert.pem
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;h3&gt;Use HTTPS with cocos2d-x&lt;/h3&gt;
+
+&lt;p&gt;Currently I&amp;#39;m using cocos2d-x-3.0rc0. The version of libcurl included is 7.27.0 and is built with openssl. Beware. Newer versions of libcurl may be built with darwinssl, which is Apple&amp;#39;s native Secure Transport. This could be good. It means that you don&amp;#39;t have to include openssl. That means saving on the precious app size. However those versions of libcurl use the keychain on iOS and ignore the &lt;code&gt;CURLOPT_CAINFO&lt;/code&gt; option. That means you can&amp;#39;t specify your own root certificate without using Apple&amp;#39;s APIs for adding certificates to the keychain. &lt;/p&gt;
+
+&lt;p&gt;To check what version of openssl you have you can use the following code.&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;c++ language-c++&quot; data-lang=&quot;c++&quot;&gt;&lt;span class=&quot;n&quot;&gt;curl&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;curl_easy_init&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;curl_version_info_data&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;data&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;curl_version_info&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;CURLVERSION_NOW&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;cocos2d&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;log&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;quot;openssl version: %s&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;data&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;ssl_version&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;cocos2d&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;log&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;quot;version: %s&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;data&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;version&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;Add &lt;code&gt;ca-chain.cert.pem&lt;/code&gt; to your resources directory. I added mine at &lt;code&gt;Project/Resources/priv/ssl/ca-chain.cert.pem&lt;/code&gt;. The easiest way to make a HTTP request with cocos2d-x is to look at the samples and use the HttpClient class. Unfortunately, the HttpClient class does not currently support ssl. In fact it turns off ssl verification so that you can make requests to a https url with no certificate bundle. This certainly, is not secure.&lt;/p&gt;
+
+&lt;p&gt;Fortunately, it&amp;#39;s easy to add this functionality to HttpClient. In HttpClient.h add these lines under the public method section.&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;c++ language-c++&quot; data-lang=&quot;c++&quot;&gt;&lt;span class=&quot;cm&quot;&gt;/** Enable ssl support **/&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;static&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;enableSSLCaInfo&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;std&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;string&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;info&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+
+&lt;span class=&quot;cm&quot;&gt;/** Disable ssl support **/&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;static&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;disableSSLCaInfo&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;In HttpClient.cpp we&amp;#39;ll add a string representing the path to your &lt;code&gt;ca-chain.cert.pem&lt;/code&gt; file.&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;c++ language-c++&quot; data-lang=&quot;c++&quot;&gt;&lt;span class=&quot;k&quot;&gt;static&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;std&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;string&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;s_sslCaInfo&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;// string path to CURL_CAINFO value&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;And&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;the&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;methods&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;for&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;changing&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;this&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;string&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;
+
+&lt;span class=&quot;kt&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;HttpClient&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;enableSSLCaInfo&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;std&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;string&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;info&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;s_sslCaInfo&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;info&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+
+&lt;span class=&quot;kt&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;HttpClient&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;disableSSLCaInfo&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;s_sslCaInfo&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;clear&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;In the method &lt;code&gt;configureCURL&lt;/code&gt; you&amp;#39;ll find these lines.&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;c++ language-c++&quot; data-lang=&quot;c++&quot;&gt;&lt;span class=&quot;n&quot;&gt;curl_easy_setopt&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;handle&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;CURLOPT_SSL_VERIFYPEER&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0L&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;curl_easy_setopt&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;handle&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;CURLOPT_SSL_VERIFYHOST&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0L&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;These lines disable ssl verification. Change them to these lines.&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;c++ language-c++&quot; data-lang=&quot;c++&quot;&gt;&lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;s_sslCaInfo&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;empty&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;())&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;curl_easy_setopt&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;handle&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;CURLOPT_SSL_VERIFYPEER&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0L&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;curl_easy_setopt&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;handle&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;CURLOPT_SSL_VERIFYHOST&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0L&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;else&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;curl_easy_setopt&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;handle&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;CURLOPT_SSL_VERIFYPEER&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1L&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;curl_easy_setopt&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;handle&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;CURLOPT_SSL_VERIFYHOST&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;2L&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;curl_easy_setopt&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;handle&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;CURLOPT_CAINFO&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;s_sslCaInfo&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;c_str&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;());&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;This just says that if you set the s_sslCaInfo string then enable ssl verification and look for the certificate chain at this location. I&amp;#39;ve added a pull request for this in the latest cocos2d-x develop. Hopefully, it or some variant gets merged in after review. The alternative is to use curl manually to do your requests for ssl. This isn&amp;#39;t terrible, but why do that when HttpClient already offers so much functionality?&lt;/p&gt;
+
+&lt;h3&gt;Make a Request&lt;/h3&gt;
+
+&lt;p&gt;You can use the HttpClient to make a request from any class, but it needs to inherit from &lt;code&gt;cocos2d::Layer&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;In your header file include the following headers.&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;c++ language-c++&quot; data-lang=&quot;c++&quot;&gt;&lt;span class=&quot;cp&quot;&gt;#include &amp;lt;string&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;cp&quot;&gt;#include &amp;lt;iostream&amp;gt; &lt;/span&gt;&lt;span class=&quot;c1&quot;&gt;// optional&lt;/span&gt;
+&lt;span class=&quot;cp&quot;&gt;#include &amp;quot;cocos2d.h&amp;quot;&lt;/span&gt;
+&lt;span class=&quot;cp&quot;&gt;#include &amp;quot;network/HttpClient.h&amp;quot;&lt;/span&gt;
+&lt;span class=&quot;cp&quot;&gt;#include &amp;quot;msgpack.hpp&amp;quot; &lt;/span&gt;&lt;span class=&quot;c1&quot;&gt;// optional&lt;/span&gt;
+&lt;span class=&quot;cp&quot;&gt;#include &amp;quot;CCConsole.h&amp;quot; &lt;/span&gt;&lt;span class=&quot;c1&quot;&gt;// optional&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;Add a public definition like the following.&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;c++ language-c++&quot; data-lang=&quot;c++&quot;&gt;&lt;span class=&quot;k&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;YourClass&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;cocos2d&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Layer&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+&lt;span class=&quot;nl&quot;&gt;public:&lt;/span&gt;
+
+    &lt;span class=&quot;kt&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;onCallback&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;cocos2d&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;network&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;HttpClient&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;sender&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;cocos2d&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;network&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;HttpResponse&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;response&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;In your cpp file include the following headers and using declarations.&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;c++ language-c++&quot; data-lang=&quot;c++&quot;&gt;&lt;span class=&quot;cp&quot;&gt;#include &amp;quot;HttpRequest.h&amp;quot;&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;USING_NS_CC&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;using&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;namespace&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;cocos2d&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;network&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;Now you need to enable ssl.&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;c++ language-c++&quot; data-lang=&quot;c++&quot;&gt;&lt;span class=&quot;k&quot;&gt;auto&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;sharedFileUtils&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;FileUtils&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;getInstance&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;std&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;string&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;ret&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;sharedFileUtils&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;fullPathForFilename&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;quot;ca-chain.cert.pem&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;cocos2d&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;network&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;HttpClient&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;enableSSLCaInfo&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;ret&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;Setup the request.&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;c++ language-c++&quot; data-lang=&quot;c++&quot;&gt;&lt;span class=&quot;n&quot;&gt;cocos2d&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;network&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;HttpRequest&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;request&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;cocos2d&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;network&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;HttpRequest&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;request&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;setUrl&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;quot;https://localhost:8443&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;request&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;setRequestType&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;cocos2d&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;network&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;HttpRequest&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Type&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;POST&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;request&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;setResponseCallback&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;this&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;httpresponse_selector&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;YourClass&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;onCallback&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;));&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;My project uses &lt;a href=&quot;http://msgpack.org/&quot;&gt;MessagePack&lt;/a&gt; to post data. But any &lt;code&gt;(char *)&lt;/code&gt; can be sent.&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;c++ language-c++&quot; data-lang=&quot;c++&quot;&gt;&lt;span class=&quot;n&quot;&gt;std&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;vector&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;std&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;string&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;postData&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;postData&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;push_back&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;quot;dataOne&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;postData&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;push_back&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;quot;dataTwo&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+
+&lt;span class=&quot;c1&quot;&gt;// msgpack data&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;msgpack&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;sbuffer&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;sbuf&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;msgpack&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;pack&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;amp;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;sbuf&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;postData&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;Now you can set the data and send!&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;c++ language-c++&quot; data-lang=&quot;c++&quot;&gt;&lt;span class=&quot;n&quot;&gt;request&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;setRequestData&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;sbuf&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;data&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(),&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;sbuf&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;size&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;());&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;cocos2d&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;network&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;HttpClient&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;getInstance&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;send&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;request&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;request&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;release&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;Just wait for your response.&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;c++ language-c++&quot; data-lang=&quot;c++&quot;&gt;&lt;span class=&quot;kt&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;YourClass&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;onCallback&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;HttpClient&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;sender&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;HttpResponse&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;response&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;!&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;response&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;cocos2d&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;log&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;no&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;response&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;quot;);&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+
+    &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;!&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;response&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;isSucceed&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;())&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;cocos2d&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;log&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;quot;response failed.&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;cocos2d&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;log&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;quot;error buffer: %s&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;response&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;getErrorBuffer&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;());&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+
+    &lt;span class=&quot;n&quot;&gt;std&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;vector&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;char&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;buffer&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;response&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;getResponseData&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;msgpack&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;unpacked&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;msg&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;msgpack&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;unpack&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;amp;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;msg&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;char&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;amp;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;buffer&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;],&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;buffer&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;size&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;());&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;msgpack&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;object&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;obj&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;msg&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;get&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
+
+    &lt;span class=&quot;n&quot;&gt;std&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;cout&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;obj&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;std&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;endl&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+
+    &lt;span class=&quot;n&quot;&gt;std&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;vector&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;std&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;string&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;parsedResponse&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;obj&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;convert&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;amp;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;parsedResponse&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;If you used MessagePack your data is in the parsedResponse vector. Otherwise your response will be in the buffer vector as a series of chars.&lt;/p&gt;
+
+&lt;p&gt;Hopefully, this post will make someone&amp;#39;s game more secure. You can double check that everything is working by creating a second set of certificates. Use that set of certificates on your server and when you try using the ca-chain cert from the first set you should get an error.&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Disclaimer&lt;/strong&gt;: I am not a security expert, just a security-conscious everything engineer. Use at your own risk.&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;P.S.&lt;/strong&gt; If you do not want to create your own certificate authority, and just want to access &lt;code&gt;https://www.google.com&lt;/code&gt;, you can use the ca bundle provided from the &lt;a href=&quot;http://curl.haxx.se/docs/caextract.html&quot;&gt;curl website&lt;/a&gt;. &lt;a href=&quot;http://curl.haxx.se/ca/cacert.pem&quot;&gt;Here&lt;/a&gt; is where you can download &lt;code&gt;cacert.pem&lt;/code&gt;. This bundle is converted from Mozilla&amp;#39;s CA cert bundle.&lt;/p&gt;
+</content>
+	</entry>
+	
+	<entry>
 		<title>Setup Riak and Erlang Client on Mac OS X</title>
                 <link href="http://www.catchvar.com/setup-riak-and-erlang-client-on-mac-osx.html"/>
 		<updated>2014-03-16T00:00:00-07:00</updated>
 		<id>http://www.catchvar.com/setup-riak-and-erlang-client-on-mac-osx</id>
                 <content type="html">&lt;p class=&quot;post_header&quot;&gt;
     &lt;a href=&quot;/setup-riak-and-erlang-client-on-mac-osx.html&quot;&gt;
-        &lt;img src=&quot;/images/setup_riak_and_erlang_client_on_mac_osx.png&quot; alt=&quot;post header image&quot; /&gt;
+        &lt;img src=&quot;/images/setup_riak_and_erlang_client_on_mac_osx.png&quot; alt=&quot;setup riak and erlang client on mac osx header image&quot; /&gt;
     &lt;/a&gt;
 &lt;/p&gt;
 
@@ -33,58 +276,60 @@
     Mar 16, 2014
 &lt;/p&gt;
 
+&lt;!--***--&gt;
+
 &lt;p&gt;In the past I&amp;#39;ve been a big fan of PostgreSQL. It&amp;#39;s rock solid and performant. I&amp;#39;ve used it to scale to hundreds of thousands of users without even coming close to breaking a sweat. The downside is that horizontal scaling is a pain. That typically means that you end up scaling vertically as long as you can. In addition, you don&amp;#39;t get availability and fault-tolerance for free. It requires extra time and work.&lt;/p&gt;
 
 &lt;p&gt;I wanted a database that emphasized availability, fault-tolerance, and scalability with little cost to the developer. As an indie game developer this may lead to reduced costs since an equivalent larger machine is usually much more expensive than several smaller machines. Riak&amp;#39;s masterless design was appealing to me, and it looked like it fit my needs better than anything else out there. Of course, when choosing a new technology there is always a chance you&amp;#39;ll regret it, but there is only one way to find out!&lt;/p&gt;
 
 &lt;p&gt;I found the documentation for Riak to be pretty good. However, there were a couple of gotchas. I found people with the same problem who were unable to find an answer around the various corners of google search, so I thought I&amp;#39;d make this short post on how to setup Riak from source.&lt;/p&gt;
 
-&lt;!--***--&gt;
-
 &lt;p&gt;You can refer to &lt;a href=&quot;http://docs.basho.com/riak/latest/ops/building/installing/mac-osx/#Installing-From-Source&quot;&gt;Installing From Source&lt;/a&gt; and the &lt;a href=&quot;http://docs.basho.com/riak/latest/quickstart/&quot;&gt;Quickstart&lt;/a&gt; from the Riak site for the most up to date versions and instructions. This post assumes you already have the Xcode tools from the &lt;a href=&quot;https://developer.apple.com/&quot;&gt;Apple Develop&amp;#39;s Website&lt;/a&gt;.&lt;/p&gt;
 
 &lt;p&gt;Let&amp;#39;s get the source code.&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;text language-text&quot; data-lang=&quot;text&quot;&gt;wget http://s3.amazonaws.com/downloads.basho.com/riak/1.4/1.4.8/riak-1.4.8.tar.gz
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;sh language-sh&quot; data-lang=&quot;sh&quot;&gt;wget http://s3.amazonaws.com/downloads.basho.com/riak/1.4/1.4.8/riak-1.4.8.tar.gz
 tar zxvf riak-1.4.8.tar.gz
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 &lt;h3&gt;Build Erlang&lt;/h3&gt;
 
 &lt;p&gt;Now we need to build it. This is where we&amp;#39;ll add a few additional steps. First, you need a specific version of Erlang (R15B01), and it also needs to be built as 64-bit. I&amp;#39;m using kerl to manage my erlang versions and it has been working out pretty great so far. It&amp;#39;s a simple version manager similar to nvm or rbenv for node and ruby respectively, if you have ever used those.&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;text language-text&quot; data-lang=&quot;text&quot;&gt;curl -O https://raw.github.com/spawngrid/kerl/master/kerl
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;sh language-sh&quot; data-lang=&quot;sh&quot;&gt;curl -O https://raw.github.com/spawngrid/kerl/master/kerl
 chmod a+x kerl
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 &lt;p&gt;Then you need to add it to your path. I have a directory called &lt;code&gt;~/Workspace/path&lt;/code&gt; that I have setup just for occasions like this. That way I don&amp;#39;t have to add them to a place like &lt;code&gt;/usr/bin&lt;/code&gt;. You can add this to your path by doing something like this.&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;text language-text&quot; data-lang=&quot;text&quot;&gt;mkdir ~/Workspace
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;sh language-sh&quot; data-lang=&quot;sh&quot;&gt;mkdir ~/Workspace
 mkdir ~/Workspace/path
 mv kerl ~/Workspace/path
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 &lt;p&gt;Edit your &lt;code&gt;~/.bash_profile&lt;/code&gt; to include this line:&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;text language-text&quot; data-lang=&quot;text&quot;&gt;export PATH=$PATH:$HOME/Workspace/path
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;sh language-sh&quot; data-lang=&quot;sh&quot;&gt;&lt;span class=&quot;nb&quot;&gt;export &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;PATH&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$PATH&lt;/span&gt;:&lt;span class=&quot;nv&quot;&gt;$HOME&lt;/span&gt;/Workspace/path
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 &lt;p&gt;In order to build our Erlang installations as 64-bit you need to create a &lt;code&gt;~/.kerlrc&lt;/code&gt; file with these contents:&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;text language-text&quot; data-lang=&quot;text&quot;&gt;KERL_CONFIGURE_OPTIONS=&amp;quot;--disable-hipe --enable-smp-support --enable-threads
-                        --enable-kernel-poll  --enable-darwin-64bit&amp;quot;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;sh language-sh&quot; data-lang=&quot;sh&quot;&gt;&lt;span class=&quot;nv&quot;&gt;KERL_CONFIGURE_OPTIONS&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&amp;quot;--disable-hipe --enable-smp-support --enable-threads&lt;/span&gt;
+&lt;span class=&quot;s2&quot;&gt;                        --enable-kernel-poll  --enable-darwin-64bit&amp;quot;&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 &lt;p&gt;Now we can install Erlang R15B01.&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;text language-text&quot; data-lang=&quot;text&quot;&gt;kerl build R15B01 r15b01-64
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;sh language-sh&quot; data-lang=&quot;sh&quot;&gt;kerl build R15B01 r15b01-64
 kerl install r15b01-64 ~/erl/r15b01-64
 . ~/erl/r15b01-64/activate
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 &lt;p&gt;With kerl you&amp;#39;ll need to call that activate command for every shell you open. What I do is add &lt;code&gt;. ~/erl/r15b01-64/activate&lt;/code&gt; to my &lt;code&gt;~/.bash_profile&lt;/code&gt;. The period in front of the command is important. Just calling activate without it won&amp;#39;t work. At this point you should be able to do&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;text language-text&quot; data-lang=&quot;text&quot;&gt;erl
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;sh language-sh&quot; data-lang=&quot;sh&quot;&gt;erl
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 &lt;p&gt;and see an erlang shell that looks like this.&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;text language-text&quot; data-lang=&quot;text&quot;&gt;Erlang R15B01 (erts-5.9.1) [source] [64-bit] [smp:4:4] [async-threads:0] [kernel-poll:false]
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;sh language-sh&quot; data-lang=&quot;sh&quot;&gt;Erlang R15B01 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;erts-5.9.1&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;source&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;64-bit&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;smp:4:4&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;async-threads:0&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;kernel-poll:false&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt;
 
-Eshell V5.9.1  (abort with ^G)
+Eshell V5.9.1  &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;abort with ^G&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
 1&amp;gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 &lt;p&gt;type &lt;code&gt;halt().&lt;/code&gt; to exit the shell.&lt;/p&gt;
 
 &lt;h3&gt;Get GCC-4.2&lt;/h3&gt;
 
+&lt;p&gt;&lt;strong&gt;Update&lt;/strong&gt;: You don&amp;#39;t need gcc-4.2 for the latest riak on the latest Mac OS X. But I&amp;#39;ll leave this here in case someone wants it anyways for some reason.&lt;/p&gt;
+
 &lt;p&gt;The second thing we have to do is get gcc-4.2 and make sure we build riak with it.&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;text language-text&quot; data-lang=&quot;text&quot;&gt;brew tap homebrew/dupes
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;sh language-sh&quot; data-lang=&quot;sh&quot;&gt;brew tap homebrew/dupes
 brew install apple-gcc42
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 &lt;p&gt;We&amp;#39;re going to change the default xcode cc, gcc, c++, and g++. Make sure you backup their current locations. For reference these were my file locations.&lt;/p&gt;
@@ -94,11 +339,11 @@ c++     =&amp;gt;  /usr/bin/clang++
 g++     =&amp;gt;  /usr/bin/g++
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 &lt;p&gt;Again, make sure you back up the ones you need to.&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;text language-text&quot; data-lang=&quot;text&quot;&gt;mv /usr/bin/gcc /usr/bin/gcc.bk
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;sh language-sh&quot; data-lang=&quot;sh&quot;&gt;mv /usr/bin/gcc /usr/bin/gcc.bk
 mv /usr/bin/g++ /usr/bin/g++.bk
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 &lt;p&gt;To point them to gcc-4.2 run these commands&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;text language-text&quot; data-lang=&quot;text&quot;&gt;cd /usr/bin
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;sh language-sh&quot; data-lang=&quot;sh&quot;&gt;&lt;span class=&quot;nb&quot;&gt;cd&lt;/span&gt; /usr/bin
 sudo rm cc gcc c++ g++
 sudo ln -s /usr/local/bin/gcc-4.2 cc
 sudo ln -s /usr/local/bin/gcc-4.2 gcc
@@ -106,21 +351,21 @@ sudo ln -s /usr/local/bin/c++-4.2 c++
 sudo ln -s /usr/local/bin/g++-4.2 g++
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 &lt;p&gt;If your gcc-4.2 is in a different location you can find that location by running these commands.&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;text language-text&quot; data-lang=&quot;text&quot;&gt;which gcc-4.2
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;sh language-sh&quot; data-lang=&quot;sh&quot;&gt;which gcc-4.2
 which c++-4.2
 which g++-4.2
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 &lt;h3&gt;Setup Riak&lt;/h3&gt;
 
 &lt;p&gt;Now we&amp;#39;re set to follow the Riak instructions for setup. They are explained in more detail in the &lt;a href=&quot;http://docs.basho.com/riak/latest/quickstart/&quot;&gt;Riak Quickstart&lt;/a&gt;.&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;text language-text&quot; data-lang=&quot;text&quot;&gt;cd riak-1.4.8
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;sh language-sh&quot; data-lang=&quot;sh&quot;&gt;&lt;span class=&quot;nb&quot;&gt;cd &lt;/span&gt;riak-1.4.8
 make all
-make devrel DEVNODES=5
-cd dev
-ulimit -n 4096
-for node in `ls`; do $node/bin/riak start; done
-for node in `ls`; do $node/bin/riak ping; done
-for n in {2..5}; do dev$n/bin/riak-admin cluster join dev1@127.0.0.1; done
+make devrel &lt;span class=&quot;nv&quot;&gt;DEVNODES&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;5
+&lt;span class=&quot;nb&quot;&gt;cd &lt;/span&gt;dev
+&lt;span class=&quot;nb&quot;&gt;ulimit&lt;/span&gt; -n 4096
+&lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;node in &lt;span class=&quot;sb&quot;&gt;`&lt;/span&gt;ls&lt;span class=&quot;sb&quot;&gt;`&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;do&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$node&lt;/span&gt;/bin/riak start&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;done&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;node in &lt;span class=&quot;sb&quot;&gt;`&lt;/span&gt;ls&lt;span class=&quot;sb&quot;&gt;`&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;do&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$node&lt;/span&gt;/bin/riak ping&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;done&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;n in &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;2..5&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;do &lt;/span&gt;dev&lt;span class=&quot;nv&quot;&gt;$n&lt;/span&gt;/bin/riak-admin cluster join dev1@127.0.0.1&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;done&lt;/span&gt;
 dev1/bin/riak-admin cluster plan
 dev1/bin/riak-admin cluster commit
 dev1/bin/riak-admin member-status
@@ -138,28 +383,28 @@ dev1/bin/riak-admin member-status
 &lt;h3&gt;Setup Erlang Client&lt;/h3&gt;
 
 &lt;p&gt;Not everybody is using Erlang. If you&amp;#39;re using another language you can find a list of clients &lt;a href=&quot;http://docs.basho.com/riak/latest/dev/using/libraries/&quot;&gt;here&lt;/a&gt;. Setup for the erlang-riak-client is pretty straightforward. The only problem I ran into is that it doesn&amp;#39;t support Erlang 17.0-RC2, and won&amp;#39;t build if you&amp;#39;re using that version of Erlang. Keep using R15B01 and you should be good.&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;text language-text&quot; data-lang=&quot;text&quot;&gt;cd /path/to/your/erlang/project
-cd deps
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;sh language-sh&quot; data-lang=&quot;sh&quot;&gt;&lt;span class=&quot;nb&quot;&gt;cd&lt;/span&gt; /path/to/your/erlang/project
+&lt;span class=&quot;nb&quot;&gt;cd &lt;/span&gt;deps
 git clone git://github.com/basho/riak-erlang-client.git
-cd riak-erlang-client
+&lt;span class=&quot;nb&quot;&gt;cd &lt;/span&gt;riak-erlang-client
 make
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 &lt;p&gt;When you run Erlang you need to add riak-erlang-client to it&amp;#39;s code path. I have a shell script called &lt;code&gt;debug.sh&lt;/code&gt; in my &lt;code&gt;/ebin&lt;/code&gt; folder with the following contents:&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;text language-text&quot; data-lang=&quot;text&quot;&gt;erl -pa `pwd` ../deps/*/ebin ../deps/riak-erlang-client/deps/*/ebin -boot start_sasl -s rinoa_app
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;sh language-sh&quot; data-lang=&quot;sh&quot;&gt;erl -pa &lt;span class=&quot;sb&quot;&gt;`&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;pwd&lt;/span&gt;&lt;span class=&quot;sb&quot;&gt;`&lt;/span&gt; ../deps/*/ebin ../deps/riak-erlang-client/deps/*/ebin -boot start_sasl -s rinoa_app
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 &lt;p&gt;Run &lt;code&gt;debug.sh&lt;/code&gt;, press enter and you can test out a connection to the Riak cluster.&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;text language-text&quot; data-lang=&quot;text&quot;&gt;sh debug.sh
-{ok, Pid} = riakc_pb_socket:start_link(&amp;quot;127.0.0.1&amp;quot;, 10017).
-riakc_pb_socket:ping(Pid).
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;sh language-sh&quot; data-lang=&quot;sh&quot;&gt;sh debug.sh
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;erlang language-erlang&quot; data-lang=&quot;erlang&quot;&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;ok&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;Pid&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;riakc_pb_socket&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;start_link&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;quot;127.0.0.1&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;10017&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;).&lt;/span&gt;
+&lt;span class=&quot;nn&quot;&gt;riakc_pb_socket&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;ping&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;Pid&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;).&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 &lt;p&gt;To figure out if your port is different than 10017:&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;text language-text&quot; data-lang=&quot;text&quot;&gt;cd riak-1.4.8/dev
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;sh language-sh&quot; data-lang=&quot;sh&quot;&gt;&lt;span class=&quot;nb&quot;&gt;cd &lt;/span&gt;riak-1.4.8/dev
 cat dev1/etc/app.config
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 &lt;p&gt;Towards the top you&amp;#39;ll see some configuration that looks like this:&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;text language-text&quot; data-lang=&quot;text&quot;&gt;%% pb is a list of IP addresses and TCP ports that the Riak
-%% Protocol Buffers interface will bind.
-{pb, [ {&amp;quot;127.0.0.1&amp;quot;, 10017 } ]}
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;erlang language-erlang&quot; data-lang=&quot;erlang&quot;&gt;&lt;span class=&quot;c&quot;&gt;%% pb is a list of IP addresses and TCP ports that the Riak&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;%% Protocol Buffers interface will bind.&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;pb&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;quot;127.0.0.1&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;10017&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;]}&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 &lt;p&gt;That&amp;#39;s it. I hope that was helpful to someone.&lt;/p&gt;
 </content>
@@ -186,6 +431,8 @@ cat dev1/etc/app.config
     Mar 9, 2014
 &lt;/p&gt;
 
+&lt;!--***--&gt;
+
 &lt;p&gt;I don&amp;#39;t believe that people ask &lt;strong&gt;why&lt;/strong&gt; people play games often enough.&lt;/p&gt;
 
 &lt;p&gt;There is an extensive amount of material related to game design on the internet. Most of this material I have found falls broadly into one of two categories. The first category is bullet-point lists. These typically are one-size fits all recommendations based on observations from a successful game. These can be useful. We should always study and learn from the successes and failures around us. However, general recommendations usually fail to capture the complicated context in which they apply.&lt;/p&gt;
@@ -197,8 +444,6 @@ cat dev1/etc/app.config
 &lt;p&gt;We need a new theory on game design that goes further than Minecraft good, Farmville bad. My view is that games are ultimately a reflection of the ideal world. Games fill some void that is present in reality and at any given time the perfect game allows a person to live the life they really want to live.&lt;/p&gt;
 
 &lt;p&gt;You might be thinking, &lt;span class=&quot;quote&quot;&gt;&amp;quot;Wait a minute! I don&amp;#39;t want to be pig farmer! And if you&amp;#39;re right I&amp;#39;ll just create a game where you have infinite fame and money and kill all enemies with the flick of a wrist. Muahahaha...&amp;quot;&lt;/span&gt;.&lt;/p&gt;
-
-&lt;!--***--&gt;
 
 &lt;p&gt;People are more complex than that. The perfect world is not full of rainbows and lollipops where nothing goes wrong. That type of world may be fun for a short while, but I bet that most people would quickly become bored. Similarly, the ideal world for a person may have very little to do with their profession and surroundings. Although, I must admit that my favorite games have some sort of fantasy theme where I can beat down monsters with swords and magic.&lt;/p&gt;
 
