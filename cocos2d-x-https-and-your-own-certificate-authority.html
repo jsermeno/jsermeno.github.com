@@ -212,11 +212,66 @@ ca-chain:          /Users/catchvar/.ca/intermediate/certs/ca-chain.cert.pem
 <span class="n">USING_NS_CC</span><span class="p">;</span>
 <span class="k">using</span> <span class="k">namespace</span> <span class="n">cocos2d</span><span class="o">::</span><span class="n">network</span><span class="p">;</span>
 </code></pre></div>
-<p>Now you need to enable ssl.</p>
+<p>Now you need to enable ssl. This is where you specify the filepath to your cert. In order to get this to work on both iOS and android a little trickery is involved. I haven&#39;t found a better solution as of yet. Warning: Not nice solution ahead.</p>
 <div class="highlight"><pre><code class="c++ language-c++" data-lang="c++"><span class="k">auto</span> <span class="n">sharedFileUtils</span> <span class="o">=</span> <span class="n">FileUtils</span><span class="o">::</span><span class="n">getInstance</span><span class="p">();</span>
-<span class="n">std</span><span class="o">::</span><span class="n">string</span> <span class="n">ret</span> <span class="o">=</span> <span class="n">sharedFileUtils</span><span class="o">-&gt;</span><span class="n">fullPathForFilename</span><span class="p">(</span><span class="s">&quot;ca-chain.cert.pem&quot;</span><span class="p">);</span>
+<span class="n">std</span><span class="o">::</span><span class="n">string</span> <span class="n">ret</span><span class="p">;</span>
+
+<span class="k">if</span> <span class="p">(</span><span class="n">CC_PLATFORM_ANDROID</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">string</span> <span class="n">writablePath</span> <span class="o">=</span> <span class="n">sharedFileUtils</span><span class="o">-&gt;</span><span class="n">getWritablePath</span><span class="p">();</span>
+    <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">writablePath</span><span class="p">.</span><span class="n">empty</span><span class="p">())</span> <span class="p">{</span>
+        <span class="n">ret</span> <span class="o">=</span> <span class="n">writablePath</span><span class="p">.</span><span class="n">substr</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">writablePath</span><span class="p">.</span><span class="n">size</span><span class="p">()</span> <span class="o">-</span> <span class="mi">6</span><span class="p">)</span> <span class="o">+</span> <span class="s">&quot;app_data/ca-chain.cert.pem&quot;</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+    <span class="n">ret</span> <span class="o">=</span> <span class="n">sharedFileUtils</span><span class="o">-&gt;</span><span class="n">fullPathForFilename</span><span class="p">(</span><span class="s">&quot;ca-chain.cert.pem&quot;</span><span class="p">);</span>
+<span class="p">}</span>
 
 <span class="n">cocos2d</span><span class="o">::</span><span class="n">network</span><span class="o">::</span><span class="n">HttpClient</span><span class="o">::</span><span class="n">enableSSLCaInfo</span><span class="p">(</span><span class="n">ret</span><span class="p">);</span>
+</code></pre></div>
+<p>The reason for this code is that on iOS we can give curl a path from our Resources directory no problem. When libcurl opens the cert file it first calls into openssl, then eventually uses fopen to open the cert. Since on android our Resources directory will be inside the APK it is unaccesible. This means we need to store our cert in our application data folder. This is internal storage that is allocated for each app. The path above will point to the correct place. But, you need to copy your cert from the Assets (Resources on android) folder to the application data folder. This can be done in the <code>onCreate</code> method of your Activity.</p>
+<div class="highlight"><pre><code class="java language-java" data-lang="java"><span class="nd">@Override</span>
+<span class="kd">protected</span> <span class="kt">void</span> <span class="nf">onCreate</span><span class="o">(</span><span class="n">Bundle</span> <span class="n">savedInstanceState</span><span class="o">)</span> <span class="o">{</span>
+        <span class="c1">// TODO Auto-generated method stub</span>
+        <span class="kd">super</span><span class="o">.</span><span class="na">onCreate</span><span class="o">(</span><span class="n">savedInstanceState</span><span class="o">);</span>
+
+        <span class="n">OutputStream</span> <span class="n">os</span> <span class="o">=</span> <span class="kc">null</span><span class="o">;</span>
+        <span class="n">InputStream</span> <span class="n">ims</span> <span class="o">=</span> <span class="kc">null</span><span class="o">;</span>
+
+        <span class="k">try</span> <span class="o">{</span>
+            <span class="n">AssetManager</span> <span class="n">assets</span> <span class="o">=</span> <span class="k">this</span><span class="o">.</span><span class="na">getAssets</span><span class="o">();</span>
+
+            <span class="n">File</span> <span class="n">path</span> <span class="o">=</span> <span class="k">this</span><span class="o">.</span><span class="na">getDir</span><span class="o">(</span><span class="s">&quot;data&quot;</span><span class="o">,</span> <span class="mi">0</span><span class="o">);</span>
+            <span class="n">File</span> <span class="n">certFile</span> <span class="o">=</span> <span class="k">new</span> <span class="n">File</span><span class="o">(</span><span class="n">path</span><span class="o">,</span> <span class="s">&quot;ca-chain.pem&quot;</span><span class="o">);</span>
+
+            <span class="k">if</span> <span class="o">(!</span><span class="n">certFile</span><span class="o">.</span><span class="na">exists</span><span class="o">())</span> <span class="o">{</span>
+                <span class="n">os</span> <span class="o">=</span> <span class="k">new</span> <span class="n">FileOutputStream</span><span class="o">(</span><span class="n">certFile</span><span class="o">);</span>
+                <span class="n">ims</span> <span class="o">=</span> <span class="n">assets</span><span class="o">.</span><span class="na">open</span><span class="o">(</span><span class="s">&quot;ca-chain.pem&quot;</span><span class="o">);</span>
+                <span class="n">certFile</span><span class="o">.</span><span class="na">createNewFile</span><span class="o">();</span>
+
+                <span class="kt">int</span> <span class="n">read</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span>
+                <span class="kt">byte</span><span class="o">[]</span> <span class="n">bytes</span> <span class="o">=</span> <span class="k">new</span> <span class="kt">byte</span><span class="o">[</span><span class="mi">1024</span><span class="o">];</span>
+
+                <span class="k">while</span> <span class="o">((</span><span class="n">read</span> <span class="o">=</span> <span class="n">ims</span><span class="o">.</span><span class="na">read</span><span class="o">(</span><span class="n">bytes</span><span class="o">))</span> <span class="o">!=</span> <span class="o">-</span><span class="mi">1</span><span class="o">)</span> <span class="o">{</span>
+                    <span class="n">os</span><span class="o">.</span><span class="na">write</span><span class="o">(</span><span class="n">bytes</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="n">read</span><span class="o">);</span>
+                <span class="o">}</span>
+            <span class="o">}</span>
+        <span class="o">}</span> <span class="k">catch</span> <span class="o">(</span><span class="n">IOException</span> <span class="n">e</span><span class="o">)</span> <span class="o">{</span>
+            <span class="n">Log</span><span class="o">.</span><span class="na">d</span><span class="o">(</span><span class="s">&quot;cocos2d-x&quot;</span><span class="o">,</span> <span class="s">&quot;Failed to create data cert!&quot;</span><span class="o">);</span>
+        <span class="o">}</span> <span class="k">finally</span> <span class="o">{</span>
+            <span class="n">close</span><span class="o">(</span><span class="n">ims</span><span class="o">);</span>
+            <span class="n">close</span><span class="o">(</span><span class="n">os</span><span class="o">);</span>
+        <span class="o">}</span>
+
+<span class="o">}</span>
+
+<span class="kd">private</span> <span class="kt">void</span> <span class="nf">close</span><span class="o">(</span><span class="n">Closeable</span> <span class="n">c</span><span class="o">)</span> <span class="o">{</span>
+    <span class="k">if</span> <span class="o">(</span><span class="n">c</span> <span class="o">!=</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">try</span> <span class="o">{</span>
+            <span class="n">c</span><span class="o">.</span><span class="na">close</span><span class="o">();</span>
+        <span class="o">}</span> <span class="k">catch</span> <span class="o">(</span><span class="n">IOException</span> <span class="n">e</span><span class="o">)</span> <span class="o">{</span>
+            <span class="n">Log</span><span class="o">.</span><span class="na">d</span><span class="o">(</span><span class="s">&quot;cocos2d-x&quot;</span><span class="o">,</span> <span class="s">&quot;Failed to close closeable.&quot;</span><span class="o">);</span>
+        <span class="o">}</span>
+    <span class="o">}</span>
+<span class="o">}</span>
 </code></pre></div>
 <p>Setup the request.</p>
 <div class="highlight"><pre><code class="c++ language-c++" data-lang="c++"><span class="n">cocos2d</span><span class="o">::</span><span class="n">network</span><span class="o">::</span><span class="n">HttpRequest</span> <span class="o">*</span><span class="n">request</span> <span class="o">=</span> <span class="k">new</span> <span class="n">cocos2d</span><span class="o">::</span><span class="n">network</span><span class="o">::</span><span class="n">HttpRequest</span><span class="p">();</span>
