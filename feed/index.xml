@@ -4,7 +4,7 @@
 	<title type="text" xml:lang="en">Catchvar - Journey to a mobile indie game</title>
 	<link type="application/atom+xml" href="http://www.catchvar.com/feed/" rel="self"/>
  	<link type="text" href="http://www.catchvar.com" rel="alternate"/>
-	<updated>2014-03-27T03:57:04-07:00</updated>
+	<updated>2014-03-27T03:59:20-07:00</updated>
 	<id>http://www.catchvar.com</id>
 	<author>
 		<name>Catchvar</name>
@@ -210,7 +210,7 @@ ca-chain:          /Users/catchvar/.ca/intermediate/certs/ca-chain.cert.pem
 
 &lt;span class=&quot;n&quot;&gt;cocos2d&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;network&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;HttpClient&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;enableSSLCaInfo&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;ret&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;The reason for this code is that on iOS we can give curl a path from our Resources directory no problem. When libcurl opens the cert file it first calls into openssl, then eventually uses fopen to open the cert. Since on android our Resources directory will be inside the APK it is unaccesible. This means we need to store our cert in our application data folder. This is internal storage that is allocated for each app. The path above will point to the correct place. But, you need to copy your cert from the Assets (Resources on android) folder to the application data folder. This can be done in the &lt;code&gt;onCreate&lt;/code&gt; method of your Activity.&lt;/p&gt;
+&lt;p&gt;The reason for this code is that on iOS we can give curl a path from our Resources directory no problem. When libcurl opens the cert file it first calls into openssl, then eventually uses &lt;code&gt;fopen&lt;/code&gt; to open the cert. Since on android our Resources directory will be inside the APK, it is inaccessible. This means we need to store our cert in our application data folder. This is internal storage that is allocated for each app. The path above will point to the correct place. But, you need to copy your cert from the Assets (Resources on android) folder to the application data folder. This can be done in the &lt;code&gt;onCreate&lt;/code&gt; method of your Activity.&lt;/p&gt;
 &lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;java language-java&quot; data-lang=&quot;java&quot;&gt;&lt;span class=&quot;nd&quot;&gt;@Override&lt;/span&gt;
 &lt;span class=&quot;kd&quot;&gt;protected&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;onCreate&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Bundle&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;savedInstanceState&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
         &lt;span class=&quot;c1&quot;&gt;// TODO Auto-generated method stub&lt;/span&gt;
