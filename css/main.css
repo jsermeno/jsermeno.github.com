@@ -6,6 +6,19 @@ body {
     -webkit-font-smoothing: antialiased;
 }
 
+#logo_link {
+    /*text-decoration-color: #223455;*/
+    text-decoration: none;
+    font-family: 'Merriweather Sans', sans-serif;
+    font-size: 28px;
+    font-weight: bold;
+    color: #666276;
+}
+
+#logo_link:hover {
+    border-bottom: 3px #233555 solid;
+}
+
 pre {
     border-radius: 0px;
 }
@@ -31,7 +44,8 @@ pre {
 }
 
 #header {
-    margin-bottom: 15px;
+    margin-top: 30px;
+    margin-bottom: 30px;
 }
 
 #posts {
@@ -45,9 +59,11 @@ h2 {
     text-align: center;
     font-size: 42px;
     line-height: 1.45em;
+    font-family: 'Merriweather Sans', sans-serif;
 }
 
 h3 {
+    font-family: 'Merriweather Sans', sans-serif;
     font-weight: bold;
     font-size: 32px;
     line-height: 1.43em;
@@ -127,13 +143,15 @@ p {
 }
 
 #footer {
-    background: #3d3d3d;
+    /*background: #223455;*/
     height: 300px;
     bottom: 0;
     width: 100%;
     position: absolute;
+}
 
-    color: #ffffff;
+#footer .container {
+    border-top: 5px #223455 solid;
 }
 
 @media (max-width: 767px) {
@@ -152,6 +170,7 @@ p {
     font-size: 32px;
     line-height: 1.9em;
     text-align: left;
+    color: #bbbcbd;
 }
 
 #about {
@@ -160,7 +179,7 @@ p {
 }
  
 .green {
-    color: #a39f29;
+    border-bottom: 2px #223455 solid;
 }
 
 .quote {
@@ -184,7 +203,7 @@ blockquote p {
 @media (min-width: 768px) {
     .col_right {
         float: right;
-        padding-top: 20px;
+        padding-top: 14px;
     }
 }
 
@@ -197,6 +216,9 @@ blockquote p {
 
 #rss_link {
     padding: 20px 20px 20px 0px;
+    /*text-decoration-color: #223555;*/
+    text-decoration: none;
+    font-weight: bold;
 }
 
 #rss_link img {
@@ -205,13 +227,18 @@ blockquote p {
 
 #rss_link span {
     margin-left: 10px;
-    font-family: sans-serif;
+    font-family: 'Merriweather Sans', sans-serif;
+    color: #333333;
+}
+
+#rss_link span:hover {
+    border-bottom: 2px #223555 solid;
 }
 
 .date {
     text-align: center;
     font-size: 14px;
-    color: #787878;
+    color: #a2a2a3;
     margin-top: 0;
 }
 
@@ -220,7 +247,7 @@ blockquote p {
 }
 
 .post_link:hover {
-    color: #787878;
+    color: #666377;
     text-decoration: none;
 }
 
