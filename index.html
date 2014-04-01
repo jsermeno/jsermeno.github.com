@@ -25,12 +25,27 @@
     </head>
     <body>
         <!-- Main page -->
+        <div id="header_status">
+            <div class="container">
+                    A blog about indie mobile MMO game development.
+                    <div id="nav">
+                        <a href="/">Home</a>
+                    </div>
+            </div>
+        </div>
         <div id="header">
-            <div class="container" itemscope itemtype="http://schema.org/Organization">
-                <a itemprop="url" href="/" id="logo_link">
-                    <!--<img id="logo" src="/images/catchvar_logo.png" alt="logo" itemprop="logo"/>-->
+            <div class="container">
+                <div id="logo">
                     CATCHVAR
-                </a>
+                </div>
+            </div>
+        </div>
+        <div id="social_header">
+            <div class="container">
+                <a class="twitter_link" href="https://twitter.com/intent/follow?original_referer=http%3A%2F%2Fcatchvar.com%2F&region=follow_link&screen_name=catchvar&tw_p=followbutton&variant=2.0">Follow me on <span>TWITTER</span></a>
+                <span id="rss_wrapper">
+                    <a id="rss_button" href="/feed/index.xml"><div></div></a>
+                </span>
             </div>
         </div>
 
@@ -38,7 +53,7 @@
             <div class="content">
                 <ul id="posts">
     
-    <li>
+    <li class="col_1">
         <p class="post_header">
     <a href="/cocos2d-x-https-and-your-own-certificate-authority.html">
         <img src="/images/cocos2d_x_https_and_your_own_certificate_authority.png" alt="cocos2d-x https and creating your own certificate authority header image"/>
@@ -55,12 +70,14 @@
     Mar 25, 2014
 </p>
 
-        <!--<div class="more_wrapper">
-            <a class="more_link sans" href="/cocos2d-x-https-and-your-own-certificate-authority.html">Keep Reading</a>
-        </div>-->
+<p>Security in mobile games is usually left by the wayside. Usually, it&#39;s just the lowest priority item on the list when it comes to getting a game out by a deadline. After the fact, you can ask anyone if the game should have security feature X and they&#39;ll be shocked that it doesn&#39;t already exist. Ask the same person before a deadline if you should have the same security feature, or a sparkling unicorn riding across the bottom of the settings page, and they&#39;ll choose the sparking unicorn unless they&#39;re a security nut.</p>
+
+        <div class="more_wrapper">
+            <a class="more_link" href="/cocos2d-x-https-and-your-own-certificate-authority.html">Keep Reading</a>
+        </div>
     </li>
     
-    <li>
+    <li class="col_2">
         <p class="post_header">
     <a href="/setup-riak-and-erlang-client-on-mac-osx.html">
         <img src="/images/setup_riak_and_erlang_client_on_mac_osx.png" alt="setup riak and erlang client on mac osx header image" />
@@ -77,12 +94,14 @@
     Mar 16, 2014
 </p>
 
-        <!--<div class="more_wrapper">
-            <a class="more_link sans" href="/setup-riak-and-erlang-client-on-mac-osx.html">Keep Reading</a>
-        </div>-->
+<p>In the past I&#39;ve been a big fan of PostgreSQL. It&#39;s rock solid and performant. I&#39;ve used it to scale to hundreds of thousands of users without even coming close to breaking a sweat. The downside is that horizontal scaling is a pain. That typically means that you end up scaling vertically as long as you can. In addition, you don&#39;t get availability and fault-tolerance for free. It requires extra time and work.</p>
+
+        <div class="more_wrapper">
+            <a class="more_link" href="/setup-riak-and-erlang-client-on-mac-osx.html">Keep Reading</a>
+        </div>
     </li>
     
-    <li>
+    <li class="col_1">
         <p class="post_header">
     <a href="/game-design-and-the-ideal-world.html">
         <img src="/images/game_design_and_the_ideal_world.png" alt="post header image" />
@@ -99,9 +118,13 @@
     Mar 9, 2014
 </p>
 
-        <!--<div class="more_wrapper">
-            <a class="more_link sans" href="/game-design-and-the-ideal-world.html">Keep Reading</a>
-        </div>-->
+<p>I don&#39;t believe that people ask <strong>why</strong> people play games often enough.</p>
+
+<p>There is an extensive amount of material related to game design on the internet. Most of this material I have found falls broadly into one of two categories. The first category is bullet-point lists. These typically are one-size fits all recommendations based on observations from a successful game. These can be useful. We should always study and learn from the successes and failures around us. However, general recommendations usually fail to capture the complicated context in which they apply.</p>
+
+        <div class="more_wrapper">
+            <a class="more_link" href="/game-design-and-the-ideal-world.html">Keep Reading</a>
+        </div>
     </li>
     
 </ul>
@@ -110,24 +133,6 @@
         </div>
 
         <div id="footer">
-            <div class="container content">
-                <div class="col_left">
-                    <h2>About</h2>
-                    <p id="about">
-                    Catchvar is where I'll share my journey to create a mobile indie game from <span class="green">start</span> to <span class="green">finish</span> on all things game design, client, server, and networking.
-                    </p>
-                </div>
-                <div class="col_right">
-                    <p>
-                        <a id="rss_link" href="/feed/index.xml"><img src="/images/rss_icon.png" alt="rss icon" /><span>RSS Feed</span>
-                        </a>
-                    </p>
-                    <p>
-                        <a href="https://twitter.com/catchvar" class="twitter-follow-button" data-show-count="false">Follow @catchvar</a>
-    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
-                    </p>
-                </div>
-            </div>
         </div>
 
         <div id="fb-root"></div>

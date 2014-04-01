@@ -25,12 +25,27 @@
     </head>
     <body>
         <!-- Main page -->
+        <div id="header_status">
+            <div class="container">
+                    A blog about indie mobile MMO game development.
+                    <div id="nav">
+                        <a href="/">Home</a>
+                    </div>
+            </div>
+        </div>
         <div id="header">
-            <div class="container" itemscope itemtype="http://schema.org/Organization">
-                <a itemprop="url" href="/" id="logo_link">
-                    <!--<img id="logo" src="/images/catchvar_logo.png" alt="logo" itemprop="logo"/>-->
+            <div class="container">
+                <div id="logo">
                     CATCHVAR
-                </a>
+                </div>
+            </div>
+        </div>
+        <div id="social_header">
+            <div class="container">
+                <a class="twitter_link" href="https://twitter.com/intent/follow?original_referer=http%3A%2F%2Fcatchvar.com%2F&region=follow_link&screen_name=catchvar&tw_p=followbutton&variant=2.0">Follow me on <span>TWITTER</span></a>
+                <span id="rss_wrapper">
+                    <a id="rss_button" href="/feed/index.xml"><div></div></a>
+                </span>
             </div>
         </div>
 
@@ -52,9 +67,9 @@
     Mar 25, 2014
 </p>
 
-<!--***-->
-
 <p>Security in mobile games is usually left by the wayside. Usually, it&#39;s just the lowest priority item on the list when it comes to getting a game out by a deadline. After the fact, you can ask anyone if the game should have security feature X and they&#39;ll be shocked that it doesn&#39;t already exist. Ask the same person before a deadline if you should have the same security feature, or a sparkling unicorn riding across the bottom of the settings page, and they&#39;ll choose the sparking unicorn unless they&#39;re a security nut.</p>
+
+<!--***-->
 
 <p>This isn&#39;t always entirely without merit. However, in the context of a real-time multiplayer game where players constantly interact with each other security becomes more important. You don&#39;t want one bad seed ruining the experience for all the other players. Using HTTPS is one aspect that can improve the security of your game. We don&#39;t need to buy an expensive certificate from a certificate authority either. If you&#39;re distributing a mobile game you can distribute the certificate chain with the game.</p>
 
@@ -150,7 +165,7 @@ ca-chain:          /Users/catchvar/.ca/intermediate/certs/ca-chain.cert.pem
 <span class="n">cocos2d</span><span class="o">::</span><span class="n">log</span><span class="p">(</span><span class="s">&quot;openssl version: %s&quot;</span><span class="p">,</span> <span class="n">data</span><span class="o">-&gt;</span><span class="n">ssl_version</span><span class="p">);</span>
 <span class="n">cocos2d</span><span class="o">::</span><span class="n">log</span><span class="p">(</span><span class="s">&quot;version: %s&quot;</span><span class="p">,</span> <span class="n">data</span><span class="o">-&gt;</span><span class="n">version</span><span class="p">);</span>
 </code></pre></div>
-<p>Add <code>ca-chain.cert.pem</code> to your resources directory. I added mine at <code>Project/Resources/priv/ssl/ca-chain.cert.pem</code>. The easiest way to make a HTTP request with cocos2d-x is to look at the samples and use the HttpClient class. Unfortunately, the HttpClient class does not currently support ssl. In fact it turns off ssl verification so that you can make requests to a https url with no certificate bundle. This certainly, is not secure.</p>
+<p>Add <code>ca-chain.cert.pem</code> to your resources directory. I added mine at <code>Project/ca-chain.cert.pem</code>. The easiest way to make a HTTP request with cocos2d-x is to look at the samples and use the HttpClient class. Unfortunately, the HttpClient class does not currently support ssl. In fact it turns off ssl verification so that you can make requests to a https url with no certificate bundle. This certainly, is not secure.</p>
 
 <p>Fortunately, it&#39;s easy to add this functionality to HttpClient. In HttpClient.h add these lines under the public method section.</p>
 <div class="highlight"><pre><code class="c++ language-c++" data-lang="c++"><span class="cm">/** Enable ssl support **/</span>
@@ -382,24 +397,6 @@ ca-chain:          /Users/catchvar/.ca/intermediate/certs/ca-chain.cert.pem
         </div>
 
         <div id="footer">
-            <div class="container content">
-                <div class="col_left">
-                    <h2>About</h2>
-                    <p id="about">
-                    Catchvar is where I'll share my journey to create a mobile indie game from <span class="green">start</span> to <span class="green">finish</span> on all things game design, client, server, and networking.
-                    </p>
-                </div>
-                <div class="col_right">
-                    <p>
-                        <a id="rss_link" href="/feed/index.xml"><img src="/images/rss_icon.png" alt="rss icon" /><span>RSS Feed</span>
-                        </a>
-                    </p>
-                    <p>
-                        <a href="https://twitter.com/catchvar" class="twitter-follow-button" data-show-count="false">Follow @catchvar</a>
-    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
-                    </p>
-                </div>
-            </div>
         </div>
 
         <div id="fb-root"></div>

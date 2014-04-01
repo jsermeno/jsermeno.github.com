@@ -1,6 +1,5 @@
 .post_header img {
-    width: 100px;
-    height: 100px;
+    display: none;
 }
 
 h1 {
@@ -12,14 +11,30 @@ h1 {
 }
 
 h2 {
-    font-size: 38px;
+    font-size: 24px;
+    line-height: 1.55;
     text-align: left;
 }
 
+@media (max-width: 767px) {
+    #posts li {
+        width: 320px;
+    }
+}
+
+@media (min-width: 768px) {
+    #posts li {
+        width: 380px;
+    }
+
+    #posts .col_1 {
+        margin-right: 90px; 
+    }
+}
+
 #posts li {
-    width: 700px;
-    padding: 25px 0px;
     float: left;
+    margin-top: 30px;
 }
 
 .content {

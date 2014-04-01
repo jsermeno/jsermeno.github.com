@@ -4,7 +4,7 @@
 	<title type="text" xml:lang="en">Catchvar - Journey to a mobile indie game</title>
 	<link type="application/atom+xml" href="http://www.catchvar.com/feed/" rel="self"/>
  	<link type="text" href="http://www.catchvar.com" rel="alternate"/>
-	<updated>2014-03-28T00:01:42-07:00</updated>
+	<updated>2014-04-01T16:39:48-07:00</updated>
 	<id>http://www.catchvar.com</id>
 	<author>
 		<name>Catchvar</name>
@@ -33,9 +33,9 @@
     Mar 25, 2014
 &lt;/p&gt;
 
-&lt;!--***--&gt;
-
 &lt;p&gt;Security in mobile games is usually left by the wayside. Usually, it&amp;#39;s just the lowest priority item on the list when it comes to getting a game out by a deadline. After the fact, you can ask anyone if the game should have security feature X and they&amp;#39;ll be shocked that it doesn&amp;#39;t already exist. Ask the same person before a deadline if you should have the same security feature, or a sparkling unicorn riding across the bottom of the settings page, and they&amp;#39;ll choose the sparking unicorn unless they&amp;#39;re a security nut.&lt;/p&gt;
+
+&lt;!--***--&gt;
 
 &lt;p&gt;This isn&amp;#39;t always entirely without merit. However, in the context of a real-time multiplayer game where players constantly interact with each other security becomes more important. You don&amp;#39;t want one bad seed ruining the experience for all the other players. Using HTTPS is one aspect that can improve the security of your game. We don&amp;#39;t need to buy an expensive certificate from a certificate authority either. If you&amp;#39;re distributing a mobile game you can distribute the certificate chain with the game.&lt;/p&gt;
 
@@ -131,7 +131,7 @@ ca-chain:          /Users/catchvar/.ca/intermediate/certs/ca-chain.cert.pem
 &lt;span class=&quot;n&quot;&gt;cocos2d&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;log&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;quot;openssl version: %s&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;data&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;ssl_version&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
 &lt;span class=&quot;n&quot;&gt;cocos2d&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;log&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;quot;version: %s&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;data&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;version&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;Add &lt;code&gt;ca-chain.cert.pem&lt;/code&gt; to your resources directory. I added mine at &lt;code&gt;Project/Resources/priv/ssl/ca-chain.cert.pem&lt;/code&gt;. The easiest way to make a HTTP request with cocos2d-x is to look at the samples and use the HttpClient class. Unfortunately, the HttpClient class does not currently support ssl. In fact it turns off ssl verification so that you can make requests to a https url with no certificate bundle. This certainly, is not secure.&lt;/p&gt;
+&lt;p&gt;Add &lt;code&gt;ca-chain.cert.pem&lt;/code&gt; to your resources directory. I added mine at &lt;code&gt;Project/ca-chain.cert.pem&lt;/code&gt;. The easiest way to make a HTTP request with cocos2d-x is to look at the samples and use the HttpClient class. Unfortunately, the HttpClient class does not currently support ssl. In fact it turns off ssl verification so that you can make requests to a https url with no certificate bundle. This certainly, is not secure.&lt;/p&gt;
 
 &lt;p&gt;Fortunately, it&amp;#39;s easy to add this functionality to HttpClient. In HttpClient.h add these lines under the public method section.&lt;/p&gt;
 &lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;c++ language-c++&quot; data-lang=&quot;c++&quot;&gt;&lt;span class=&quot;cm&quot;&gt;/** Enable ssl support **/&lt;/span&gt;
@@ -331,9 +331,9 @@ ca-chain:          /Users/catchvar/.ca/intermediate/certs/ca-chain.cert.pem
     Mar 16, 2014
 &lt;/p&gt;
 
-&lt;!--***--&gt;
-
 &lt;p&gt;In the past I&amp;#39;ve been a big fan of PostgreSQL. It&amp;#39;s rock solid and performant. I&amp;#39;ve used it to scale to hundreds of thousands of users without even coming close to breaking a sweat. The downside is that horizontal scaling is a pain. That typically means that you end up scaling vertically as long as you can. In addition, you don&amp;#39;t get availability and fault-tolerance for free. It requires extra time and work.&lt;/p&gt;
+
+&lt;!--***--&gt;
 
 &lt;p&gt;I wanted a database that emphasized availability, fault-tolerance, and scalability with little cost to the developer. As an indie game developer this may lead to reduced costs since an equivalent larger machine is usually much more expensive than several smaller machines. Riak&amp;#39;s masterless design was appealing to me, and it looked like it fit my needs better than anything else out there. Of course, when choosing a new technology there is always a chance you&amp;#39;ll regret it, but there is only one way to find out!&lt;/p&gt;
 
@@ -486,11 +486,11 @@ cat dev1/etc/app.config
     Mar 9, 2014
 &lt;/p&gt;
 
-&lt;!--***--&gt;
-
 &lt;p&gt;I don&amp;#39;t believe that people ask &lt;strong&gt;why&lt;/strong&gt; people play games often enough.&lt;/p&gt;
 
 &lt;p&gt;There is an extensive amount of material related to game design on the internet. Most of this material I have found falls broadly into one of two categories. The first category is bullet-point lists. These typically are one-size fits all recommendations based on observations from a successful game. These can be useful. We should always study and learn from the successes and failures around us. However, general recommendations usually fail to capture the complicated context in which they apply.&lt;/p&gt;
+
+&lt;!--***--&gt;
 
 &lt;p&gt;The second category is more useful and consists of in depth analysis about &lt;strong&gt;what&lt;/strong&gt; design should be like, and how we can further improve the gaming experience for users. I personally want games to be of benefit to players, and find myself in disagreement with many of the mechanics that make it into today&amp;#39;s casual social games. However, much of the material that falls into this category fails to account for both what gamers consider a good game and why so many people also love casual social games. The explanation is often that casual social games are just plain manipulative. They are. But maybe there is something deeper that explains why people play these games.&lt;/p&gt;
 
