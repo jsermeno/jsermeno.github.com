@@ -88,6 +88,10 @@ pre {
     text-shadow: 1px 1px #333333;
 }
 
+#logo_link {
+    text-decoration: none;
+}
+
 #social_header {
     background: #666377;
     height: 40px;
