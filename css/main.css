@@ -69,11 +69,11 @@ pre {
 
 #header {
     background: #233556;
-    height: 165px;
+    height: 195px;
 }
 
 #header .container {
-    padding: 17px 0px 0px 0px !important;
+    padding: 32px 0px 0px 0px !important;
 }
 
 #logo {
@@ -94,8 +94,8 @@ pre {
 
 #social_header {
     background: #666377;
-    height: 40px;
-    line-height: 40px;
+    height: 60px;
+    line-height: 60px;
     color: #e7e7e7;
     text-align: right;
 }
@@ -122,7 +122,7 @@ pre {
 
 #rss_wrapper {
     display: inline;
-    line-height: 40px;
+    line-height: 60px;
     height: auto;
     vertical-align: middle;
     margin-left: 36px;
@@ -131,7 +131,7 @@ pre {
 #rss_button {
     position: relative;
     display: inline-block;
-    line-height: 40px;
+    line-height: 60px;
     height: 26px;
     width: 24px;
     vertical-align: middle;
@@ -140,13 +140,15 @@ pre {
 #rss_button div {
     width: 24px;
     height: 24px;
-    background: url("/images/rss_button_sprite.png") 0px 0px;
+    background: url("/images/rss_button_sprite.png");
+    background-position: 0px 0px;
 }
 
 #rss_button:hover div {
     width: 24px;
     height: 24px;
-    background: url("/images/rss_button_sprite.png") 0px 24px;
+    background: url("/images/rss_button_sprite.png");
+    background-position: 0px 24px;
 }
 
 #posts {
@@ -180,6 +182,55 @@ p {
     line-height: 1.8em;
     margin-top: 1.8em;
     margin-bottm: 1.8em;
+}
+
+#email_subscriber {
+    text-align: center;
+    border-top: 1px #666277 solid;
+    border-bottom: 1px #666277 solid;
+    margin: 45px 30px;
+    padding: 15px 0px 45px 0px;
+}
+
+#email_subscriber h2 {
+    text-align: center;
+}
+
+#email_subscriber input {
+    display: inline-block;
+}
+
+#mce-EMAIL {
+    font-family: 'Merriweather', serif;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    -o-border-radius: 3px;
+    -ms-border-radius: 3px;
+    border-radius: 3px;
+    border: 1px #bc7641 solid;
+    color: #333333;
+    line-height: 1.8em;
+    padding: 8px;
+    margin-bottom: 15px;
+}
+
+#mc-embedded-subscribe {
+    background: #1d8f43;
+    font-family: 'Merriweather Sans', sans-serif;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    -o-border-radius: 3px;
+    -ms-border-radius: 3px;
+    border-radius: 3px;
+    border: 0;
+    color: #fafafa;
+    line-height: 1.38em;
+    font-size: 18px;
+    padding: 8px 15px;
+}
+
+#mc-embedded-subscribe:hover {
+    background: #2a6944;
 }
 
 .highlight {
