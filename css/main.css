@@ -212,6 +212,7 @@ p {
 
 .content ul li {
     line-height: 1.8em;
+    word-wrap: break-word;
 }
 
 #email_subscriber {
