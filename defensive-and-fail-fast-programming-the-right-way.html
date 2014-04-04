@@ -37,7 +37,7 @@
             <div class="container">
                 <a href="/" id="logo_link">
                     <div id="logo">
-                        CATCHVAR
+                        <div id="logo_text">CATCHVAR</div>
                     </div>
                 </a>
             </div>
@@ -226,6 +226,15 @@
 <p>However, at least a few definitions do describe what we want. We should code in a manner that is not suspectible to breakage if the code changes. Our functions should have defined behaviour for a set of inputs. Undefined behaviour throws an exception. We should handle these exceptions. In Java, handling means using <code>try ... catch</code>s. In Erlang, handling could mean using <code>try ... catch</code>s if we need to maintain state, or failing the process to be restarted in order to gain the many benefits it presents. Unexpected behaviour should be presented to the user in a graceful manner, while still allowing the application to run. In all cases our errors should be logged to a persistent source.</p>
 
 <p>If you have different goals than a highly available, user-friendly program, where we can easily find and fix bugs, then different error handling methods would be reasonable. Remember, these methods are not a replacement for automation, and developer testing.</p>
+
+<h4>Additional Reading</h4>
+
+<ul>
+<li>[1] http://c2.com/cgi/wiki?DefensiveProgramming</li>
+<li>[2] http://c2.com/cgi/wiki?FailFast</li>
+<li>http://www.captaindebug.com/2013/04/does-defensive-programming-deserve-such.html#.Uz3PD61dU34</li>
+<li>http://www.eetindia.co.in/ARTICLES/1999DEC/PDF/EEIOL<em>1999DEC01</em>EMS<em>TA</em>1.pdf?SOURCES=DOWNLOAD</li>
+</ul>
 
 
 <div class="share_buttons">

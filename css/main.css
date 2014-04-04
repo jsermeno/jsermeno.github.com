@@ -60,7 +60,9 @@ pre {
 
 #nav a {
     color: #a3a3a3;
-    padding: 5px 0px 5px 15px;
+    padding: 0px 0px 0px 15px;
+    display: inline-block;
+    position: relative;
 }
 
 #nav a:hover {
@@ -90,6 +92,14 @@ pre {
 
 #logo_link {
     text-decoration: none;
+}
+
+#logo_text {
+    position: relative;
+}
+
+#logo_link:active #logo_text {
+    top: 1px;
 }
 
 #social_header {
