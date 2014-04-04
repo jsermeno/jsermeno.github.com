@@ -4,7 +4,7 @@
 	<title type="text" xml:lang="en">Catchvar - Journey to a mobile indie game</title>
 	<link type="application/atom+xml" href="http://www.catchvar.com/feed/" rel="self"/>
  	<link type="text" href="http://www.catchvar.com" rel="alternate"/>
-	<updated>2014-04-04T13:50:57-07:00</updated>
+	<updated>2014-04-04T14:05:07-07:00</updated>
 	<id>http://www.catchvar.com</id>
 	<author>
 		<name>Catchvar</name>
@@ -37,7 +37,7 @@
 
 &lt;!--***--&gt;
 
-&lt;p&gt;First, we need to define how we want our program will behave. In 2014 users have strong expections of their programs. The internet has created an &lt;em&gt;always on&lt;/em&gt; environment. Programs should always work. Users will not tolerate status 500 server error pages. They do not want cryptic error messages. This means no crashing. When a user is expecting a response from the program errors should be handled gracefully. Make the user aware an error occured, then keep on chugging. We want to fix errors fast. So, we need to be aware of when they occur. If we can achieve all these goals, then we&amp;#39;ll be using &lt;em&gt;user focused programming&lt;/em&gt;. Let&amp;#39;s look at defensive programming first.&lt;/p&gt;
+&lt;p&gt;First, we need to define how we want our program will behave. In 2014 users have strong expections of their programs. The internet has created an &lt;em&gt;always on&lt;/em&gt; environment. Programs should always work. Users will not tolerate status 500 server error pages. They do not want cryptic error messages. This means no crashing. When a user is expecting a response from the program, errors should be handled gracefully. Make the user aware an error occured, then keep on chugging. We want to fix errors fast. So, we need to be aware of when they occur. If we can achieve all these goals, then we&amp;#39;ll be using &lt;em&gt;user focused programming&lt;/em&gt;. Let&amp;#39;s look at defensive programming first.&lt;/p&gt;
 
 &lt;h3&gt;Defensive Programming&lt;/h3&gt;
 

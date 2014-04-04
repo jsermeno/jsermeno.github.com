@@ -5,6 +5,7 @@ body {
     font-size: 14px;
     text-rendering: optimizeLegibility;
     padding-bottom: 45px;
+    background: #fdfdfd;
 }
 
 pre {
@@ -355,10 +356,17 @@ p {
 blockquote {
     padding-top: 0px;
     padding-bottom: 0px;
+    border-left: 5px solid #e8e8e8;
+}
+
+code {
+    background-color: #f2ebed;
+    color: #c7254e;
 }
 
 blockquote p {
-    color: #787878;
+    /*color: #787878;*/
+    color: #727272;
     font-size: 14px;
 }
 
