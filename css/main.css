@@ -489,3 +489,62 @@ blockquote p {
 .highlight .vg { color: #f8f8f2 } /* Name.Variable.Global */
 .highlight .vi { color: #f8f8f2 } /* Name.Variable.Instance */
 .highlight .il { color: #ae81ff } /* Literal.Number.Integer.Long */
+
+
+/** index.css **/
+#posts .post_header {
+    /*display: none;*/
+}
+
+#posts h1 {
+    font-family: 'Merriweather Sans', sans-serif;
+    font-size: 28px;
+    font-weight: bold;
+    color: #333333;
+    text-decoration-color: #223455;
+}
+
+#posts h2 {
+    font-size: 24px;
+    line-height: 1.55;
+    text-align: left;
+}
+
+@media (max-width: 767px) {
+    #posts li {
+        width: 320px;
+    }
+}
+
+@media (min-width: 768px) {
+    #posts li {
+        width: 380px;
+    }
+
+    #posts .col_1 {
+        margin-right: 90px; 
+    }
+}
+
+#posts li {
+    float: left;
+    margin-top: 30px;
+}
+
+.#posts content {
+    padding-left: 0;
+}
+
+#posts .date {
+    text-align: left;
+}
+
+#posts .post_header {
+    text-align: left;
+}
+
+/** post.css **/
+#post_content .post_link:hover {
+    color: #333333;
+    text-decoration: none;
+}
