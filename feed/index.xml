@@ -1,22 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
-	
+
 	<title type="text" xml:lang="en">Catchvar - Journey to a mobile indie game</title>
 	<link type="application/atom+xml" href="http://www.catchvar.com/feed/" rel="self"/>
  	<link type="text" href="http://www.catchvar.com" rel="alternate"/>
-	<updated>2014-04-04T16:03:59-07:00</updated>
-	<id>http://www.catchvar.com</id>
+	<updated>2014-04-04T16:05:49-07:00</updated>
+	<id>http://catchvar.com</id>
 	<author>
 		<name>Catchvar</name>
 	</author>
 	<rights>Copyright (c) 2014, Catchvar; all rights reserved.</rights>
-	
+
 	
 	<entry>
 		<title>Defensive and Fail-Fast Programming the Right Way</title>
-                <link href="http://www.catchvar.com/defensive-and-fail-fast-programming-the-right-way.html"/>
+                <link href="http://catchvar.com/defensive-and-fail-fast-programming-the-right-way.html"/>
 		<updated>2014-04-04T00:00:00-07:00</updated>
-		<id>http://www.catchvar.com/defensive-and-fail-fast-programming-the-right-way</id>
+		<id>http://catchvar.com/defensive-and-fail-fast-programming-the-right-way</id>
                 <content type="html">&lt;p&gt;&lt;a class=&quot;post_link&quot; href=&quot;/defensive-and-fail-fast-programming-the-right-way.html&quot;&gt;&lt;/p&gt;
 
 &lt;h2&gt;Defensive and Fail-Fast Programming the Right Way&lt;/h2&gt;
@@ -198,9 +198,9 @@
 	
 	<entry>
 		<title>Cocos2d-x HTTPS and your own certificate authority</title>
-                <link href="http://www.catchvar.com/cocos2d-x-https-and-your-own-certificate-authority.html"/>
+                <link href="http://catchvar.com/cocos2d-x-https-and-your-own-certificate-authority.html"/>
 		<updated>2014-03-25T00:00:00-07:00</updated>
-		<id>http://www.catchvar.com/cocos2d-x-https-and-your-own-certificate-authority</id>
+		<id>http://catchvar.com/cocos2d-x-https-and-your-own-certificate-authority</id>
                 <content type="html">&lt;p&gt;&lt;a class=&quot;post_link&quot; href=&quot;/cocos2d-x-https-and-your-own-certificate-authority.html&quot;&gt;&lt;/p&gt;
 
 &lt;h2&gt;Cocos2d-x HTTPS and your own certificate authority&lt;/h2&gt;
@@ -490,9 +490,9 @@ ca-chain:          /Users/catchvar/.ca/intermediate/certs/ca-chain.cert.pem
 	
 	<entry>
 		<title>Setup Riak and Erlang Client on Mac OS X</title>
-                <link href="http://www.catchvar.com/setup-riak-and-erlang-client-on-mac-osx.html"/>
+                <link href="http://catchvar.com/setup-riak-and-erlang-client-on-mac-osx.html"/>
 		<updated>2014-03-16T00:00:00-07:00</updated>
-		<id>http://www.catchvar.com/setup-riak-and-erlang-client-on-mac-osx</id>
+		<id>http://catchvar.com/setup-riak-and-erlang-client-on-mac-osx</id>
                 <content type="html">&lt;p&gt;&lt;a class=&quot;post_link&quot; href=&quot;/setup-riak-and-erlang-client-on-mac-osx.html&quot;&gt;&lt;/p&gt;
 
 &lt;h2&gt;Setup Riak and Erlang Client on Mac OS X&lt;/h2&gt;
@@ -639,9 +639,9 @@ cat dev1/etc/app.config
 	
 	<entry>
 		<title>Catchvar - Game Design and The Ideal World</title>
-                <link href="http://www.catchvar.com/game-design-and-the-ideal-world.html"/>
+                <link href="http://catchvar.com/game-design-and-the-ideal-world.html"/>
 		<updated>2014-03-09T00:00:00-08:00</updated>
-		<id>http://www.catchvar.com/game-design-and-the-ideal-world</id>
+		<id>http://catchvar.com/game-design-and-the-ideal-world</id>
                 <content type="html">&lt;p&gt;&lt;a class=&quot;post_link&quot; href=&quot;/game-design-and-the-ideal-world.html&quot;&gt;&lt;/p&gt;
 
 &lt;h2&gt;Game Design and The Ideal World&lt;/h2&gt;
