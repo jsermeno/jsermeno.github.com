@@ -21,6 +21,7 @@ pre {
         width: 300px; 
         background: url("/images/logo_background.png") no-repeat;
         background-size: contain;
+        background-position: 0px 8px;
     }
     /*body {
         padding-bottom: 450px; 
