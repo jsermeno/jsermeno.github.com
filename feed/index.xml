@@ -4,7 +4,7 @@
 	<title type="text" xml:lang="en">Catchvar - Journey to a mobile indie game</title>
 	<link type="application/atom+xml" href="http://www.catchvar.com/feed/" rel="self"/>
  	<link type="text" href="http://www.catchvar.com" rel="alternate"/>
-	<updated>2014-04-04T14:09:26-07:00</updated>
+	<updated>2014-04-04T14:13:27-07:00</updated>
 	<id>http://www.catchvar.com</id>
 	<author>
 		<name>Catchvar</name>
@@ -194,10 +194,10 @@
 &lt;h4&gt;Additional Reading&lt;/h4&gt;
 
 &lt;ul&gt;
-&lt;li&gt;[1] http://c2.com/cgi/wiki?DefensiveProgramming&lt;/li&gt;
-&lt;li&gt;[2] http://c2.com/cgi/wiki?FailFast&lt;/li&gt;
-&lt;li&gt;http://www.captaindebug.com/2013/04/does-defensive-programming-deserve-such.html#.Uz3PD61dU34&lt;/li&gt;
-&lt;li&gt;http://www.eetindia.co.in/ARTICLES/1999DEC/PDF/EEIOL&lt;em&gt;1999DEC01&lt;/em&gt;EMS&lt;em&gt;TA&lt;/em&gt;1.pdf?SOURCES=DOWNLOAD&lt;/li&gt;
+&lt;li&gt;[1] &lt;a href=&quot;http://c2.com/cgi/wiki?DefensiveProgramming&quot;&gt;Defensive Programming&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;[2] &lt;a href=&quot;http://c2.com/cgi/wiki?FailFast&quot;&gt;Fail Fast&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;http://www.captaindebug.com/2013/04/does-defensive-programming-deserve-such.html#.Uz3PD61dU34&quot;&gt;Does defensive programming deserve&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;http://www.eetindia.co.in/ARTICLES/1999DEC/PDF/EEIOL_1999DEC01_EMS_TA_1.pdf?SOURCES=DOWNLOAD&quot;&gt;Rules for defensive C programming&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 </content>
 	</entry>
