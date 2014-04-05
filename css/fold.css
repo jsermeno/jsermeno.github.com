@@ -47,6 +47,16 @@ a {
     font-family: 'Merriweather Sans', sans-serif !important;
 }
 
+@media (min-width: 993px) {
+    #posts li {
+        width: 405px;
+    }
+
+    #posts .col_1 {
+        margin-right: 90px; 
+    }
+}
+
 @media (max-width: 767px) {
     .container {
         padding: 0px 15px !important; 
@@ -137,4 +147,109 @@ p {
 
 #posts {
     list-style-type: none;
+}
+
+.container {
+  padding-right: 15px;
+  padding-left: 15px;
+  margin-right: auto;
+  margin-left: auto;
+}
+@media (min-width: 768px) {
+  .container {
+    width: 750px;
+  }
+}
+@media (min-width: 992px) {
+  .container {
+    width: 970px;
+  }
+}
+@media (min-width: 1200px) {
+  .container {
+    width: 1170px;
+  }
+}
+
+.container:before,
+.container:after {
+  display: table;
+  content: " ";
+}
+.container:after {
+  clear: both;
+}
+
+* {
+  -webkit-box-sizing: border-box;
+     -moz-box-sizing: border-box;
+          box-sizing: border-box;
+}
+*:before,
+*:after {
+  -webkit-box-sizing: border-box;
+     -moz-box-sizing: border-box;
+          box-sizing: border-box;
+}
+
+#rss_link {
+    padding: 20px 20px 20px 0px;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+#rss_link img {
+    text-decoration: none;
+}
+
+#rss_link span {
+    margin-left: 10px;
+    font-family: 'Merriweather Sans', sans-serif;
+    color: #333333;
+}
+
+#rss_wrapper {
+    display: inline;
+    line-height: 60px;
+    height: auto;
+    vertical-align: middle;
+    margin-left: 36px;
+}
+
+#rss_button {
+    position: relative;
+    display: inline-block;
+    line-height: 60px;
+    height: 26px;
+    width: 24px;
+    vertical-align: middle;
+}
+
+#rss_button div {
+    width: 24px;
+    height: 24px;
+    background: url("/images/rss_button_sprite.png");
+    background-position: 0px 0px;
+}
+
+#posts li {
+    float: left;
+    margin-top: 30px;
+}
+
+.#posts content {
+    padding-left: 0;
+}
+
+#posts .date {
+    text-align: left;
+}
+
+#posts .post_header {
+    text-align: left;
+}
+
+#posts {
+    margin: 0px;
+    padding: 0px;
 }
