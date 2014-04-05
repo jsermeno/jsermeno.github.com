@@ -1,0 +1,12 @@
+@font-face {
+    font-family: 'Merriweather Sans';
+    font-style: normal;
+    font-weight: 400;
+    src: url(http://themes.googleusercontent.com/static/fonts/merriweathersans/v3/AKu1CjQ4qnV8MUltkAX3sM2kigAIKUS7C8wDj9A45hI.ttf) format('truetype');
+}
+@font-face {
+    font-family: 'Merriweather Sans';
+    font-style: normal;
+    font-weight: 800;
+    src: url(http://themes.googleusercontent.com/static/fonts/merriweathersans/v3/6LmGj5dOJopQKEkt88Gowf5_oG7m85YQnBYEZ7uTa3L3rGVtsTkPsbDajuO5ueQw.ttf) format('truetype');
+}

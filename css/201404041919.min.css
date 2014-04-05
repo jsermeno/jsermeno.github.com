@@ -333,7 +333,6 @@ p {
 }
 
 .content {
-    padding: 0px 15px;
 }
 
 .sans {
@@ -518,15 +517,15 @@ blockquote p {
     text-align: left;
 }
 
-@media (max-width: 767px) {
+/*@media (max-width: 650px) {
     #posts li {
         width: 320px;
     }
-}
+}*/
 
-@media (min-width: 768px) {
+@media (min-width: 993px) {
     #posts li {
-        width: 380px;
+        width: 405px;
     }
 
     #posts .col_1 {
@@ -555,5 +554,18 @@ blockquote p {
 #post_content .post_link:hover {
     color: #333333;
     text-decoration: none;
+}
+
+@font-face {
+    font-family: 'Merriweather Sans';
+    font-style: normal;
+    font-weight: 400;
+    src: url(http://themes.googleusercontent.com/static/fonts/merriweathersans/v3/AKu1CjQ4qnV8MUltkAX3sM2kigAIKUS7C8wDj9A45hI.ttf) format('truetype');
+}
+@font-face {
+    font-family: 'Merriweather Sans';
+    font-style: normal;
+    font-weight: 800;
+    src: url(http://themes.googleusercontent.com/static/fonts/merriweathersans/v3/6LmGj5dOJopQKEkt88Gowf5_oG7m85YQnBYEZ7uTa3L3rGVtsTkPsbDajuO5ueQw.ttf) format('truetype');
 }
 

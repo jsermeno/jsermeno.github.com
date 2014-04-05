@@ -326,7 +326,6 @@ p {
 }
 
 .content {
-    padding: 0px 15px;
 }
 
 .sans {
@@ -511,15 +510,15 @@ blockquote p {
     text-align: left;
 }
 
-@media (max-width: 767px) {
+/*@media (max-width: 650px) {
     #posts li {
         width: 320px;
     }
-}
+}*/
 
-@media (min-width: 768px) {
+@media (min-width: 993px) {
     #posts li {
-        width: 380px;
+        width: 405px;
     }
 
     #posts .col_1 {
