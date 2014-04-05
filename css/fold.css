@@ -64,7 +64,6 @@ a {
 
     #logo {
         width: 300px; 
-        background: url("/images/logo_background.png") no-repeat;
         background-size: contain;
         background-position: 0px 8px;
     }
@@ -78,7 +77,6 @@ a {
 
     #logo {
         width: 366px; 
-        background: url("/images/logo_background.png");
         background-size: cover;
     }
 }
@@ -86,6 +84,7 @@ a {
 #logo {
     height: 130px;
     margin: 0px auto;
+    background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAW4AAACCCAMAAABRjdLwAAAADFBMVEUAAAAQcqMjNVYiNFWcYv7rAAAAAXRSTlMAQObYZgAAA/1JREFUeNrtndFS6zAMRCvr///5zn3BmE0lj4WzDt3VE2zHrJOTYoSTviRJkqRnyoYKTbvNRXPeLQxVdPMJ4lHgKkiVuPWh6m6uZkP9PEGj/bKNbp4qd/MJ7nTjCQbT5mWtn6qjiWn2TTjtbuPPm3ft0vULN02Vu/GL97s4fR/o7opOEYwYuzndZv5VmLWbPVXggopD1WN8N22e7gb81lyk2/8q3T5B95lZExdUHQrdAjGiW3SLbtEtukW36H463fV1N5/unlJ030i3ve+ZvKwXJWueKnaNR3evoGcC3+3i0F3vCPLpfl03sCx+ESFrnipzjUG32xwENlQzKAbd2YUZuSS6feotDkkBEa7ErJkZuBS6zfFYzeiCbQrdr6iZGbk8unslM8JjxKe7wCDBBU3TDWLQTSB02UWJbtEtukW36Bbdolt0i27RHbZMmHTPp2qDfy7decuER3ckODeDnkG3XTby6XTnqcA7iO60H4vZ+XRjKo86y+YH0u3BhmMUn+4F8elO+7ENrs4zZuJjDVPBsvPoHup8uv2BdOep2vNmgmLSnUt0i27RLbpFt+gW3aL7Zrp9LK27n0Y3dj43uVW6x2rmN7jYyan3TK66tXXXwX0i3S2qNbqhNrvzivuF+10kJuh3B8rOXsVNZrIkGMv3u/h+iAV0/wm5oXyfW/hf8ArfFTfpqa7Koba5SzsdpIIW6NYRX5ToFt2iW3SLbtEtbaD7bYl80f10usV3WfM9Ex3rsuY7gskFoHVLqIV+d3QF6J19qc+OpVW51i2Plr8v/c0purUqF92iW3RLolt0i+5EbfeuAf7quOLuoHvfnpjP0WzPZOuOr7r4Owjn6Z7sCBKybhB332hwTzzh7n5CV3rpWRLtf/DuLt2bk9X2vej7xd/zz78350addOdZXOysdenOsw+nO5DoFt2iW3SLbtEtukU3b91NyFrsi2ZFIAZSfRLdzqbbArrb3XTXe41h+clPySTQXe6LJuWcZ8BOfQgXge56XzQUoYccpbJerOd31/uiUTUG3ZjqUoWVCdft0tPpb3JRTLpHiW7RLbpFt+gW3aJbdItu0f3+nm0n8utflbt8un2sVbqdTbfNu3y6k1T2o86he6jUxeYE/3PiMRXqmE8AGmrMmLkculuSKpgYfXVRg53zGztOlV+YxNWFDQVMxK5xiMlSJQ8159NdH4pFDKYKmOdnhRhwO3/gkohp7zOLbgLd52YNYhDoLp5m0S26F+gGV3SLbtEturXuLix4K2593T3Zra27jm6+7rbPoBv7onW367foxnbENhdVHwonuMvNMh+btd4R5BODqXIZfr3frccgKU9lFzUIrFvcylCxafe4aEvSn9Y/SKaI0LkmWjoAAAAASUVORK5CYII=) no-repeat;
     color: #e7e7e7;
     font-family: 'Merriweather Sans';
     font-weight: bold;
@@ -228,7 +227,7 @@ p {
 #rss_button div {
     width: 24px;
     height: 24px;
-    background: url("/images/rss_button_sprite.png");
+    background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAwCAMAAAA8VkqRAAAAElBMVEUAAADegyH///+8dkH/vx3hkDiSiZ7HAAAAAXRSTlMAQObYZgAAAJlJREFUeNrV1FsKxDAIBdBqzf63PFcUH5gU8jkX0bQHGgKhz0Pb4L1sQ1+wZJYDRyosWVwEj1oKC1AFccikJKQUmNL3CDFA2EMamx24QcRlAl0A1jfw0os1uo7oBloTIKPsU9ucgOh4fY5wu4efY5YDRypAOFMOiHATxCGTApiSMKXvUeX/7pWQYI2uI7qB1gTIpuj2X/Jxr34i1QmzNroOiQAAAABJRU5ErkJggg==);
     background-position: 0px 0px;
 }
 

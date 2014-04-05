@@ -38,6 +38,11 @@ pre {
     background-position: 0px 24px;
 }
 
+#posts {
+    margin: 0px;
+    padding: 0px;
+}
+
 h3 {
     font-size: 24px;
     line-height: 2em !important;
@@ -238,6 +243,22 @@ blockquote p {
     }
 }
 
+#rss_link {
+    padding: 20px 20px 20px 0px;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+#rss_link img {
+    text-decoration: none;
+}
+
+#rss_link span {
+    margin-left: 10px;
+    font-family: 'Merriweather Sans', sans-serif;
+    color: #333333;
+}
+
 #rss_link span:hover {
     border-bottom: 2px #223555 solid;
 }
@@ -329,6 +350,33 @@ blockquote p {
         width: 320px;
     }
 }*/
+
+@media (min-width: 993px) {
+    #posts li {
+        width: 405px;
+    }
+
+    #posts .col_1 {
+        margin-right: 90px; 
+    }
+}
+
+#posts li {
+    float: left;
+    margin-top: 30px;
+}
+
+.#posts content {
+    padding-left: 0;
+}
+
+#posts .date {
+    text-align: left;
+}
+
+#posts .post_header {
+    text-align: left;
+}
 
 /** post.css **/
 #post_content .post_link:hover {
