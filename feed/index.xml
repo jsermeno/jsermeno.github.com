@@ -4,7 +4,7 @@
 	<title type="text" xml:lang="en">Catchvar - Journey to a mobile indie game</title>
 	<link type="application/atom+xml" href="http://www.catchvar.com/feed/" rel="self"/>
  	<link type="text" href="http://www.catchvar.com" rel="alternate"/>
-	<updated>2014-04-08T13:11:15-07:00</updated>
+	<updated>2014-04-08T13:18:45-07:00</updated>
 	<id>http://catchvar.com</id>
 	<author>
 		<name>Catchvar</name>
@@ -194,7 +194,7 @@
 &lt;p&gt;If you have different goals than a highly available, user-friendly program, where we can easily find and fix bugs, then different error handling methods would be reasonable. Remember, these methods are not a replacement for automation, and developer testing.&lt;/p&gt;
 
 &lt;h3 id=&quot;additional-reading&quot;&gt;Additional Reading&lt;/h3&gt;
-&lt;ul&gt;
+&lt;ul class=&quot;prevent_ul_a_linebreak&quot;&gt;
   &lt;li id=&quot;fn:1&quot;&gt;[1] &lt;a href=&quot;http://c2.com/cgi/wiki?DefensiveProgramming&quot;&gt;Defensive Programming&lt;/a&gt; &lt;/li&gt;
   &lt;li id=&quot;fn:2&quot;&gt;[2] &lt;a href=&quot;http://c2.com/cgi/wiki?FailFast&quot;&gt;Fail Fast&lt;/a&gt;&lt;/li&gt;
   &lt;li&gt;&lt;a href=&quot;http://www.captaindebug.com/2013/04/does-defensive-programming-deserve-such.html#.Uz3PD61dU34&quot;&gt;Does defensive programming deserve&lt;/a&gt;&lt;/li&gt;

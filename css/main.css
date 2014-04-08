@@ -41,13 +41,13 @@ a {
     line-height: 2rem;
 }
 
-h1 a {
-    line-height: 4rem;
+.prevent_ul_a_linebreak a {
+    display: inline;
+    padding: 4px 8px;
 }
 
-ul a {
-    display: inline;
-    padding: 8px;
+h1 a {
+    line-height: 4rem;
 }
 
 a:hover {
