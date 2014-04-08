@@ -4,7 +4,7 @@
 	<title type="text" xml:lang="en">Catchvar - Journey to a mobile indie game</title>
 	<link type="application/atom+xml" href="http://www.catchvar.com/feed/" rel="self"/>
  	<link type="text" href="http://www.catchvar.com" rel="alternate"/>
-	<updated>2014-04-05T00:15:18-07:00</updated>
+	<updated>2014-04-07T17:02:34-07:00</updated>
 	<id>http://catchvar.com</id>
 	<author>
 		<name>Catchvar</name>
@@ -17,36 +17,33 @@
                 <link href="http://catchvar.com/defensive-and-fail-fast-programming-the-right-way.html"/>
 		<updated>2014-04-04T00:00:00-07:00</updated>
 		<id>http://catchvar.com/defensive-and-fail-fast-programming-the-right-way</id>
-                <content type="html">&lt;p&gt;&lt;a class=&quot;post_link&quot; href=&quot;/defensive-and-fail-fast-programming-the-right-way.html&quot;&gt;&lt;/p&gt;
+                <content type="html">&lt;h1 class=&quot;post_link&quot; id=&quot;defensive-and-fail-fast-programming-the-right-way-defensive-and-fail-fast-programming-the-right-wayhtml-&quot;&gt;&lt;a href=&quot;/defensive-and-fail-fast-programming-the-right-way.html&quot;&gt;Defensive and Fail-Fast Programming the Right Way&lt;/a&gt;&lt;/h1&gt;
 
-&lt;h2&gt;Defensive and Fail-Fast Programming the Right Way&lt;/h2&gt;
+&lt;p class=&quot;date&quot;&gt;- Apr 4, 2014 -&lt;/p&gt;
 
-&lt;p&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p class=&quot;start_block&quot;&gt;Programmers program errors. You need to handle errors. Every major language has constructs for handling errors. Two guidelines that many try to follow are defensive programming, and fail-fast programming. The problems are that everyone has a different definition, and our choice of error handling should depend on our goals. &lt;/p&gt;
 
-&lt;p class=&quot;date&quot;&gt;
-    Apr 4, 2014
-&lt;/p&gt;
+&lt;p&gt;I want to take a look at what each method means, and how they should be used. I’ll also try to examine each method from the perspective of multiple languages.&lt;/p&gt;
 
-&lt;p&gt;Programmers program errors. You need to handle errors. Every major language has constructs for handling errors. Two guidelines that many try to follow are defensive programming, and fail-fast programming. The problems are that everyone has a different definition, and our choice of error handling should depend on our goals. I want to take a look at what each method means, and how they should be used. I&amp;#39;ll also try to examine each method from the perspective of multiple languages.&lt;/p&gt;
+&lt;!-- excerpt --&gt;
 
-&lt;!--***--&gt;
+&lt;p&gt;First, we need to define how we want our program will behave. In 2014 users have strong expections of their programs. The internet has created an &lt;em&gt;always on&lt;/em&gt; environment. Programs should always work. Users will not tolerate status 500 server error pages. They do not want cryptic error messages. This means no crashing. When a user is expecting a response from the program, errors should be handled gracefully. Make the user aware an error occured, then keep on chugging. We want to fix errors fast. So, we need to be aware of when they occur. If we can achieve all these goals, then we’ll be using &lt;em&gt;user focused programming&lt;/em&gt;. Let’s look at defensive programming first.&lt;/p&gt;
 
-&lt;p&gt;First, we need to define how we want our program will behave. In 2014 users have strong expections of their programs. The internet has created an &lt;em&gt;always on&lt;/em&gt; environment. Programs should always work. Users will not tolerate status 500 server error pages. They do not want cryptic error messages. This means no crashing. When a user is expecting a response from the program, errors should be handled gracefully. Make the user aware an error occured, then keep on chugging. We want to fix errors fast. So, we need to be aware of when they occur. If we can achieve all these goals, then we&amp;#39;ll be using &lt;em&gt;user focused programming&lt;/em&gt;. Let&amp;#39;s look at defensive programming first.&lt;/p&gt;
-
-&lt;h3&gt;Defensive Programming&lt;/h3&gt;
+&lt;h2 id=&quot;defensive-programming&quot;&gt;Defensive Programming&lt;/h2&gt;
 
 &lt;p&gt;Some people hate it. Some people love it. If you hate it, it may be because people are misusing it and claiming glory in the name of defensive programming. In theory it basically means this.&lt;/p&gt;
 
 &lt;blockquote&gt;
-&lt;p&gt;Defend against the impossible, because the impossible will happen. [1]&lt;/p&gt;
+  &lt;p&gt;Defend against the impossible, because the impossible will happen &lt;a href=&quot;#fn:1&quot;&gt;[1]&lt;/a&gt;.&lt;/p&gt;
 &lt;/blockquote&gt;
 
 &lt;p&gt;In practice is applies to a broad smorgasbord of things. It means doing whatever it takes to prevent the application from crashing. It mostly applies to validating function arguments, and using one-size fits all syntax.&lt;/p&gt;
 
-&lt;h4&gt;Verifying function arguments&lt;/h4&gt;
+&lt;h3 id=&quot;verifying-function-arguments&quot;&gt;Verifying function arguments&lt;/h3&gt;
 
 &lt;p&gt;This is mostly what comes to mind when someone refers to defensive programming. It means that a function should have defined behaviour for all possible inputs. If a function cannot handle an input, then it should throw an exception.&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;java language-java&quot; data-lang=&quot;java&quot;&gt;&lt;span class=&quot;c1&quot;&gt;// no defensive programming&lt;/span&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;java&quot;&gt;&lt;span class=&quot;c1&quot;&gt;// no defensive programming&lt;/span&gt;
 &lt;span class=&quot;kd&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;List&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;String&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;getFriendNames&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;User&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;user&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
     &lt;span class=&quot;n&quot;&gt;List&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;User&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;users&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;user&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;getFriends&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;();&lt;/span&gt;
     &lt;span class=&quot;n&quot;&gt;List&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;String&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;names&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;ArrayList&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;String&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;();&lt;/span&gt;
@@ -58,8 +55,10 @@
     &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;names&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
 &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
 &lt;p&gt;The problem above is that there are numerous opportunities for null pointer exceptions. In addition, we may get &lt;code&gt;null&lt;/code&gt;s in our return list. An incorrect attempt at defensive programming may look like this:&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;java language-java&quot; data-lang=&quot;java&quot;&gt;&lt;span class=&quot;c1&quot;&gt;// bad&lt;/span&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;java&quot;&gt;&lt;span class=&quot;c1&quot;&gt;// bad&lt;/span&gt;
 &lt;span class=&quot;kd&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;List&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;String&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;getFriendNames&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;User&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;user&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
     &lt;span class=&quot;n&quot;&gt;List&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;String&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;names&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;ArrayList&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;String&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;();&lt;/span&gt;
 
@@ -77,8 +76,10 @@
     &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;names&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
 &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;This is where people have the right to complain. I do not consider this defensive programming. This is sweep under the rug programming. If an error occurs you won&amp;#39;t know. Defensive programming would look like this:&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;java language-java&quot; data-lang=&quot;java&quot;&gt;&lt;span class=&quot;c1&quot;&gt;// better&lt;/span&gt;
+
+&lt;p&gt;This is where people have the right to complain. I do not consider this defensive programming. This is sweep under the rug programming. If an error occurs you won’t know. Defensive programming would look like this:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;java&quot;&gt;&lt;span class=&quot;c1&quot;&gt;// better&lt;/span&gt;
 &lt;span class=&quot;kd&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;List&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;String&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;getFriendNames&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;User&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;user&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;throws&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;InvalidFriendListException&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
     &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;user&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;!=&lt;/span&gt; &lt;span class=&quot;kc&quot;&gt;null&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
         &lt;span class=&quot;n&quot;&gt;List&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;User&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;users&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;user&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;getFriends&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;();&lt;/span&gt;
@@ -100,8 +101,10 @@
     &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;names&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
 &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;This code works for valid input, and will throw an exception for invalid input. Now we know an error occured and can do something about it. However, this is kind of hard. It&amp;#39;s bloated. Just look at how many Exception subclasses exist in large projects. Can you really expect everyone on your team to do this in every function? Maybe you could. Here is how this might look in Clojure.&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;clojure language-clojure&quot; data-lang=&quot;clojure&quot;&gt;&lt;span class=&quot;c1&quot;&gt;;; user is a map&lt;/span&gt;
+
+&lt;p&gt;This code works for valid input, and will throw an exception for invalid input. Now we know an error occured and can do something about it. However, this is kind of hard. It’s bloated. Just look at how many Exception subclasses exist in large projects. Can you really expect everyone on your team to do this in every function? Maybe you could. Here is how this might look in Clojure.&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;clojure&quot;&gt;&lt;span class=&quot;c1&quot;&gt;;; user is a map&lt;/span&gt;
 &lt;span class=&quot;c1&quot;&gt;;; ex.&lt;/span&gt;
 &lt;span class=&quot;c1&quot;&gt;;; {:friends [{:name &amp;quot;Steven&amp;quot;}&lt;/span&gt;
 &lt;span class=&quot;c1&quot;&gt;;;            {:name &amp;quot;Jake&amp;quot;}&lt;/span&gt;
@@ -111,8 +114,10 @@
         &lt;span class=&quot;nv&quot;&gt;result&lt;/span&gt;
         &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;throw&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;InvalidFriendListException.&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))))&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
 &lt;p&gt;You still need to manually throw an exception. Alternatively, many clojure users may just handle &lt;code&gt;nil&lt;/code&gt; as the return value of &lt;code&gt;get-friend-names&lt;/code&gt;. &lt;code&gt;nil&lt;/code&gt; is the null value in Clojure. This works because many Clojure functions can safely handle &lt;code&gt;nil&lt;/code&gt;. That is kind of sweet. However, null pointer exceptions still happen. Number ops or Java interop can cause null pointer exceptions, and in actual Clojure code there still tends to be an abundance of &lt;code&gt;if&lt;/code&gt; statements checking argument values. Here is how this would look in Erlang.&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;erlang language-erlang&quot; data-lang=&quot;erlang&quot;&gt;&lt;span class=&quot;p&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;ni&quot;&gt;module&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;test&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;).&lt;/span&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;erlang&quot;&gt;&lt;span class=&quot;p&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;ni&quot;&gt;module&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;test&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;).&lt;/span&gt;
 &lt;span class=&quot;p&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;ni&quot;&gt;export&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;([&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;get_friend_names&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]).&lt;/span&gt;
 
 &lt;span class=&quot;nf&quot;&gt;get_friend_names&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;({&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;user&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;friends&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[{&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;Name&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}|&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;T&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]}})&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt;
@@ -123,12 +128,14 @@
 &lt;span class=&quot;c&quot;&gt;%% add me to throw a custom error meant to be caught&lt;/span&gt;
 &lt;span class=&quot;c&quot;&gt;%% get_friend_names(X) -&amp;gt; throw({invalid_friends_list, X}).&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;That&amp;#39;s it. We define the valid inputs that will work. Any other inputs throw an exception. Some people learn to hate the exception thrown here because it happens often. Remember, this is doing exactly what all that crusty Java code did. You&amp;#39;re getting defensive programming for free!&lt;/p&gt;
 
-&lt;h4&gt;Using one-size fits all syntax&lt;/h4&gt;
+&lt;p&gt;That’s it. We define the valid inputs that will work. Any other inputs throw an exception. Some people learn to hate the exception thrown here because it happens often. Remember, this is doing exactly what all that crusty Java code did. You’re getting defensive programming for free!&lt;/p&gt;
 
-&lt;p&gt;This is a very language dependent style of programming. I won&amp;#39;t spend much time on it. It means using syntax that will avoid errors. This can include not using if statements without curly braces, one return statement per function, or the leading comma syntax in JavaScript (which I don&amp;#39;t use).&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;javascript language-javascript&quot; data-lang=&quot;javascript&quot;&gt;&lt;span class=&quot;kd&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;obj&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;a&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;4&lt;/span&gt;
+&lt;h3 id=&quot;using-one-size-fits-all-syntax&quot;&gt;Using one-size fits all syntax&lt;/h3&gt;
+
+&lt;p&gt;This is a very language dependent style of programming. I won’t spend much time on it. It means using syntax that will avoid errors. This can include not using if statements without curly braces, one return statement per function, or the leading comma syntax in JavaScript (which I don’t use).&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;javascript&quot;&gt;&lt;span class=&quot;kd&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;obj&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;a&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;4&lt;/span&gt;
           &lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;b&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;5&lt;/span&gt;
           &lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;c&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;10&lt;/span&gt;
           &lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;d&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[]};&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;// added this line later&lt;/span&gt;
@@ -140,58 +147,58 @@
            &lt;span class=&quot;nx&quot;&gt;c&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;10&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;// doh! missing a comma&lt;/span&gt;
            &lt;span class=&quot;nx&quot;&gt;d&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[]};&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;h3&gt;Fail-fast Programming&lt;/h3&gt;
 
-&lt;p&gt;Fail-fast programming is probably best described by someone else&amp;#39;s quote.&lt;/p&gt;
+&lt;h2 id=&quot;fail-fast-programming&quot;&gt;Fail-fast Programming&lt;/h2&gt;
+
+&lt;p&gt;Fail-fast programming is probably best described by someone else’s quote.&lt;/p&gt;
 
 &lt;blockquote&gt;
-&lt;p&gt;whereby an application or system service terminates itself immediately upon encountering an error [2]&lt;/p&gt;
+  &lt;p&gt;whereby an application or system service terminates itself immediately upon encountering an error &lt;a href=&quot;#fn:2&quot;&gt;[2]&lt;/a&gt;.&lt;/p&gt;
 &lt;/blockquote&gt;
 
-&lt;p&gt;Sounds pretty scary. It&amp;#39;s an old idea. Some people like it because it makes bugs very apparent. This may have been acceptable in the olden days (10 years ago), but we want high-availablity.&lt;/p&gt;
+&lt;p&gt;Sounds pretty scary. It’s an old idea. Some people like it because it makes bugs very apparent. This may have been acceptable in the olden days (10 years ago), but we want high-availablity.&lt;/p&gt;
 
 &lt;p&gt;In the context of Java I do not see this being very applicable since often times if the main thread dies you crash.&lt;/p&gt;
 
 &lt;p&gt;In the context of Erlang and highly concurrent languages it is more applicable. It is not mutually exclusive with defensive programming, and can be layered on top to achieve fault-tolerance. This is because Erlang programs generally consist of many processes. Erlang provides very good mechanisms for detecting when a process crashes. In the event of process A crashing, process B can clean up any errors and restart A. In addition, supervisors allow for flexible configuration with different restart strategies. For example, you can have a supervisor monitor 3 processes. When one dies you can choose to restart all 3, just the one that died, or restart all processes that depended on the killed process. You can also set limits on how many restarts can occur within a specified time limit.&lt;/p&gt;
 
-&lt;p&gt;Erlang&amp;#39;s ability to handle process errors allows for many benefits.&lt;/p&gt;
+&lt;p&gt;Erlang’s ability to handle process errors allows for many benefits.&lt;/p&gt;
 
 &lt;ul&gt;
-&lt;li&gt;Error handling is separated from your core logic. This creates a sepration of concerns.&lt;/li&gt;
-&lt;li&gt;Fixing an error is generally much simpler by failing-fast. Sometimes when an unexpected error happens all you can do is say, crap... but wait! We can restart the process and keep on chugging without crashing. This leads to fault-tolerance.&lt;/li&gt;
-&lt;li&gt;Error handling can be distributed across machines for free.&lt;/li&gt;
+  &lt;li&gt;Error handling is separated from your core logic. This creates a sepration of concerns.&lt;/li&gt;
+  &lt;li&gt;Fixing an error is generally much simpler by failing-fast. Sometimes when an unexpected error happens all you can do is say, crap… but wait! We can restart the process and keep on chugging without crashing. This leads to fault-tolerance.&lt;/li&gt;
+  &lt;li&gt;Error handling can be distributed across machines for free.&lt;/li&gt;
 &lt;/ul&gt;
 
 &lt;p&gt;Not every error needs to crash the process. Fail-fast can work in tandem with defensive programming. Erlang also provides &lt;code&gt;try ... catch&lt;/code&gt;s. Simple errors that can be handled, should be handled. Fail-fast may also not be appropriate in all areas of the program. It is very similar to the trade off between consistency and availability. If you absolutely cannot lose state, it may be better to lean more towards defensive programming.&lt;/p&gt;
 
-&lt;p&gt;One worry is that we die, we restart, and then we just keep doing it all over again. I don&amp;#39;t see too much wrong with this. Imagine you&amp;#39;re using a program and an internal error occurs. A process crashes, and gets restarted. Your program keeps running. That&amp;#39;s good. This problem is not much different than repeatedly catching the same error over and over. If you&amp;#39;re unable to fix the problem by restarting the entire process it&amp;#39;s hard to see how additional logic in a &lt;code&gt;try ... catch&lt;/code&gt; would help.&lt;/p&gt;
+&lt;p&gt;One worry is that we die, we restart, and then we just keep doing it all over again. I don’t see too much wrong with this. Imagine you’re using a program and an internal error occurs. A process crashes, and gets restarted. Your program keeps running. That’s good. This problem is not much different than repeatedly catching the same error over and over. If you’re unable to fix the problem by restarting the entire process it’s hard to see how additional logic in a &lt;code&gt;try ... catch&lt;/code&gt; would help.&lt;/p&gt;
 
-&lt;p&gt;&lt;strong&gt;Note&lt;/strong&gt;: I&amp;#39;ve also seen fail-fast refer to throwing exceptions rather than allowing undefined behaviour. In this sense, it is similar, or the same, to what I described as the correct way of doing defensive programming.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Note&lt;/strong&gt;: I’ve also seen fail-fast refer to throwing exceptions rather than allowing undefined behaviour. In this sense, it is similar, or the same, to what I described as the correct way of doing defensive programming.&lt;/p&gt;
 
-&lt;h3&gt;Not finished&lt;/h3&gt;
+&lt;h2 id=&quot;not-finished&quot;&gt;Not finished&lt;/h2&gt;
 
 &lt;p&gt;With defensive and fail-fast programming we have the makings of a well-defined fault-tolerant program. However, a full error handling methodology is incomplete without two points.&lt;/p&gt;
 
 &lt;ul&gt;
-&lt;li&gt;Unexpected behaviour should be presented to the user in a graceful manner. In a client-server architecture this may mean having your api return an error code. The important aspect is that user experience is minimally affected. No cryptic error codes. Friendly dialogs that inform the user of the error, while still allowing continuing execution seems to work best.&lt;/li&gt;
-&lt;li&gt;We code with defensive and fail-fast programming to make the program aware of these errors. Once we&amp;#39;re aware we can handle them. We as developers, also need to be aware so we can fix them. The best way I&amp;#39;ve found is to log errors to a source for later access. On the server, this could be log files that get rotated to s3. On the client, there are tools for sending errors to a managable location. In addition, there are various ways to send notifications when an error occurs. Email is the simplest way.&lt;/li&gt;
+  &lt;li&gt;Unexpected behaviour should be presented to the user in a graceful manner. In a client-server architecture this may mean having your api return an error code. The important aspect is that user experience is minimally affected. No cryptic error codes. Friendly dialogs that inform the user of the error, while still allowing continuing execution seems to work best.&lt;/li&gt;
+  &lt;li&gt;We code with defensive and fail-fast programming to make the program aware of these errors. Once we’re aware we can handle them. We as developers, also need to be aware so we can fix them. The best way I’ve found is to log errors to a source for later access. On the server, this could be log files that get rotated to s3. On the client, there are tools for sending errors to a managable location. In addition, there are various ways to send notifications when an error occurs. Email is the simplest way.&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;h3&gt;Conclusion&lt;/h3&gt;
+&lt;h2 id=&quot;conclusion&quot;&gt;Conclusion&lt;/h2&gt;
 
-&lt;p&gt;The main conclusion I come to is that defensive programming and fail-fast programming are confusing terms. The above descriptions should allow for better discussion between developers. First ask, &lt;span class=&quot;quote&quot;&gt;&amp;quot;What do you mean?&amp;quot;&lt;/span&gt;, when someone brings up one of these terms. &lt;em&gt;User-focused&lt;/em&gt; programming is an all encompassing term, but will probably be mangled as requirements over time change.&lt;/p&gt;
+&lt;p&gt;The main conclusion I come to is that defensive programming and fail-fast programming are confusing terms. The above descriptions should allow for better discussion between developers. First ask, &lt;span class=&quot;quote&quot;&gt;“What do you mean?”&lt;/span&gt;, when someone brings up one of these terms. &lt;em&gt;User-focused&lt;/em&gt; programming is an all encompassing term, but will probably be mangled as requirements over time change.&lt;/p&gt;
 
 &lt;p&gt;However, at least a few definitions do describe what we want. We should code in a manner that is not suspectible to breakage if the code changes. Our functions should have defined behaviour for a set of inputs. Undefined behaviour throws an exception. We should handle these exceptions. In Java, handling means using &lt;code&gt;try ... catch&lt;/code&gt;s. In Erlang, handling could mean using &lt;code&gt;try ... catch&lt;/code&gt;s if we need to maintain state, or failing the process to be restarted in order to gain the many benefits it presents. Unexpected behaviour should be presented to the user in a graceful manner, while still allowing the application to run. In all cases our errors should be logged to a persistent source.&lt;/p&gt;
 
 &lt;p&gt;If you have different goals than a highly available, user-friendly program, where we can easily find and fix bugs, then different error handling methods would be reasonable. Remember, these methods are not a replacement for automation, and developer testing.&lt;/p&gt;
 
-&lt;h4&gt;Additional Reading&lt;/h4&gt;
-
+&lt;h3 id=&quot;additional-reading&quot;&gt;Additional Reading&lt;/h3&gt;
 &lt;ul&gt;
-&lt;li&gt;[1] &lt;a href=&quot;http://c2.com/cgi/wiki?DefensiveProgramming&quot;&gt;Defensive Programming&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;[2] &lt;a href=&quot;http://c2.com/cgi/wiki?FailFast&quot;&gt;Fail Fast&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;http://www.captaindebug.com/2013/04/does-defensive-programming-deserve-such.html#.Uz3PD61dU34&quot;&gt;Does defensive programming deserve&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;http://www.eetindia.co.in/ARTICLES/1999DEC/PDF/EEIOL_1999DEC01_EMS_TA_1.pdf?SOURCES=DOWNLOAD&quot;&gt;Rules for defensive C programming&lt;/a&gt;&lt;/li&gt;
+  &lt;li id=&quot;fn:1&quot;&gt;[1] &lt;a href=&quot;http://c2.com/cgi/wiki?DefensiveProgramming&quot;&gt;Defensive Programming&lt;/a&gt; &lt;/li&gt;
+  &lt;li id=&quot;fn:2&quot;&gt;[2] &lt;a href=&quot;http://c2.com/cgi/wiki?FailFast&quot;&gt;Fail Fast&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;http://www.captaindebug.com/2013/04/does-defensive-programming-deserve-such.html#.Uz3PD61dU34&quot;&gt;Does defensive programming deserve&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;http://www.eetindia.co.in/ARTICLES/1999DEC/PDF/EEIOL_1999DEC01_EMS_TA_1.pdf?SOURCES=DOWNLOAD&quot;&gt;Rules for defensive C programming&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 </content>
 	</entry>
@@ -201,33 +208,32 @@
                 <link href="http://catchvar.com/cocos2d-x-https-and-your-own-certificate-authority.html"/>
 		<updated>2014-03-25T00:00:00-07:00</updated>
 		<id>http://catchvar.com/cocos2d-x-https-and-your-own-certificate-authority</id>
-                <content type="html">&lt;p&gt;&lt;a class=&quot;post_link&quot; href=&quot;/cocos2d-x-https-and-your-own-certificate-authority.html&quot;&gt;&lt;/p&gt;
+                <content type="html">&lt;h1 id=&quot;cocos2d-x-https-and-your-own-certificate-authority-cocos2d-x-https-and-your-own-certificate-authorityhtml-&quot;&gt;&lt;a href=&quot;/cocos2d-x-https-and-your-own-certificate-authority.html&quot;&gt;Cocos2d-x HTTPS and your own certificate authority&lt;/a&gt;&lt;/h1&gt;
 
-&lt;h2&gt;Cocos2d-x HTTPS and your own certificate authority&lt;/h2&gt;
+&lt;p class=&quot;date&quot;&gt;- Mar 25, 2014 -&lt;/p&gt;
 
-&lt;p&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;Security in mobile games is usually left by the wayside. Usually, it’s just the lowest priority item on the list when it comes to getting a game out by a deadline. After the fact, you can ask anyone if the game should have security feature X and they’ll be shocked that it doesn’t already exist. Ask the same person before a deadline if you should have the same security feature, or a sparkling unicorn riding across the bottom of the settings page, and they’ll choose the sparking unicorn unless they’re a security nut.&lt;/p&gt;
 
-&lt;p class=&quot;date&quot;&gt;
-    Mar 25, 2014
-&lt;/p&gt;
+&lt;!-- excerpt --&gt;
 
-&lt;p&gt;Security in mobile games is usually left by the wayside. Usually, it&amp;#39;s just the lowest priority item on the list when it comes to getting a game out by a deadline. After the fact, you can ask anyone if the game should have security feature X and they&amp;#39;ll be shocked that it doesn&amp;#39;t already exist. Ask the same person before a deadline if you should have the same security feature, or a sparkling unicorn riding across the bottom of the settings page, and they&amp;#39;ll choose the sparking unicorn unless they&amp;#39;re a security nut.&lt;/p&gt;
+&lt;p&gt;This isn’t always entirely without merit. However, in the context of a real-time multiplayer game where players constantly interact with each other security becomes more important. You don’t want one bad seed ruining the experience for all the other players. Using HTTPS is one aspect that can improve the security of your game. We don’t need to buy an expensive certificate from a certificate authority either. If you’re distributing a mobile game you can distribute the certificate chain with the game.&lt;/p&gt;
 
-&lt;!--***--&gt;
-
-&lt;p&gt;This isn&amp;#39;t always entirely without merit. However, in the context of a real-time multiplayer game where players constantly interact with each other security becomes more important. You don&amp;#39;t want one bad seed ruining the experience for all the other players. Using HTTPS is one aspect that can improve the security of your game. We don&amp;#39;t need to buy an expensive certificate from a certificate authority either. If you&amp;#39;re distributing a mobile game you can distribute the certificate chain with the game.&lt;/p&gt;
-
-&lt;h3&gt;Create your own certificate authority&lt;/h3&gt;
+&lt;h2 id=&quot;create-your-own-certificate-authority&quot;&gt;Create your own certificate authority&lt;/h2&gt;
 
 &lt;p&gt;This is the part that I had the most trouble with. There are tutorials galore out there, however the ones I ran into failed to provide certificates that actually worked. Hopefully it can be a little easier for you. Use &lt;a href=&quot;https://github.com/jsermeno/easycert_openssl.git&quot;&gt;easycert openssl&lt;/a&gt; on github to create your certificates.&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;sh language-sh&quot; data-lang=&quot;sh&quot;&gt;&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;curl -O https://raw.github.com/jsermeno/kerl/master/easycert
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;sh&quot;&gt;&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;curl -O https://raw.github.com/jsermeno/kerl/master/easycert
 &lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;chmod a+x easycert
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
 &lt;p&gt;Then add this file to your path. You can edit your &lt;code&gt;~/.bash_profile&lt;/code&gt; and do something like this:&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;sh language-sh&quot; data-lang=&quot;sh&quot;&gt;&lt;span class=&quot;nb&quot;&gt;export &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;PATH&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$PATH&lt;/span&gt;:~/Workspace/path/easycert
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;sh&quot;&gt;&lt;span class=&quot;nb&quot;&gt;export &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;PATH&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$PATH&lt;/span&gt;:~/Workspace/path/easycert
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;Next we&amp;#39;ll create a necessary configuration file. Make any necessary changes to the following config and copy it into your shell.&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;sh language-sh&quot; data-lang=&quot;sh&quot;&gt;&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;cat &amp;gt; ~/.easycertrc &lt;span class=&quot;s&quot;&gt;&amp;lt;&amp;lt; EOF&lt;/span&gt;
+
+&lt;p&gt;Next we’ll create a necessary configuration file. Make any necessary changes to the following config and copy it into your shell.&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;sh&quot;&gt;&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;cat &amp;gt; ~/.easycertrc &lt;span class=&quot;s&quot;&gt;&amp;lt;&amp;lt; EOF&lt;/span&gt;
 &lt;span class=&quot;s&quot;&gt;EASYCERT_COUNTRY=&amp;quot;US&amp;quot;&lt;/span&gt;
 &lt;span class=&quot;s&quot;&gt;EASYCERT_STATE=&amp;quot;California&amp;quot;&lt;/span&gt;
 &lt;span class=&quot;s&quot;&gt;EASYCERT_LOCALITY=&amp;quot;Mountain View&amp;quot;&lt;/span&gt;
@@ -238,13 +244,17 @@
 &lt;span class=&quot;s&quot;&gt;EASYCERT_UNSTRUCTURED=&amp;quot;Catchvar&amp;quot;&lt;/span&gt;
 &lt;span class=&quot;s&quot;&gt;EOF&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;When a client makes a request it will check the domain against the &lt;code&gt;EASYCERT_COMMON_NAME&lt;/code&gt; property so make sure this property reflects your own domain. For development, localhost works. You&amp;#39;ll need seperate certificates for production. The other important property is &lt;code&gt;EASYCERT_ORGANIZATION&lt;/code&gt;. You just need to know that this must be the same among all your certificates. Easycert will do that for you, so don&amp;#39;t worry.&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;sh language-sh&quot; data-lang=&quot;sh&quot;&gt;&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;easycert create-all ~/.ca
+
+&lt;p&gt;When a client makes a request it will check the domain against the &lt;code&gt;EASYCERT_COMMON_NAME&lt;/code&gt; property so make sure this property reflects your own domain. For development, localhost works. You’ll need seperate certificates for production. The other important property is &lt;code&gt;EASYCERT_ORGANIZATION&lt;/code&gt;. You just need to know that this must be the same among all your certificates. Easycert will do that for you, so don’t worry.&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;sh&quot;&gt;&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;easycert create-all ~/.ca
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
 &lt;p&gt;This command tells easycert to create your certificates at &lt;code&gt;~/.ca&lt;/code&gt;. It will create a root certificate, an intermediate certificate, and a server certificate. The root certificate and the intermediate certificate make up the certificate chain. The certificate chain will be what clients use to verify your server. &lt;/p&gt;
 
-&lt;p&gt;You&amp;#39;ll be prompted several times during this process. You&amp;#39;ll be asked for two separate passphrases for the root and intermediate keys. You will need to enter each passpharse twice to verify that it&amp;#39;s really what you wanted to enter.&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;sh language-sh&quot; data-lang=&quot;sh&quot;&gt;Generating directory structure... /Users/catchvar/.cert
+&lt;p&gt;You’ll be prompted several times during this process. You’ll be asked for two separate passphrases for the root and intermediate keys. You will need to enter each passpharse twice to verify that it’s really what you wanted to enter.&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;sh&quot;&gt;Generating directory structure... /Users/catchvar/.cert
 Generating directory structure... /Users/catchvar/.cert/intermediate
 Generating ca root key...
 Generating RSA private key, 4096 bit long modulus
@@ -254,11 +264,15 @@ e is 65537 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;0x10001&lt;span class=&
 Enter pass phrase &lt;span class=&quot;k&quot;&gt;for&lt;/span&gt; /Users/catchvar/.cert/private/ca.key.pem:
 Verifying - Enter pass phrase &lt;span class=&quot;k&quot;&gt;for&lt;/span&gt; /Users/catchvar/.cert/private/ca.key.pem:
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;When generating the certificates you&amp;#39;ll need to re-enter these passphrases.&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;sh language-sh&quot; data-lang=&quot;sh&quot;&gt;Enter pass phrase &lt;span class=&quot;k&quot;&gt;for&lt;/span&gt; /Users/catchvar/.cert/private/ca.key.pem:
+
+&lt;p&gt;When generating the certificates you’ll need to re-enter these passphrases.&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;sh&quot;&gt;Enter pass phrase &lt;span class=&quot;k&quot;&gt;for&lt;/span&gt; /Users/catchvar/.cert/private/ca.key.pem:
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;Then you&amp;#39;ll be asked to confirm the certificate info. The defaults will be what you entered into the configuration above. If you want to use the defaults just press enter and quickly get through that section.&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;sh language-sh&quot; data-lang=&quot;sh&quot;&gt;You are about to be asked to enter information that will be incorporated
+
+&lt;p&gt;Then you’ll be asked to confirm the certificate info. The defaults will be what you entered into the configuration above. If you want to use the defaults just press enter and quickly get through that section.&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;sh&quot;&gt;You are about to be asked to enter information that will be incorporated
 into your certificate request.
 What you are about to enter is what is called a Distinguished Name or a DN.
 There are quite a few fields but you can leave some blank
@@ -278,16 +292,20 @@ Generating RSA private key, 4096 bit long modulus
 ...........................++
 e is 65537 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;0x10001&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;You&amp;#39;ll need to to the same serveral times. Once for each certificate that is generated. When asked if you want to sign the certificate and commit just type &lt;code&gt;y&lt;/code&gt;. The end will look like this.&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;sh language-sh&quot; data-lang=&quot;sh&quot;&gt;1 out of 1 certificate requests certified, commit? &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;y/n&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt;y
+
+&lt;p&gt;You’ll need to to the same serveral times. Once for each certificate that is generated. When asked if you want to sign the certificate and commit just type &lt;code&gt;y&lt;/code&gt;. The end will look like this.&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;sh&quot;&gt;1 out of 1 certificate requests certified, commit? &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;y/n&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt;y
 Write out database with 1 new entries
 Data Base Updated
 Verifying server certificate...&lt;span class=&quot;o&quot;&gt;{}&lt;/span&gt;
 /Users/jsermeno/.cert/intermediate/certs/localhost.cert.pem: OK
 &lt;span class=&quot;k&quot;&gt;done&lt;/span&gt;.
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
 &lt;p&gt;Now you can get the paths for where your certificates are stored.&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;sh language-sh&quot; data-lang=&quot;sh&quot;&gt;&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;easycert find ~/.ca
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;sh&quot;&gt;&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;easycert find ~/.ca
 ca:                /Users/catchvar/.ca/certs/ca.cert.pem
 intermediate:      /Users/catchvar/.ca/intermediate/certs/intermediate.cert.pem
 server key:        /Users/catchvar/.ca/intermediate/private/localhost.key.pem
@@ -295,31 +313,39 @@ server:            /Users/catchvar/.ca/intermediate/certs/localhost.cert.pem
 ca-chain:          /Users/catchvar/.ca/intermediate/certs/ca-chain.cert.pem
 &lt;span class=&quot;k&quot;&gt;done&lt;/span&gt;.
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;Easycert verifies your certificates, but for added measure you can verify that your certificates are working properly with the following command.&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;sh language-sh&quot; data-lang=&quot;sh&quot;&gt;openssl verify -verbose -purpose sslserver -CAfile ~/.ca/intermediate/certs/ca-chain.cert.pem ~/.ca/intermediate/certs/localhost.cert.pem
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;h3&gt;Use HTTPS with cocos2d-x&lt;/h3&gt;
 
-&lt;p&gt;Currently I&amp;#39;m using cocos2d-x-3.0rc0. The version of libcurl included is 7.27.0 and is built with openssl. Beware. Newer versions of libcurl may be built with darwinssl, which is Apple&amp;#39;s native Secure Transport. This could be good. It means that you don&amp;#39;t have to include openssl. That means saving on the precious app size. However those versions of libcurl use the keychain on iOS and ignore the &lt;code&gt;CURLOPT_CAINFO&lt;/code&gt; option. That means you can&amp;#39;t specify your own root certificate without using Apple&amp;#39;s APIs for adding certificates to the keychain. &lt;/p&gt;
+&lt;p&gt;Easycert verifies your certificates, but for added measure you can verify that your certificates are working properly with the following command.&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;sh&quot;&gt;openssl verify -verbose -purpose sslserver -CAfile ~/.ca/intermediate/certs/ca-chain.cert.pem ~/.ca/intermediate/certs/localhost.cert.pem
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;use-https-with-cocos2d-x&quot;&gt;Use HTTPS with cocos2d-x&lt;/h2&gt;
+
+&lt;p&gt;Currently I’m using cocos2d-x-3.0rc0. The version of libcurl included is 7.27.0 and is built with openssl. Beware. Newer versions of libcurl may be built with darwinssl, which is Apple’s native Secure Transport. This could be good. It means that you don’t have to include openssl. That means saving on the precious app size. However those versions of libcurl use the keychain on iOS and ignore the &lt;code&gt;CURLOPT_CAINFO&lt;/code&gt; option. That means you can’t specify your own root certificate without using Apple’s APIs for adding certificates to the keychain. &lt;/p&gt;
 
 &lt;p&gt;To check what version of openssl you have you can use the following code.&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;c++ language-c++&quot; data-lang=&quot;c++&quot;&gt;&lt;span class=&quot;n&quot;&gt;curl&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;curl_easy_init&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;c++&quot;&gt;&lt;span class=&quot;n&quot;&gt;curl&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;curl_easy_init&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
 
 &lt;span class=&quot;n&quot;&gt;curl_version_info_data&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;data&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;curl_version_info&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;CURLVERSION_NOW&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
 &lt;span class=&quot;n&quot;&gt;cocos2d&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;log&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;quot;openssl version: %s&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;data&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;ssl_version&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
 &lt;span class=&quot;n&quot;&gt;cocos2d&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;log&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;quot;version: %s&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;data&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;version&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
 &lt;p&gt;Add &lt;code&gt;ca-chain.cert.pem&lt;/code&gt; to your resources directory. I added mine at &lt;code&gt;Project/ca-chain.cert.pem&lt;/code&gt;. The easiest way to make a HTTP request with cocos2d-x is to look at the samples and use the HttpClient class. Unfortunately, the HttpClient class does not currently support ssl. In fact it turns off ssl verification so that you can make requests to a https url with no certificate bundle. This certainly, is not secure.&lt;/p&gt;
 
-&lt;p&gt;Fortunately, it&amp;#39;s easy to add this functionality to HttpClient. In HttpClient.h add these lines under the public method section.&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;c++ language-c++&quot; data-lang=&quot;c++&quot;&gt;&lt;span class=&quot;cm&quot;&gt;/** Enable ssl support **/&lt;/span&gt;
+&lt;p&gt;Fortunately, it’s easy to add this functionality to HttpClient. In HttpClient.h add these lines under the public method section.&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;c++&quot;&gt;&lt;span class=&quot;cm&quot;&gt;/** Enable ssl support **/&lt;/span&gt;
 &lt;span class=&quot;k&quot;&gt;static&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;enableSSLCaInfo&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;std&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;string&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;info&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
 
 &lt;span class=&quot;cm&quot;&gt;/** Disable ssl support **/&lt;/span&gt;
 &lt;span class=&quot;k&quot;&gt;static&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;disableSSLCaInfo&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;In HttpClient.cpp we&amp;#39;ll add a string representing the path to your &lt;code&gt;ca-chain.cert.pem&lt;/code&gt; file.&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;c++ language-c++&quot; data-lang=&quot;c++&quot;&gt;&lt;span class=&quot;k&quot;&gt;static&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;std&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;string&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;s_sslCaInfo&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;// string path to CURL_CAINFO value&lt;/span&gt;
+
+&lt;p&gt;In HttpClient.cpp we’ll add a string representing the path to your &lt;code&gt;ca-chain.cert.pem&lt;/code&gt; file.&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;c++&quot;&gt;&lt;span class=&quot;k&quot;&gt;static&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;std&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;string&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;s_sslCaInfo&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;// string path to CURL_CAINFO value&lt;/span&gt;
 
 &lt;span class=&quot;n&quot;&gt;And&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;the&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;methods&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;for&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;changing&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;this&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;string&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;
 
@@ -333,12 +359,16 @@ ca-chain:          /Users/catchvar/.ca/intermediate/certs/ca-chain.cert.pem
     &lt;span class=&quot;n&quot;&gt;s_sslCaInfo&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;clear&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
 &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;In the method &lt;code&gt;configureCURL&lt;/code&gt; you&amp;#39;ll find these lines.&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;c++ language-c++&quot; data-lang=&quot;c++&quot;&gt;&lt;span class=&quot;n&quot;&gt;curl_easy_setopt&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;handle&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;CURLOPT_SSL_VERIFYPEER&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0L&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+
+&lt;p&gt;In the method &lt;code&gt;configureCURL&lt;/code&gt; you’ll find these lines.&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;c++&quot;&gt;&lt;span class=&quot;n&quot;&gt;curl_easy_setopt&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;handle&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;CURLOPT_SSL_VERIFYPEER&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0L&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
 &lt;span class=&quot;n&quot;&gt;curl_easy_setopt&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;handle&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;CURLOPT_SSL_VERIFYHOST&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0L&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
 &lt;p&gt;These lines disable ssl verification. Change them to these lines.&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;c++ language-c++&quot; data-lang=&quot;c++&quot;&gt;&lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;s_sslCaInfo&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;empty&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;())&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;c++&quot;&gt;&lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;s_sslCaInfo&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;empty&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;())&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
         &lt;span class=&quot;n&quot;&gt;curl_easy_setopt&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;handle&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;CURLOPT_SSL_VERIFYPEER&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0L&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
         &lt;span class=&quot;n&quot;&gt;curl_easy_setopt&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;handle&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;CURLOPT_SSL_VERIFYHOST&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0L&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
 &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;else&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
@@ -347,34 +377,42 @@ ca-chain:          /Users/catchvar/.ca/intermediate/certs/ca-chain.cert.pem
     &lt;span class=&quot;n&quot;&gt;curl_easy_setopt&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;handle&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;CURLOPT_CAINFO&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;s_sslCaInfo&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;c_str&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;());&lt;/span&gt;
 &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;This just says that if you set the s_sslCaInfo string then enable ssl verification and look for the certificate chain at this location. I&amp;#39;ve added a pull request for this in the latest cocos2d-x develop. Hopefully, it or some variant gets merged in after review. The alternative is to use curl manually to do your requests for ssl. This isn&amp;#39;t terrible, but why do that when HttpClient already offers so much functionality?&lt;/p&gt;
 
-&lt;h3&gt;Make a Request&lt;/h3&gt;
+&lt;p&gt;This just says that if you set the s_sslCaInfo string then enable ssl verification and look for the certificate chain at this location. I’ve added a pull request for this in the latest cocos2d-x develop. Hopefully, it or some variant gets merged in after review. The alternative is to use curl manually to do your requests for ssl. This isn’t terrible, but why do that when HttpClient already offers so much functionality?&lt;/p&gt;
+
+&lt;h2 id=&quot;make-a-request&quot;&gt;Make a Request&lt;/h2&gt;
 
 &lt;p&gt;You can use the HttpClient to make a request from any class, but it needs to inherit from &lt;code&gt;cocos2d::Layer&lt;/code&gt;.&lt;/p&gt;
 
 &lt;p&gt;In your header file include the following headers.&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;c++ language-c++&quot; data-lang=&quot;c++&quot;&gt;&lt;span class=&quot;cp&quot;&gt;#include &amp;lt;string&amp;gt;&lt;/span&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;c++&quot;&gt;&lt;span class=&quot;cp&quot;&gt;#include &amp;lt;string&amp;gt;&lt;/span&gt;
 &lt;span class=&quot;cp&quot;&gt;#include &amp;lt;iostream&amp;gt; &lt;/span&gt;&lt;span class=&quot;c1&quot;&gt;// optional&lt;/span&gt;
 &lt;span class=&quot;cp&quot;&gt;#include &amp;quot;cocos2d.h&amp;quot;&lt;/span&gt;
 &lt;span class=&quot;cp&quot;&gt;#include &amp;quot;network/HttpClient.h&amp;quot;&lt;/span&gt;
 &lt;span class=&quot;cp&quot;&gt;#include &amp;quot;msgpack.hpp&amp;quot; &lt;/span&gt;&lt;span class=&quot;c1&quot;&gt;// optional&lt;/span&gt;
 &lt;span class=&quot;cp&quot;&gt;#include &amp;quot;CCConsole.h&amp;quot; &lt;/span&gt;&lt;span class=&quot;c1&quot;&gt;// optional&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
 &lt;p&gt;Add a public definition like the following.&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;c++ language-c++&quot; data-lang=&quot;c++&quot;&gt;&lt;span class=&quot;k&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;YourClass&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;cocos2d&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Layer&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;c++&quot;&gt;&lt;span class=&quot;k&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;YourClass&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;cocos2d&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Layer&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
 &lt;span class=&quot;nl&quot;&gt;public:&lt;/span&gt;
 
     &lt;span class=&quot;kt&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;onCallback&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;cocos2d&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;network&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;HttpClient&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;sender&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;cocos2d&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;network&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;HttpResponse&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;response&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
 &lt;p&gt;In your cpp file include the following headers and using declarations.&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;c++ language-c++&quot; data-lang=&quot;c++&quot;&gt;&lt;span class=&quot;cp&quot;&gt;#include &amp;quot;HttpRequest.h&amp;quot;&lt;/span&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;c++&quot;&gt;&lt;span class=&quot;cp&quot;&gt;#include &amp;quot;HttpRequest.h&amp;quot;&lt;/span&gt;
 
 &lt;span class=&quot;n&quot;&gt;USING_NS_CC&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
 &lt;span class=&quot;k&quot;&gt;using&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;namespace&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;cocos2d&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;network&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;Now you need to enable ssl. This is where you specify the filepath to your cert. In order to get this to work on both iOS and android a little trickery is involved. I haven&amp;#39;t found a better solution as of yet. Warning: Not nice solution ahead.&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;c++ language-c++&quot; data-lang=&quot;c++&quot;&gt;&lt;span class=&quot;k&quot;&gt;auto&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;sharedFileUtils&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;FileUtils&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;getInstance&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
+
+&lt;p&gt;Now you need to enable ssl. This is where you specify the filepath to your cert. In order to get this to work on both iOS and android a little trickery is involved. I haven’t found a better solution as of yet. Warning: Not nice solution ahead.&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;c++&quot;&gt;&lt;span class=&quot;k&quot;&gt;auto&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;sharedFileUtils&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;FileUtils&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;getInstance&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
 &lt;span class=&quot;n&quot;&gt;std&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;string&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;ret&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
 
 &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;CC_TARGET_PLATFORM&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;==&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;CC_PLATFORM_ANDROID&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
@@ -388,8 +426,10 @@ ca-chain:          /Users/catchvar/.ca/intermediate/certs/ca-chain.cert.pem
 
 &lt;span class=&quot;n&quot;&gt;cocos2d&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;network&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;HttpClient&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;enableSSLCaInfo&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;ret&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
 &lt;p&gt;The reason for this code is that on iOS we can give curl a path from our Resources directory no problem. When libcurl opens the cert file it first calls into openssl, then eventually uses &lt;code&gt;fopen&lt;/code&gt; to open the cert. Since on android our Resources directory will be inside the APK, it is inaccessible. This means we need to store our cert in our application data folder. This is internal storage that is allocated for each app. The path above will point to the correct place. But, you need to copy your cert from the Assets (Resources on android) folder to the application data folder. This can be done in the &lt;code&gt;onCreate&lt;/code&gt; method of your Activity.&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;java language-java&quot; data-lang=&quot;java&quot;&gt;&lt;span class=&quot;nd&quot;&gt;@Override&lt;/span&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;java&quot;&gt;&lt;span class=&quot;nd&quot;&gt;@Override&lt;/span&gt;
 &lt;span class=&quot;kd&quot;&gt;protected&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;onCreate&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Bundle&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;savedInstanceState&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
         &lt;span class=&quot;c1&quot;&gt;// TODO Auto-generated method stub&lt;/span&gt;
         &lt;span class=&quot;kd&quot;&gt;super&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;onCreate&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;savedInstanceState&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
@@ -434,14 +474,18 @@ ca-chain:          /Users/catchvar/.ca/intermediate/certs/ca-chain.cert.pem
     &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
 &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
 &lt;p&gt;Setup the request.&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;c++ language-c++&quot; data-lang=&quot;c++&quot;&gt;&lt;span class=&quot;n&quot;&gt;cocos2d&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;network&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;HttpRequest&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;request&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;cocos2d&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;network&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;HttpRequest&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;c++&quot;&gt;&lt;span class=&quot;n&quot;&gt;cocos2d&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;network&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;HttpRequest&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;request&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;cocos2d&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;network&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;HttpRequest&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
 &lt;span class=&quot;n&quot;&gt;request&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;setUrl&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;quot;https://localhost:8443&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
 &lt;span class=&quot;n&quot;&gt;request&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;setRequestType&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;cocos2d&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;network&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;HttpRequest&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Type&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;POST&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
 &lt;span class=&quot;n&quot;&gt;request&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;setResponseCallback&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;this&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;httpresponse_selector&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;YourClass&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;onCallback&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;));&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
 &lt;p&gt;My project uses &lt;a href=&quot;http://msgpack.org/&quot;&gt;MessagePack&lt;/a&gt; to post data. But any &lt;code&gt;(char *)&lt;/code&gt; can be sent.&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;c++ language-c++&quot; data-lang=&quot;c++&quot;&gt;&lt;span class=&quot;n&quot;&gt;std&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;vector&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;std&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;string&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;postData&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;c++&quot;&gt;&lt;span class=&quot;n&quot;&gt;std&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;vector&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;std&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;string&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;postData&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
 &lt;span class=&quot;n&quot;&gt;postData&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;push_back&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;quot;dataOne&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
 &lt;span class=&quot;n&quot;&gt;postData&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;push_back&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;quot;dataTwo&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
 
@@ -449,42 +493,48 @@ ca-chain:          /Users/catchvar/.ca/intermediate/certs/ca-chain.cert.pem
 &lt;span class=&quot;n&quot;&gt;msgpack&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;sbuffer&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;sbuf&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
 &lt;span class=&quot;n&quot;&gt;msgpack&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;pack&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;amp;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;sbuf&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;postData&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
 &lt;p&gt;Now you can set the data and send!&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;c++ language-c++&quot; data-lang=&quot;c++&quot;&gt;&lt;span class=&quot;n&quot;&gt;request&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;setRequestData&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;sbuf&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;data&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(),&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;sbuf&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;size&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;());&lt;/span&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;c++&quot;&gt;&lt;span class=&quot;n&quot;&gt;request&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;setRequestData&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;sbuf&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;data&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(),&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;sbuf&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;size&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;());&lt;/span&gt;
 &lt;span class=&quot;n&quot;&gt;cocos2d&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;network&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;HttpClient&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;getInstance&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;send&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;request&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
 &lt;span class=&quot;n&quot;&gt;request&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;release&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
 &lt;p&gt;Just wait for your response.&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;c++ language-c++&quot; data-lang=&quot;c++&quot;&gt;&lt;span class=&quot;kt&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;YourClass&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;onCallback&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;HttpClient&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;sender&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;HttpResponse&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;response&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;c++&quot;&gt;&lt;span class=&quot;kt&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;YourClass&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;onCallback&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;HttpClient&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;sender&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;HttpResponse&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;response&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
     &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;!&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;response&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
         &lt;span class=&quot;n&quot;&gt;cocos2d&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;log&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;no&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;response&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;quot;);&lt;/span&gt;
         &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
     &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-
+    
     &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;!&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;response&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;isSucceed&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;())&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
         &lt;span class=&quot;n&quot;&gt;cocos2d&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;log&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;quot;response failed.&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
         &lt;span class=&quot;n&quot;&gt;cocos2d&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;log&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;quot;error buffer: %s&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;response&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;getErrorBuffer&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;());&lt;/span&gt;
         &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
     &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-
+    
     &lt;span class=&quot;n&quot;&gt;std&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;vector&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;char&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;buffer&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;response&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;getResponseData&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
     &lt;span class=&quot;n&quot;&gt;msgpack&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;unpacked&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;msg&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
     &lt;span class=&quot;n&quot;&gt;msgpack&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;unpack&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;amp;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;msg&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;char&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;amp;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;buffer&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;],&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;buffer&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;size&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;());&lt;/span&gt;
     &lt;span class=&quot;n&quot;&gt;msgpack&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;object&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;obj&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;msg&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;get&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
-
+    
     &lt;span class=&quot;n&quot;&gt;std&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;cout&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;obj&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;std&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;endl&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-
+    
     &lt;span class=&quot;n&quot;&gt;std&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;vector&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;std&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;string&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;parsedResponse&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
     &lt;span class=&quot;n&quot;&gt;obj&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;convert&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;amp;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;parsedResponse&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
 &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
 &lt;p&gt;If you used MessagePack your data is in the parsedResponse vector. Otherwise your response will be in the buffer vector as a series of chars.&lt;/p&gt;
 
-&lt;p&gt;Hopefully, this post will make someone&amp;#39;s game more secure. You can double check that everything is working by creating a second set of certificates. Use that set of certificates on your server and when you try using the ca-chain cert from the first set you should get an error.&lt;/p&gt;
+&lt;p&gt;Hopefully, this post will make someone’s game more secure. You can double check that everything is working by creating a second set of certificates. Use that set of certificates on your server and when you try using the ca-chain cert from the first set you should get an error.&lt;/p&gt;
 
 &lt;p&gt;&lt;strong&gt;Disclaimer&lt;/strong&gt;: I am not a security expert, just a security-conscious everything engineer. Use at your own risk.&lt;/p&gt;
 
-&lt;p&gt;&lt;strong&gt;P.S.&lt;/strong&gt; If you do not want to create your own certificate authority, and just want to access &lt;code&gt;https://www.google.com&lt;/code&gt;, you can use the ca bundle provided from the &lt;a href=&quot;http://curl.haxx.se/docs/caextract.html&quot;&gt;curl website&lt;/a&gt;. &lt;a href=&quot;http://curl.haxx.se/ca/cacert.pem&quot;&gt;Here&lt;/a&gt; is where you can download &lt;code&gt;cacert.pem&lt;/code&gt;. This bundle is converted from Mozilla&amp;#39;s CA cert bundle.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;P.S.&lt;/strong&gt; If you do not want to create your own certificate authority, and just want to access &lt;code&gt;https://www.google.com&lt;/code&gt;, you can use the ca bundle provided from the &lt;a href=&quot;http://curl.haxx.se/docs/caextract.html&quot;&gt;curl website&lt;/a&gt;. &lt;a href=&quot;http://curl.haxx.se/ca/cacert.pem&quot;&gt;Here&lt;/a&gt; is where you can download &lt;code&gt;cacert.pem&lt;/code&gt;. This bundle is converted from Mozilla’s CA cert bundle.&lt;/p&gt;
+
 </content>
 	</entry>
 	
@@ -493,99 +543,122 @@ ca-chain:          /Users/catchvar/.ca/intermediate/certs/ca-chain.cert.pem
                 <link href="http://catchvar.com/setup-riak-and-erlang-client-on-mac-osx.html"/>
 		<updated>2014-03-16T00:00:00-07:00</updated>
 		<id>http://catchvar.com/setup-riak-and-erlang-client-on-mac-osx</id>
-                <content type="html">&lt;p&gt;&lt;a class=&quot;post_link&quot; href=&quot;/setup-riak-and-erlang-client-on-mac-osx.html&quot;&gt;&lt;/p&gt;
+                <content type="html">&lt;h1 class=&quot;post_link&quot; id=&quot;setup-riak-and-erlang-client-on-mac-os-x-setup-riak-and-erlang-client-on-mac-osxhtml-&quot;&gt;&lt;a href=&quot;/setup-riak-and-erlang-client-on-mac-osx.html&quot;&gt;Setup Riak and Erlang Client on Mac OS X&lt;/a&gt;&lt;/h1&gt;
 
-&lt;h2&gt;Setup Riak and Erlang Client on Mac OS X&lt;/h2&gt;
+&lt;p class=&quot;date&quot;&gt;- Mar 16, 2014 -&lt;/p&gt;
 
-&lt;p&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p class=&quot;start_block&quot;&gt;In the past I’ve been a big fan of PostgreSQL. It’s rock solid and performant. I’ve used it to scale to hundreds of thousands of users without even coming close to breaking a sweat. &lt;/p&gt;
 
-&lt;p class=&quot;date&quot;&gt;
-    Mar 16, 2014
-&lt;/p&gt;
+&lt;p&gt;The downside is that horizontal scaling is a pain. That typically means that you end up scaling vertically as long as you can. In addition, you don’t get availability and fault-tolerance for free. It requires extra time and work.&lt;/p&gt;
 
-&lt;p&gt;In the past I&amp;#39;ve been a big fan of PostgreSQL. It&amp;#39;s rock solid and performant. I&amp;#39;ve used it to scale to hundreds of thousands of users without even coming close to breaking a sweat. The downside is that horizontal scaling is a pain. That typically means that you end up scaling vertically as long as you can. In addition, you don&amp;#39;t get availability and fault-tolerance for free. It requires extra time and work.&lt;/p&gt;
+&lt;!-- excerpt --&gt;
 
-&lt;!--***--&gt;
+&lt;p&gt;I wanted a database that emphasized availability, fault-tolerance, and scalability with little cost to the developer. As an indie game developer this may lead to reduced costs since an equivalent larger machine is usually much more expensive than several smaller machines. Riak’s masterless design was appealing to me, and it looked like it fit my needs better than anything else out there. Of course, when choosing a new technology there is always a chance you’ll regret it, but there is only one way to find out!&lt;/p&gt;
 
-&lt;p&gt;I wanted a database that emphasized availability, fault-tolerance, and scalability with little cost to the developer. As an indie game developer this may lead to reduced costs since an equivalent larger machine is usually much more expensive than several smaller machines. Riak&amp;#39;s masterless design was appealing to me, and it looked like it fit my needs better than anything else out there. Of course, when choosing a new technology there is always a chance you&amp;#39;ll regret it, but there is only one way to find out!&lt;/p&gt;
+&lt;p&gt;I found the documentation for Riak to be pretty good. However, there were a couple of gotchas. I found people with the same problem who were unable to find an answer around the various corners of google search, so I thought I’d make this short post on how to setup Riak from source.&lt;/p&gt;
 
-&lt;p&gt;I found the documentation for Riak to be pretty good. However, there were a couple of gotchas. I found people with the same problem who were unable to find an answer around the various corners of google search, so I thought I&amp;#39;d make this short post on how to setup Riak from source.&lt;/p&gt;
+&lt;p&gt;You can refer to &lt;a href=&quot;http://docs.basho.com/riak/latest/ops/building/installing/mac-osx/#Installing-From-Source&quot;&gt;Installing From Source&lt;/a&gt; and the &lt;a href=&quot;http://docs.basho.com/riak/latest/quickstart/&quot;&gt;Quickstart&lt;/a&gt; from the Riak site for the most up to date versions and instructions. This post assumes you already have the Xcode tools from the &lt;a href=&quot;https://developer.apple.com/&quot;&gt;Apple Develop’s Website&lt;/a&gt;.&lt;/p&gt;
 
-&lt;p&gt;You can refer to &lt;a href=&quot;http://docs.basho.com/riak/latest/ops/building/installing/mac-osx/#Installing-From-Source&quot;&gt;Installing From Source&lt;/a&gt; and the &lt;a href=&quot;http://docs.basho.com/riak/latest/quickstart/&quot;&gt;Quickstart&lt;/a&gt; from the Riak site for the most up to date versions and instructions. This post assumes you already have the Xcode tools from the &lt;a href=&quot;https://developer.apple.com/&quot;&gt;Apple Develop&amp;#39;s Website&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;Let’s get the source code.&lt;/p&gt;
 
-&lt;p&gt;Let&amp;#39;s get the source code.&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;sh language-sh&quot; data-lang=&quot;sh&quot;&gt;wget http://s3.amazonaws.com/downloads.basho.com/riak/1.4/1.4.8/riak-1.4.8.tar.gz
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;sh&quot;&gt;wget http://s3.amazonaws.com/downloads.basho.com/riak/1.4/1.4.8/riak-1.4.8.tar.gz
 tar zxvf riak-1.4.8.tar.gz
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;h3&gt;Build Erlang&lt;/h3&gt;
 
-&lt;p&gt;Now we need to build it. This is where we&amp;#39;ll add a few additional steps. First, you need a specific version of Erlang (R15B01), and it also needs to be built as 64-bit. I&amp;#39;m using kerl to manage my erlang versions and it has been working out pretty great so far. It&amp;#39;s a simple version manager similar to nvm or rbenv for node and ruby respectively, if you have ever used those.&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;sh language-sh&quot; data-lang=&quot;sh&quot;&gt;curl -O https://raw.github.com/spawngrid/kerl/master/kerl
+&lt;h2 id=&quot;build-erlang&quot;&gt;Build Erlang&lt;/h2&gt;
+
+&lt;p&gt;Now we need to build it. This is where we’ll add a few additional steps. First, you need a specific version of Erlang (R15B01), and it also needs to be built as 64-bit. I’m using kerl to manage my erlang versions and it has been working out pretty great so far. It’s a simple version manager similar to nvm or rbenv for node and ruby respectively, if you have ever used those.&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;sh&quot;&gt;curl -O https://raw.github.com/spawngrid/kerl/master/kerl
 chmod a+x kerl
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;Then you need to add it to your path. I have a directory called &lt;code&gt;~/Workspace/path&lt;/code&gt; that I have setup just for occasions like this. That way I don&amp;#39;t have to add them to a place like &lt;code&gt;/usr/bin&lt;/code&gt;. You can add this to your path by doing something like this.&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;sh language-sh&quot; data-lang=&quot;sh&quot;&gt;mkdir ~/Workspace
+
+&lt;p&gt;Then you need to add it to your path. I have a directory called &lt;code&gt;~/Workspace/path&lt;/code&gt; that I have setup just for occasions like this. That way I don’t have to add them to a place like &lt;code&gt;/usr/bin&lt;/code&gt;. You can add this to your path by doing something like this.&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;sh&quot;&gt;mkdir ~/Workspace
 mkdir ~/Workspace/path
 mv kerl ~/Workspace/path
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
 &lt;p&gt;Edit your &lt;code&gt;~/.bash_profile&lt;/code&gt; to include this line:&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;sh language-sh&quot; data-lang=&quot;sh&quot;&gt;&lt;span class=&quot;nb&quot;&gt;export &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;PATH&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$PATH&lt;/span&gt;:&lt;span class=&quot;nv&quot;&gt;$HOME&lt;/span&gt;/Workspace/path
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;sh&quot;&gt;&lt;span class=&quot;nb&quot;&gt;export &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;PATH&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$PATH&lt;/span&gt;:&lt;span class=&quot;nv&quot;&gt;$HOME&lt;/span&gt;/Workspace/path
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
 &lt;p&gt;In order to build our Erlang installations as 64-bit you need to create a &lt;code&gt;~/.kerlrc&lt;/code&gt; file with these contents:&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;sh language-sh&quot; data-lang=&quot;sh&quot;&gt;&lt;span class=&quot;nv&quot;&gt;KERL_CONFIGURE_OPTIONS&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&amp;quot;--disable-hipe --enable-smp-support --enable-threads&lt;/span&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;sh&quot;&gt;&lt;span class=&quot;nv&quot;&gt;KERL_CONFIGURE_OPTIONS&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&amp;quot;--disable-hipe --enable-smp-support --enable-threads&lt;/span&gt;
 &lt;span class=&quot;s2&quot;&gt;                        --enable-kernel-poll  --enable-darwin-64bit&amp;quot;&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
 &lt;p&gt;Now we can install Erlang R15B01.&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;sh language-sh&quot; data-lang=&quot;sh&quot;&gt;kerl build R15B01 r15b01-64
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;sh&quot;&gt;kerl build R15B01 r15b01-64
 kerl install r15b01-64 ~/erl/r15b01-64
 . ~/erl/r15b01-64/activate
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;With kerl you&amp;#39;ll need to call that activate command for every shell you open. What I do is add &lt;code&gt;. ~/erl/r15b01-64/activate&lt;/code&gt; to my &lt;code&gt;~/.bash_profile&lt;/code&gt;. The period in front of the command is important. Just calling activate without it won&amp;#39;t work. At this point you should be able to do&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;sh language-sh&quot; data-lang=&quot;sh&quot;&gt;erl
+
+&lt;p&gt;With kerl you’ll need to call that activate command for every shell you open. What I do is add &lt;code&gt;. ~/erl/r15b01-64/activate&lt;/code&gt; to my &lt;code&gt;~/.bash_profile&lt;/code&gt;. The period in front of the command is important. Just calling activate without it won’t work. At this point you should be able to do&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;sh&quot;&gt;erl
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
 &lt;p&gt;and see an erlang shell that looks like this.&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;sh language-sh&quot; data-lang=&quot;sh&quot;&gt;Erlang R15B01 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;erts-5.9.1&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;source&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;64-bit&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;smp:4:4&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;async-threads:0&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;kernel-poll:false&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;sh&quot;&gt;Erlang R15B01 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;erts-5.9.1&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;source&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;64-bit&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;smp:4:4&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;async-threads:0&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;kernel-poll:false&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt;
 
 Eshell V5.9.1  &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;abort with ^G&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
 1&amp;gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
 &lt;p&gt;type &lt;code&gt;halt().&lt;/code&gt; to exit the shell.&lt;/p&gt;
 
-&lt;h3&gt;Get GCC-4.2&lt;/h3&gt;
+&lt;h2 id=&quot;get-gcc-42&quot;&gt;Get GCC-4.2&lt;/h2&gt;
 
-&lt;p&gt;&lt;strong&gt;Update&lt;/strong&gt;: You don&amp;#39;t need gcc-4.2 for the latest riak on the latest Mac OS X. But I&amp;#39;ll leave this here in case someone wants it anyways for some reason.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Update&lt;/strong&gt;: You don’t need gcc-4.2 for the latest riak on the latest Mac OS X. But I’ll leave this here in case someone wants it anyways for some reason.&lt;/p&gt;
 
 &lt;p&gt;The second thing we have to do is get gcc-4.2 and make sure we build riak with it.&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;sh language-sh&quot; data-lang=&quot;sh&quot;&gt;brew tap homebrew/dupes
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;sh&quot;&gt;brew tap homebrew/dupes
 brew install apple-gcc42
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;We&amp;#39;re going to change the default xcode cc, gcc, c++, and g++. Make sure you backup their current locations. For reference these were my file locations.&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;text language-text&quot; data-lang=&quot;text&quot;&gt;cc      =&amp;gt;  /usr/bin/clang
-gcc     =&amp;gt;  /usr/bin/gcc
-c++     =&amp;gt;  /usr/bin/clang++
-g++     =&amp;gt;  /usr/bin/g++
+
+&lt;p&gt;We’re going to change the default xcode cc, gcc, c++, and g++. Make sure you backup their current locations. For reference these were my file locations.&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;sh&quot;&gt;&lt;span class=&quot;nv&quot;&gt;cc&lt;/span&gt;      &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&amp;gt;  /usr/bin/clang
+&lt;span class=&quot;nv&quot;&gt;gcc&lt;/span&gt;     &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&amp;gt;  /usr/bin/gcc
+c++     &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&amp;gt;  /usr/bin/clang++
+g++     &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&amp;gt;  /usr/bin/g++
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
 &lt;p&gt;Again, make sure you back up the ones you need to.&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;sh language-sh&quot; data-lang=&quot;sh&quot;&gt;mv /usr/bin/gcc /usr/bin/gcc.bk
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;sh&quot;&gt;mv /usr/bin/gcc /usr/bin/gcc.bk
 mv /usr/bin/g++ /usr/bin/g++.bk
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
 &lt;p&gt;To point them to gcc-4.2 run these commands&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;sh language-sh&quot; data-lang=&quot;sh&quot;&gt;&lt;span class=&quot;nb&quot;&gt;cd&lt;/span&gt; /usr/bin
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;sh&quot;&gt;&lt;span class=&quot;nb&quot;&gt;cd&lt;/span&gt; /usr/bin
 sudo rm cc gcc c++ g++
 sudo ln -s /usr/local/bin/gcc-4.2 cc
 sudo ln -s /usr/local/bin/gcc-4.2 gcc
 sudo ln -s /usr/local/bin/c++-4.2 c++
 sudo ln -s /usr/local/bin/g++-4.2 g++
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
 &lt;p&gt;If your gcc-4.2 is in a different location you can find that location by running these commands.&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;sh language-sh&quot; data-lang=&quot;sh&quot;&gt;which gcc-4.2
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;sh&quot;&gt;which gcc-4.2
 which c++-4.2
 which g++-4.2
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;h3&gt;Setup Riak&lt;/h3&gt;
 
-&lt;p&gt;Now we&amp;#39;re set to follow the Riak instructions for setup. They are explained in more detail in the &lt;a href=&quot;http://docs.basho.com/riak/latest/quickstart/&quot;&gt;Riak Quickstart&lt;/a&gt;.&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;sh language-sh&quot; data-lang=&quot;sh&quot;&gt;&lt;span class=&quot;nb&quot;&gt;cd &lt;/span&gt;riak-1.4.8
+&lt;h2 id=&quot;setup-riak&quot;&gt;Setup Riak&lt;/h2&gt;
+
+&lt;p&gt;Now we’re set to follow the Riak instructions for setup. They are explained in more detail in the &lt;a href=&quot;http://docs.basho.com/riak/latest/quickstart/&quot;&gt;Riak Quickstart&lt;/a&gt;.&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;sh&quot;&gt;&lt;span class=&quot;nb&quot;&gt;cd &lt;/span&gt;riak-1.4.8
 make all
 make devrel &lt;span class=&quot;nv&quot;&gt;DEVNODES&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;5
 &lt;span class=&quot;nb&quot;&gt;cd &lt;/span&gt;dev
@@ -597,43 +670,58 @@ dev1/bin/riak-admin cluster plan
 dev1/bin/riak-admin cluster commit
 dev1/bin/riak-admin member-status
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
 &lt;p&gt;Now we have a Riak cluster! &lt;/p&gt;
 
-&lt;p&gt;Any errors are available by running something like &lt;code&gt;dev1/bin/riak console&lt;/code&gt;. &lt;code&gt;dev1&lt;/code&gt; is for the first node. It would be &lt;code&gt;dev2&lt;/code&gt; for the second node and so forth. If you didn&amp;#39;t use gcc-4.2 and a R15B01 64-bit build of Erlang you might have received an error that looked like this:&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;text language-text&quot; data-lang=&quot;text&quot;&gt;16:55:17.552 [error] Error loading &amp;quot;erlang_js_drv&amp;quot;: &amp;quot;dlopen(/Users/catchvar/Workspace/riak-1.4.8/dev/dev1/bin/../lib/erlang_js-1.2.2/priv/erlang_js_drv.so, 2): no suitable image found.  Did find:\n\t/Users/catchvar/Workspace/riak-1.4.8/dev/dev1/bin/../lib/erlang_js-1.2.2/priv/erlang_js_drv.so: mach-o, but wrong architecture&amp;quot;
+&lt;p&gt;Any errors are available by running something like &lt;code&gt;dev1/bin/riak console&lt;/code&gt;. &lt;code&gt;dev1&lt;/code&gt; is for the first node. It would be &lt;code&gt;dev2&lt;/code&gt; for the second node and so forth. If you didn’t use gcc-4.2 and a R15B01 64-bit build of Erlang you might have received an error that looked like this:&lt;/p&gt;
 
-16:55:17.552 [error] CRASH REPORT Process erlang_js_sup with 0 neighbours exited with reason: bad return value: {error,{load_error,&amp;quot;Failed to load erlang_js_drv.so&amp;quot;}} in gen_server:init_it/6 line 332
-16:55:17.552 [error] CRASH REPORT Process &amp;lt;0.115.0&amp;gt; with 0 neighbours exited with reason: bad return value: {error,{load_error,&amp;quot;Failed to load erlang_js_drv.so&amp;quot;}} in erlang_js:start(normal, []) in application_master:init/4 line 138
-16:55:17.552 [info] Application erlang_js exited with reason: bad return value: {error,{load_error,&amp;quot;Failed to load erlang_js_drv.so&amp;quot;}} in erlang_js:start(normal, [])
-{&amp;quot;Kernel pid terminated&amp;quot;,application_controller,&amp;quot;{application_start_failure,erlang_js,},{erlang_js,start,[normal,[]]}}}&amp;quot;}
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;sh&quot;&gt;16:55:17.552 &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;error&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; Error loading &lt;span class=&quot;s2&quot;&gt;&amp;quot;erlang_js_drv&amp;quot;&lt;/span&gt;: &lt;span class=&quot;s2&quot;&gt;&amp;quot;dlopen(/Users/catchvar/Workspace/riak-1.4.8/dev/dev1/bin/../lib/erlang_js-1.2.2/priv/erlang_js_drv.so, 2): no suitable image found.  Did find:\n\t/Users/catchvar/Workspace/riak-1.4.8/dev/dev1/bin/../lib/erlang_js-1.2.2/priv/erlang_js_drv.so: mach-o, but wrong architecture&amp;quot;&lt;/span&gt;
+
+16:55:17.552 &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;error&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; CRASH REPORT Process erlang_js_sup with 0 neighbours exited with reason: bad &lt;span class=&quot;k&quot;&gt;return &lt;/span&gt;value: &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;error,&lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;load_error,&lt;span class=&quot;s2&quot;&gt;&amp;quot;Failed to load erlang_js_drv.so&amp;quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;}}&lt;/span&gt; in gen_server:init_it/6 line 332
+16:55:17.552 &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;error&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; CRASH REPORT Process &amp;lt;0.115.0&amp;gt; with 0 neighbours exited with reason: bad &lt;span class=&quot;k&quot;&gt;return &lt;/span&gt;value: &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;error,&lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;load_error,&lt;span class=&quot;s2&quot;&gt;&amp;quot;Failed to load erlang_js_drv.so&amp;quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;}}&lt;/span&gt; in erlang_js:start&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;normal, &lt;span class=&quot;o&quot;&gt;[])&lt;/span&gt; in application_master:init/4 line 138
+16:55:17.552 &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;info&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; Application erlang_js exited with reason: bad &lt;span class=&quot;k&quot;&gt;return &lt;/span&gt;value: &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;error,&lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;load_error,&lt;span class=&quot;s2&quot;&gt;&amp;quot;Failed to load erlang_js_drv.so&amp;quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;}}&lt;/span&gt; in erlang_js:start&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;normal, &lt;span class=&quot;o&quot;&gt;[])&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&amp;quot;Kernel pid terminated&amp;quot;&lt;/span&gt;,application_controller,&lt;span class=&quot;s2&quot;&gt;&amp;quot;{application_start_failure,erlang_js,},{erlang_js,start,[normal,[]]}}}&amp;quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;h3&gt;Setup Erlang Client&lt;/h3&gt;
 
-&lt;p&gt;Not everybody is using Erlang. If you&amp;#39;re using another language you can find a list of clients &lt;a href=&quot;http://docs.basho.com/riak/latest/dev/using/libraries/&quot;&gt;here&lt;/a&gt;. Setup for the erlang-riak-client is pretty straightforward. The only problem I ran into is that it doesn&amp;#39;t support Erlang 17.0-RC2, and won&amp;#39;t build if you&amp;#39;re using that version of Erlang. Keep using R15B01 and you should be good.&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;sh language-sh&quot; data-lang=&quot;sh&quot;&gt;&lt;span class=&quot;nb&quot;&gt;cd&lt;/span&gt; /path/to/your/erlang/project
+&lt;h2 id=&quot;setup-erlang-client&quot;&gt;Setup Erlang Client&lt;/h2&gt;
+
+&lt;p&gt;Not everybody is using Erlang. If you’re using another language you can find a list of clients &lt;a href=&quot;http://docs.basho.com/riak/latest/dev/using/libraries/&quot;&gt;here&lt;/a&gt;. Setup for the erlang-riak-client is pretty straightforward. The only problem I ran into is that it doesn’t support Erlang 17.0-RC2, and won’t build if you’re using that version of Erlang. Keep using R15B01 and you should be good.&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;sh&quot;&gt;&lt;span class=&quot;nb&quot;&gt;cd&lt;/span&gt; /path/to/your/erlang/project
 &lt;span class=&quot;nb&quot;&gt;cd &lt;/span&gt;deps
 git clone git://github.com/basho/riak-erlang-client.git
 &lt;span class=&quot;nb&quot;&gt;cd &lt;/span&gt;riak-erlang-client
 make
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;When you run Erlang you need to add riak-erlang-client to it&amp;#39;s code path. I have a shell script called &lt;code&gt;debug.sh&lt;/code&gt; in my &lt;code&gt;/ebin&lt;/code&gt; folder with the following contents:&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;sh language-sh&quot; data-lang=&quot;sh&quot;&gt;erl -pa &lt;span class=&quot;sb&quot;&gt;`&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;pwd&lt;/span&gt;&lt;span class=&quot;sb&quot;&gt;`&lt;/span&gt; ../deps/*/ebin ../deps/riak-erlang-client/deps/*/ebin -boot start_sasl -s rinoa_app
+
+&lt;p&gt;When you run Erlang you need to add riak-erlang-client to it’s code path. I have a shell script called &lt;code&gt;debug.sh&lt;/code&gt; in my &lt;code&gt;/ebin&lt;/code&gt; folder with the following contents:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;sh&quot;&gt;erl -pa &lt;span class=&quot;sb&quot;&gt;`&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;pwd&lt;/span&gt;&lt;span class=&quot;sb&quot;&gt;`&lt;/span&gt; ../deps/*/ebin ../deps/riak-erlang-client/deps/*/ebin -boot start_sasl -s rinoa_app
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
 &lt;p&gt;Run &lt;code&gt;debug.sh&lt;/code&gt;, press enter and you can test out a connection to the Riak cluster.&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;sh language-sh&quot; data-lang=&quot;sh&quot;&gt;sh debug.sh
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;erlang language-erlang&quot; data-lang=&quot;erlang&quot;&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;ok&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;Pid&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;riakc_pb_socket&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;start_link&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;quot;127.0.0.1&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;10017&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;).&lt;/span&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;sh&quot;&gt;sh debug.sh
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;erlang&quot;&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;ok&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;Pid&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;riakc_pb_socket&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;start_link&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;quot;127.0.0.1&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;10017&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;).&lt;/span&gt;
 &lt;span class=&quot;nn&quot;&gt;riakc_pb_socket&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;ping&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;Pid&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;).&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
 &lt;p&gt;To figure out if your port is different than 10017:&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;sh language-sh&quot; data-lang=&quot;sh&quot;&gt;&lt;span class=&quot;nb&quot;&gt;cd &lt;/span&gt;riak-1.4.8/dev
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;sh&quot;&gt;&lt;span class=&quot;nb&quot;&gt;cd &lt;/span&gt;riak-1.4.8/dev
 cat dev1/etc/app.config
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;Towards the top you&amp;#39;ll see some configuration that looks like this:&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;erlang language-erlang&quot; data-lang=&quot;erlang&quot;&gt;&lt;span class=&quot;c&quot;&gt;%% pb is a list of IP addresses and TCP ports that the Riak&lt;/span&gt;
+
+&lt;p&gt;Towards the top you’ll see some configuration that looks like this:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;erlang&quot;&gt;&lt;span class=&quot;c&quot;&gt;%% pb is a list of IP addresses and TCP ports that the Riak&lt;/span&gt;
 &lt;span class=&quot;c&quot;&gt;%% Protocol Buffers interface will bind.&lt;/span&gt;
 &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;pb&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;quot;127.0.0.1&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;10017&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;]}&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;That&amp;#39;s it. I hope that was helpful to someone.&lt;/p&gt;
+
+&lt;p&gt;That’s it. I hope that was helpful to someone.&lt;/p&gt;
 </content>
 	</entry>
 	
@@ -642,85 +730,79 @@ cat dev1/etc/app.config
                 <link href="http://catchvar.com/game-design-and-the-ideal-world.html"/>
 		<updated>2014-03-09T00:00:00-08:00</updated>
 		<id>http://catchvar.com/game-design-and-the-ideal-world</id>
-                <content type="html">&lt;p&gt;&lt;a class=&quot;post_link&quot; href=&quot;/game-design-and-the-ideal-world.html&quot;&gt;&lt;/p&gt;
+                <content type="html">&lt;h1 class=&quot;post_link&quot; id=&quot;game-design-and-the-ideal-world-game-design-and-the-ideal-worldhtml-&quot;&gt;&lt;a href=&quot;/game-design-and-the-ideal-world.html&quot;&gt;Game Design and The Ideal World&lt;/a&gt;&lt;/h1&gt;
 
-&lt;h2&gt;Game Design and The Ideal World&lt;/h2&gt;
+&lt;p class=&quot;date&quot;&gt;- Mar 9, 2014 -&lt;/p&gt;
 
-&lt;p&gt;&lt;/a&gt;&lt;/p&gt;
-
-&lt;p class=&quot;date&quot;&gt;
-    Mar 9, 2014
-&lt;/p&gt;
-
-&lt;p&gt;I don&amp;#39;t believe that people ask &lt;strong&gt;why&lt;/strong&gt; people play games often enough.&lt;/p&gt;
+&lt;p class=&quot;start_block&quot;&gt;I don’t believe that people ask &lt;strong&gt;why&lt;/strong&gt; people play games often enough.&lt;/p&gt;
 
 &lt;p&gt;There is an extensive amount of material related to game design on the internet. Most of this material I have found falls broadly into one of two categories. The first category is bullet-point lists. These typically are one-size fits all recommendations based on observations from a successful game. These can be useful. We should always study and learn from the successes and failures around us. However, general recommendations usually fail to capture the complicated context in which they apply.&lt;/p&gt;
 
-&lt;!--***--&gt;
+&lt;!-- excerpt --&gt;
 
-&lt;p&gt;The second category is more useful and consists of in depth analysis about &lt;strong&gt;what&lt;/strong&gt; design should be like, and how we can further improve the gaming experience for users. I personally want games to be of benefit to players, and find myself in disagreement with many of the mechanics that make it into today&amp;#39;s casual social games. However, much of the material that falls into this category fails to account for both what gamers consider a good game and why so many people also love casual social games. The explanation is often that casual social games are just plain manipulative. They are. But maybe there is something deeper that explains why people play these games.&lt;/p&gt;
+&lt;p&gt;The second category is more useful and consists of in depth analysis about &lt;strong&gt;what&lt;/strong&gt; design should be like, and how we can further improve the gaming experience for users. I personally want games to be of benefit to players, and find myself in disagreement with many of the mechanics that make it into today’s casual social games. However, much of the material that falls into this category fails to account for both what gamers consider a good game and why so many people also love casual social games. The explanation is often that casual social games are just plain manipulative. They are. But maybe there is something deeper that explains why people play these games.&lt;/p&gt;
 
-&lt;h3&gt;The Why of Game Design&lt;/h3&gt;
+&lt;h2 id=&quot;the-why-of-game-design&quot;&gt;The Why of Game Design&lt;/h2&gt;
 
 &lt;p&gt;We need a new theory on game design that goes further than Minecraft good, Farmville bad. My view is that games are ultimately a reflection of the ideal world. Games fill some void that is present in reality and at any given time the perfect game allows a person to live the life they really want to live.&lt;/p&gt;
 
-&lt;p&gt;You might be thinking, &lt;span class=&quot;quote&quot;&gt;&amp;quot;Wait a minute! I don&amp;#39;t want to be pig farmer! And if you&amp;#39;re right I&amp;#39;ll just create a game where you have infinite fame and money and kill all enemies with the flick of a wrist. Muahahaha...&amp;quot;&lt;/span&gt;.&lt;/p&gt;
+&lt;p&gt;You might be thinking, &lt;span class=&quot;quote&quot;&gt;“Wait a minute! I don’t want to be pig farmer! And if you’re right I’ll just create a game where you have infinite fame and money and kill all enemies with the flick of a wrist. Muahahaha…”&lt;/span&gt;.&lt;/p&gt;
 
 &lt;p&gt;People are more complex than that. The perfect world is not full of rainbows and lollipops where nothing goes wrong. That type of world may be fun for a short while, but I bet that most people would quickly become bored. Similarly, the ideal world for a person may have very little to do with their profession and surroundings. Although, I must admit that my favorite games have some sort of fantasy theme where I can beat down monsters with swords and magic.&lt;/p&gt;
 
-&lt;p&gt;So what is the ideal world? What life attributes are necessary for a person to be upon and their deathbed and confidently say that they led a life fulfilled and satisfied? It&amp;#39;s likely different for each and every person. However, there are certain qualities that many seek in their professional and personal lives that all common among the best games. I&amp;#39;ll update this list as I come across more qualities. For now, I believe that every human strives for challenge, progression, understanding, freedom, and socialization.&lt;/p&gt;
+&lt;p&gt;So what is the ideal world? What life attributes are necessary for a person to be upon and their deathbed and confidently say that they led a life fulfilled and satisfied? It’s likely different for each and every person. However, there are certain qualities that many seek in their professional and personal lives that all common among the best games. I’ll update this list as I come across more qualities. For now, I believe that every human strives for challenge, progression, understanding, freedom, and socialization.&lt;/p&gt;
 
-&lt;h3&gt;Challenge&lt;/h3&gt;
+&lt;h2 id=&quot;challenge&quot;&gt;Challenge&lt;/h2&gt;
 
 &lt;p&gt;Challenge is one of the most obvious aspects to any game. Even in the most vapid and humdrum games you must endure the mental challenge of patience. Otherwise the game would end instanteously. The challenge can also take on many other forms. It could be figuring out where to go next, solving a puzzle, finding out how fast you can button mash, or showing emotional resilience in the game that kills you 70 times a minute.&lt;/p&gt;
 
 &lt;p&gt;People &lt;strong&gt;need&lt;/strong&gt; challenge. Maybe not 24/7. But, whether it is due to evolution, divine will, coded into our genes, or all three, people need challenge. Without a challenge you get boredom. Johnathan Blow, the creator of braid, said in one of his talks:&lt;/p&gt;
 
 &lt;blockquote&gt;
-&lt;p&gt;Boredom is a healthy response to unproductive situations... Boredom has survival value.&lt;/p&gt;
+  &lt;p&gt;Boredom is a healthy response to unproductive situations… Boredom has survival value.&lt;/p&gt;
 &lt;/blockquote&gt;
 
 &lt;p&gt;He was talking about how social games manipulate people into overcoming their natural survival instincts. If boredom has survival value it is to point people towards a challenge. That is why humans keep advancing and surviving. Because we need a challenge. If you cannot get your challenge in the real world, then perhaps you would turn to games. Now, challenge is not something that everybody is missing from their lives. It is however, linked to our next quality.&lt;/p&gt;
 
-&lt;h3&gt;Progression&lt;/h3&gt;
+&lt;h2 id=&quot;progression&quot;&gt;Progression&lt;/h2&gt;
 
 &lt;p&gt;This is the quality probably most associated with gamificiation, social games, and familiar to all gamers. You beat a level to get to the next level, or you kill monsters to gain experience points, or you get more stuff to add to your house. This is a reflection of real-life. People go to school to increase their grade. Seniors are always cooler than Freshman. People get a degree, maybe two, to prove their qualifications and to gain more knowledge. People work to get a bigger salary, faster cars, and a bigger house (or a house at all).&lt;/p&gt;
 
-&lt;p&gt;Not everybody makes progress in life. Or maybe not in the way they expect themselves to. A housewife that feels stuck in life might gain solace with the occasional Candycrush and Farmville because they can always get better. They can always improve their skill, or gain better decorations. Maybe you&amp;#39;re doing just fine in life and you just want to make more progress crushing some n00bs in Starcraft.&lt;/p&gt;
+&lt;p&gt;Not everybody makes progress in life. Or maybe not in the way they expect themselves to. A housewife that feels stuck in life might gain solace with the occasional Candycrush and Farmville because they can always get better. They can always improve their skill, or gain better decorations. Maybe you’re doing just fine in life and you just want to make more progress crushing some n00bs in Starcraft.&lt;/p&gt;
 
-&lt;p&gt;That last paragraph was kind of a downer now that I wrote it, but I think it&amp;#39;s necessary to examine why games are attractive. On to the next quality.&lt;/p&gt;
+&lt;p&gt;That last paragraph was kind of a downer now that I wrote it, but I think it’s necessary to examine why games are attractive. On to the next quality.&lt;/p&gt;
 
-&lt;h3&gt;Understanding&lt;/h3&gt;
+&lt;h2 id=&quot;understanding&quot;&gt;Understanding&lt;/h2&gt;
 
-&lt;p&gt;The world is a complex and complicated place. Interactions can have ripple effects that make it seem like things just happen for no reason. Philosophers and religion have been trying to explain the world for thousands of years. Even with as much as we have learned there is just so much missing. Why are we here? What is our purpose in life? Will choosing bacon, steak, or both for dinner have profound unknown effects that cause the world to end in fifty years? I just don&amp;#39;t know.&lt;/p&gt;
+&lt;p&gt;The world is a complex and complicated place. Interactions can have ripple effects that make it seem like things just happen for no reason. Philosophers and religion have been trying to explain the world for thousands of years. Even with as much as we have learned there is just so much missing. Why are we here? What is our purpose in life? Will choosing bacon, steak, or both for dinner have profound unknown effects that cause the world to end in fifty years? I just don’t know.&lt;/p&gt;
 
 &lt;p&gt;Games offer a much simpler world. In Mario if you get hit by an enemy or fall in a hole you die. If you get a powerup it has a deterministic bonus that helps you kill baddies. If you reach the end of the level you win. Even in a more complex rpg scenario the world is easy to understand. These stats effect my damage this much. I have an x% chance of evading an attack. If I get these items with these stats I can maximize the amount of damage I can inflict while still surviving assuming the enemies dps is exactly this much.&lt;/p&gt;
 
-&lt;p&gt;This also explains why players just don&amp;#39;t care for extremely complicated simulation effects. They just don&amp;#39;t understand them, and therefore they don&amp;#39;t contribute to their play.&lt;/p&gt;
+&lt;p&gt;This also explains why players just don’t care for extremely complicated simulation effects. They just don’t understand them, and therefore they don’t contribute to their play.&lt;/p&gt;
 
-&lt;h3&gt;Freedom&lt;/h3&gt;
+&lt;h2 id=&quot;freedom&quot;&gt;Freedom&lt;/h2&gt;
 
-&lt;p&gt;Sometimes people want to do whatever the heck they want to. In the real world your freedom is restricted by many things. It could be that your freedom is restricted by money, social obligations, or even family obligations. We also have many rules in place. Most of them for good reason, in order to maintain a society that can flourish and thrive. For example, there are good rules in place that prevent you from dual-wielding poison infused daggers and ganking somebody when they least expect it. Even further, people are restricted by what is actually possible with our current technology. I can&amp;#39;t fly un-aided through a snowy mountain range.&lt;/p&gt;
+&lt;p&gt;Sometimes people want to do whatever the heck they want to. In the real world your freedom is restricted by many things. It could be that your freedom is restricted by money, social obligations, or even family obligations. We also have many rules in place. Most of them for good reason, in order to maintain a society that can flourish and thrive. For example, there are good rules in place that prevent you from dual-wielding poison infused daggers and ganking somebody when they least expect it. Even further, people are restricted by what is actually possible with our current technology. I can’t fly un-aided through a snowy mountain range.&lt;/p&gt;
 
-&lt;p&gt;Games provide a way to experience what it might be like to circumvent all of these restrictions. In some ways being able to magically gain money by killing a creature is a form of freedom. You can become a goblin rampaging through the hills. You can experience fantastic worlds made of candy and chocolate. One of the most popular games to exemplify this quality is Minecraft. By now most everybody has heard of Minecraft, and on mobile it&amp;#39;s less popular Survivalcraft clone. It&amp;#39;s a voxel-based game that let&amp;#39;s you build anything you can image out of blocks. It&amp;#39;s a great expression of freedom and allows the player to do things they could never imagine in the real world.&lt;/p&gt;
+&lt;p&gt;Games provide a way to experience what it might be like to circumvent all of these restrictions. In some ways being able to magically gain money by killing a creature is a form of freedom. You can become a goblin rampaging through the hills. You can experience fantastic worlds made of candy and chocolate. One of the most popular games to exemplify this quality is Minecraft. By now most everybody has heard of Minecraft, and on mobile it’s less popular Survivalcraft clone. It’s a voxel-based game that let’s you build anything you can image out of blocks. It’s a great expression of freedom and allows the player to do things they could never imagine in the real world.&lt;/p&gt;
 
-&lt;h3&gt;Socialization&lt;/h3&gt;
+&lt;h2 id=&quot;socialization&quot;&gt;Socialization&lt;/h2&gt;
 
 &lt;p&gt;Not all games satisfy this quality, but on some level or another everybody requires or desires some sort of interaction with other people. Even if you imagine yourself to be an introvert, spending a month in absolute seclusion can drive a man mad. Before the internet, games could be played together as a way to pass the time, laugh, or get to know somebody better. Since the invention of the internet, people have been able to more or less the same without being in the same room. This makes some people cringe, and evokes images of a computer nerd sitting in the dark pretending to be a girl over the internet.&lt;/p&gt;
 
-&lt;p&gt;Like many things in the world there are pros and cons. It could give you a chance to interact with real-life friends that are too far away to visit on a daily basis. When I was a teenager I had a friend that I moved away from. We kept in touch by playing Dark Age of Camelot over the internet. For those of you that are not familiar with the game it&amp;#39;s an mmorpg that both preceded and is very similar to WoW. We would be on Ventrilo talking over our mics as we went on a raid, or did some PvP. It was pretty fun.&lt;/p&gt;
+&lt;p&gt;Like many things in the world there are pros and cons. It could give you a chance to interact with real-life friends that are too far away to visit on a daily basis. When I was a teenager I had a friend that I moved away from. We kept in touch by playing Dark Age of Camelot over the internet. For those of you that are not familiar with the game it’s an mmorpg that both preceded and is very similar to WoW. We would be on Ventrilo talking over our mics as we went on a raid, or did some PvP. It was pretty fun.&lt;/p&gt;
 
-&lt;p&gt;You might even be able to make the argument that someone could build leadership skills in a mmorpg. Hear me out here. I&amp;#39;m not saying that someone who has played an mmorpg can go and lead a company. Not even close. However organizing people, recuiting people, convincing them to follow a purpose, like the leader of a guild would do, certainly has its merits. Especially if that person wouldn&amp;#39;t be exposed to those experiences otherwise.&lt;/p&gt;
+&lt;p&gt;You might even be able to make the argument that someone could build leadership skills in a mmorpg. Hear me out here. I’m not saying that someone who has played an mmorpg can go and lead a company. Not even close. However organizing people, recuiting people, convincing them to follow a purpose, like the leader of a guild would do, certainly has its merits. Especially if that person wouldn’t be exposed to those experiences otherwise.&lt;/p&gt;
 
-&lt;h3&gt;Conclusion&lt;/h3&gt;
+&lt;h2 id=&quot;conclusion&quot;&gt;Conclusion&lt;/h2&gt;
 
-&lt;p&gt;Hopefully, I have presented enough loose evidence to support that the qualities of challenge, progression, understanding, freedom, and socialization are all qualities that we look for in our everyday lives. When we aren&amp;#39;t able to satisfy these qualities it&amp;#39;s possible that we use games as an outlet to fulfill that missing satisfaction. This does not meaning getting sucked into a game and losing yourself. It could. It could also mean just relieving a little stress with thirty minutes of play. &lt;/p&gt;
+&lt;p&gt;Hopefully, I have presented enough loose evidence to support that the qualities of challenge, progression, understanding, freedom, and socialization are all qualities that we look for in our everyday lives. When we aren’t able to satisfy these qualities it’s possible that we use games as an outlet to fulfill that missing satisfaction. This does not meaning getting sucked into a game and losing yourself. It could. It could also mean just relieving a little stress with thirty minutes of play. &lt;/p&gt;
 
-&lt;p&gt;I&amp;#39;m not trying to argue whether some games are good or bad. By understanding why people play games it provides a better starting point for how you construct your games. Also understand that manipulation in itself is not bad. It has just received a negative connotation over time. Manipulation is just understanding the underlying mechanics that affect behaviour and optimizing for a desired goal. The goal you aim for is what makes a valiant or devious effort. There is no reason to prevent putting eye candy into a game because it&amp;#39;s manipulative if you&amp;#39;re optimizing for a better experience.&lt;/p&gt;
+&lt;p&gt;I’m not trying to argue whether some games are good or bad. By understanding why people play games it provides a better starting point for how you construct your games. Also understand that manipulation in itself is not bad. It has just received a negative connotation over time. Manipulation is just understanding the underlying mechanics that affect behaviour and optimizing for a desired goal. The goal you aim for is what makes a valiant or devious effort. There is no reason to prevent putting eye candy into a game because it’s manipulative if you’re optimizing for a better experience.&lt;/p&gt;
 
-&lt;p&gt;The next time you see some horrible social game that you hate get really popular, you shouldn&amp;#39;t rage and be like, &lt;span class=&quot;quote&quot;&gt;&amp;quot;Argh! They&amp;#39;re ruining games!&amp;quot;&lt;/span&gt;. You should give thought to why that game became popular in the first place. I don&amp;#39;t mean copying elements from that game and putting it into your game. Really ask yourself, &lt;span class=&quot;quote&quot;&gt;&amp;quot;Why?&amp;quot;&lt;/span&gt;. It could be because it fulfilled the basic qualities of life that we need in order to be satisfied.&lt;/p&gt;
+&lt;p&gt;The next time you see some horrible social game that you hate get really popular, you shouldn’t rage and be like, &lt;span class=&quot;quote&quot;&gt;“Argh! They’re ruining games!”&lt;/span&gt;. You should give thought to why that game became popular in the first place. I don’t mean copying elements from that game and putting it into your game. Really ask yourself, &lt;span class=&quot;quote&quot;&gt;“Why?”&lt;/span&gt;. It could be because it fulfilled the basic qualities of life that we need in order to be satisfied.&lt;/p&gt;
 
-&lt;p&gt;Phew, that was a long post. This blog is supposed to be about one man&amp;#39;s journey to create a mobile indie game. I thought I&amp;#39;d start by giving my thoughts on game design and why people play games. I don&amp;#39;t expect every post to be this long. Thank you if you stuck with it. I&amp;#39;d love to hear your thoughts in the comments even if you think I&amp;#39;m horribly wrong.&lt;/p&gt;
+&lt;p&gt;Phew, that was a long post. This blog is supposed to be about one man’s journey to create a mobile indie game. I thought I’d start by giving my thoughts on game design and why people play games. I don’t expect every post to be this long. Thank you if you stuck with it. I’d love to hear your thoughts in the comments even if you think I’m horribly wrong.&lt;/p&gt;
 </content>
 	</entry>
 	
