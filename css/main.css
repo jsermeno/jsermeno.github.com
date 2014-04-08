@@ -45,6 +45,10 @@ h1 a {
     line-height: 4rem;
 }
 
+ul a {
+    display: inline;
+}
+
 a:hover {
     text-decoration: none;
 }
