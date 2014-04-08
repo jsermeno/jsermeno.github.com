@@ -43,7 +43,7 @@ a {
 
 .prevent_ul_a_linebreak a {
     display: inline;
-    padding: 4px 8px;
+    padding: 16px 0px;
 }
 
 p a {
