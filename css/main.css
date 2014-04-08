@@ -41,6 +41,10 @@ a {
     line-height: 2rem;
 }
 
+h1 a {
+    line-height: 4rem;
+}
+
 a:hover {
     text-decoration: none;
 }
