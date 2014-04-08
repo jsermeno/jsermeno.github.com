@@ -36,6 +36,11 @@ blockquote p:after {
   content: "";
 }
 
+a {
+    display: inline-block;
+    line-height: 2rem;
+}
+
 a:hover {
     text-decoration: none;
 }
