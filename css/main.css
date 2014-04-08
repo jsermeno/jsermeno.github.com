@@ -28,8 +28,8 @@ blockquote p:before {
     content: "\201C"; /*Unicode for Left Double Quote*/
     font-size: 1.2em;
     font-weight: bold;
-    width: 30px;
-    margin-left: -30px;
+    width: 1rem;
+    margin-left: -1rem;
 }
 
 blockquote p:after {
@@ -49,6 +49,11 @@ a {
 p a {
     display: inline;
     padding: 16px 0px;
+}
+
+#social_header a {
+   display: inline; 
+   padding: 16px 0px;
 }
 
 h1 a {
@@ -165,7 +170,7 @@ ul li:before {
 }
 
 .share_element {
-    float: left;
+    display: inline-block;
     padding-bottom: 16px;
     line-height: 0;
 }
