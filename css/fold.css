@@ -64,6 +64,10 @@ li {
     list-style-type: none;
 }
 
+#posts li:before {
+    content: ""
+}
+
 a {
     color: #000000;
 }
@@ -139,6 +143,38 @@ h1 a {
  */
 
 body {
+    background: #ffffff;
+    color: #435359;
+}
+
+a {
+    color: #5b728f;
+}
+
+a:hover,
+.twitter_link:hover span {
+    color: #59B4DC;
+}
+
+h1 a {
+    color: #293033;
+}
+
+h1 a:hover {
+    color: #477e80;
+}
+
+.twitter_link,
+.twitter_link:hover {
+    color: #000000;
+}
+
+.twitter_link span {
+    color: #5b728f;
+}
+
+#logo_link, #logo_link:hover {
+    color: #000000;
 }
 
 /** header **/
@@ -147,11 +183,8 @@ body {
 }
 
 #header_status .container {
-    border-bottom: 1px #000000 solid;
+    border-bottom: 1px solid #000000;
     padding-top: 1rem;
-}
-
-#nav a {
 }
 
 /** logo **/
@@ -171,6 +204,7 @@ body {
 #logo_text,
 #logo_icon {
     display: inline-block;
+    margin-bottom: 1rem;
 }
 
 #logo_icon {
@@ -178,12 +212,14 @@ body {
     height: 32px;
     line-height: 4rem;
     vertical-align: top;
+    background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAQAAADZc7J/AAAALElEQVR4AWNg+E8AogF0+eFowKgBhDUMTwNGDSAVDE8DRg2gNOEMCwNGDQAAIWg936e63cwAAAAASUVORK5CYII=);
 }
 
 #logo_text {
     font-size: 3rem;
     font-weight: bold;
     line-height: 4rem;
+    color: #35373d;
 }
 
 #logo_text span {
@@ -203,9 +239,12 @@ body {
     padding-bottom: 1rem;
 }
 
-#social_header .container {
+#social_container {
     border-top: 2px #000000 solid;
-    border-bottom: 5px #000000 solid;
+}
+
+#header_wrapper {
+    box-shadow: 0px 1px 3px rgba(0, 20, 22, 0.4);
 }
 
 .twitter_link {
@@ -215,4 +254,8 @@ body {
 
 .twitter_link span {
     text-decoration: underline;
+}
+
+#posts li {
+    overflow: hidden; /* firefox negates header margins otherwise */
 }
