@@ -9,11 +9,13 @@ body {
 h2 {
     font-size: 1.8rem;
     font-weight: bold;
+    line-height: 4rem;
 }
 
 h3 {
     font-size: 1.2rem;
     font-weight: bold;
+    line-height: 2rem;
 }
 
 blockquote {
@@ -33,16 +35,33 @@ blockquote p:after {
   content: "";
 }
 
+a {
+    -webkit-transition: 0.5s ease;
+    transition: 0.5s ease;
+}
+
 a:hover {
     text-decoration: none;
 }
 
+#posts {
+    padding-bottom: 2rem;
+}
+
+#posts li {
+    overflow: hidden; /* firefox negates header margins otherwise */
+}
+
 #email_subscriber {
     padding: 2rem 0;
+    border-top: 5px #000000 solid;
+    border-bottom: 2px #000000 solid;
+    margin: 2rem 0;
 }
 
 #email_subscriber h2 {
     text-align: center;
+    margin-top: 0;
 }
 
 #mc-embedded-subscribe-form {
@@ -52,6 +71,10 @@ a:hover {
 #mce-EMAIL {
     display: inline-block;
     border: 1px #000000 solid;
+    -moz-border-radius: 3px;
+    -webkit-border-radius: 3px;
+    -o-border-radius: 3px;
+    -ms-border-radius: 3px;
     border-radius: 3px;
     padding: 8px;
     line-height: 2rem;
@@ -62,6 +85,10 @@ a:hover {
 #mc-embedded-subscribe {
     display: inline-block;
     background: #000000;
+    -moz-border-radius: 3px;
+    -webkit-border-radius: 3px;
+    -o-border-radius: 3px;
+    -ms-border-radius: 3px;
     border-radius: 3px;
     border: 0;
     padding: 8px 15px;
@@ -80,19 +107,36 @@ a:hover {
     text-decoration: none;
 }
 
+.large_dots:before {
+    content: ' \25CF\00a0\00a0\00a0\00a0\25CF\00a0\00a0\00a0\00a0\25CF';
+    font-size: 1.2rem;
+    font-weight: normal;
+}
+
+.large_dots {
+    text-align: center;
+    border: 0;
+    height: 2rem;
+}
+
 /**
  * social
  */
 #share_buttons {
     text-align: center;
-    margin: 2rem auto 0 auto;
-    border-spacing: 0px;
-    border-collapse: collapse;
+    margin-top: 2rem;
+    margin-bottom: 2rem;
+    overflow: hidden;
 }
 
-#share_buttons td,
-#share_buttons tr {
-    padding: 0;
+#share_elements {
+    display: inline-block;
+}
+
+.share_element {
+    float: left;
+    padding-bottom: 16px;
+    line-height: 0;
 }
 
 .google_plus {
@@ -124,6 +168,10 @@ a:hover {
 
 .buffer-button {
     vertical-align: top;
+}
+
+#disqus_thread {
+    padding-top: 16px;
 }
 
 /** highlight **/
@@ -197,7 +245,7 @@ pre {
     white-space: pre-wrap;
     font-size: 0.75rem;
     line-height: 1.125rem;
-    padding: 1.125rem;
+    padding: 8px;
 }
 
 code {

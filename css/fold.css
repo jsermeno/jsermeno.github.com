@@ -18,6 +18,7 @@
 body {
     font-family: Merriweather, serif;
     font-size: 1.2rem;
+    -webkit-text-rendering: optimizeLegibility;
     text-rendering: optimizeLegibility;
     font-feature-settings: "kern";
     -webkit-font-feature-settings: "kern";
@@ -143,8 +144,11 @@ body {
 /** header **/
 #header_status {
     text-align: right;
-    height: 2rem;
-    padding: 1rem 0;
+}
+
+#header_status .container {
+    border-bottom: 1px #000000 solid;
+    padding-top: 1rem;
 }
 
 #nav a {
@@ -156,7 +160,7 @@ body {
 }
 
 #header .container {
-    padding: 2rem 2rem;
+    padding: 2rem 30px 2rem 30px;
 }
 
 #logo_link {
@@ -196,7 +200,12 @@ body {
 /** social **/
 #social_header {
     text-align: right;
-    padding: 1rem 0;
+    padding-bottom: 1rem;
+}
+
+#social_header .container {
+    border-top: 2px #000000 solid;
+    border-bottom: 5px #000000 solid;
 }
 
 .twitter_link {
