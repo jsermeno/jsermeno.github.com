@@ -3,6 +3,7 @@
  */
 
 body {
+    position: relative;
     padding-bottom: 90px;
 }
 
@@ -309,4 +310,12 @@ pre {
 code {
     white-space: pre-wrap;
     font-family: Menlo, Monaco, Consolas, "Courier New", monospace;
+}
+
+#footer {
+    height: 15px;
+    background: #53a9cf;
+    position: absolute;
+    bottom: 0;
+    width: 100%;
 }

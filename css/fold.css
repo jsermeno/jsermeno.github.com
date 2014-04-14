@@ -149,7 +149,6 @@ body {
 
 a {
     color: #186887;
-    font-weight: bold;
 }
 
 a:hover,
@@ -167,13 +166,12 @@ h1 a:hover {
 
 .twitter_link,
 .twitter_link:hover {
-    color: #000000;
+    color: #435359;
     font-weight: normal;
 }
 
 .twitter_link span {
     color: #186887;
-    font-weight: bold;
 }
 
 #logo_link, #logo_link:hover {
@@ -255,12 +253,19 @@ h1 a:hover {
 }
 
 #social_container {
-    border-top: 2px #000000 solid;
     padding: 0px 15px;
+    border-bottom: 2px #5F7411 solid;
+}
+
+#social_header hr {
+    background: #5F7411;
+    border: 0;
+    height: 5px;
+    padding: 0;
 }
 
 #header_wrapper {
-    box-shadow: 0px 1px 3px rgba(0, 20, 22, 0.4);
+    /*box-shadow: 0px 1px 3px rgba(0, 20, 22, 0.4);*/
 }
 
 .twitter_link {
