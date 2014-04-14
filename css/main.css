@@ -37,8 +37,8 @@ blockquote p:after {
 }
 
 a {
-    display: inline-block;
-    line-height: 2rem;
+    display: inline;
+    padding: 16px 0px;
 }
 
 .prevent_ul_a_linebreak a {
