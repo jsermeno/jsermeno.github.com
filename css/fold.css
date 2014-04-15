@@ -113,7 +113,7 @@ h1 a {
         font-size: 14px;
     }
 
-    .p_img {
+    .p_img img {
         width: 200px; 
         height: 200px;
     }
@@ -134,7 +134,7 @@ h1 a {
         font-size: 10px;
     }
 
-    .p_img {
+    .p_img img {
         width: 100px; 
         height: 100px;
     }
