@@ -1,0 +1,674 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="Description" content="A blog about indie mobile MMO game development.">
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <title>Voronoi Noise and Erlang, Nif, and Port performance comparison</title>
+
+        <!-- Bootstrap -->
+        <style>
+            @font-face{font-family:'Merriweather';font-style:normal;font-weight:300;src:local('Merriweather Light'),local('Merriweather-Light'),url(http://themes.googleusercontent.com/static/fonts/merriweather/v6/ZvcMqxEwPfh2qDWBPxn6nmB7wJ9CoPCp9n30ZBThZ1I.woff) format('woff')}@font-face{font-family:'Merriweather';font-style:normal;font-weight:400;src:local('Merriweather'),url(http://themes.googleusercontent.com/static/fonts/merriweather/v6/RFda8w1V0eDZheqfcyQ4EKRDOzjiPcYnFooOUGCOsRk.woff) format('woff')}@font-face{font-family:'Merriweather';font-style:normal;font-weight:700;src:local('Merriweather Bold'),local('Merriweather-Bold'),url(http://themes.googleusercontent.com/static/fonts/merriweather/v6/ZvcMqxEwPfh2qDWBPxn6nhAPw1J91axKNXP_-QX9CC8.woff) format('woff')}@font-face{font-family:'Merriweather Sans';font-style:normal;font-weight:400;src:url(http://themes.googleusercontent.com/static/fonts/merriweathersans/v3/AKu1CjQ4qnV8MUltkAX3sM2kigAIKUS7C8wDj9A45hI.ttf) format('truetype')}@font-face{font-family:'Merriweather Sans';font-style:normal;font-weight:800;src:url(http://themes.googleusercontent.com/static/fonts/merriweathersans/v3/6LmGj5dOJopQKEkt88Gowf5_oG7m85YQnBYEZ7uTa3L3rGVtsTkPsbDajuO5ueQw.ttf) format('truetype')}*{-webkit-box-sizing:border-box;-moz-box-sizing:border-box;box-sizing:border-box}*:before,*:after{-webkit-box-sizing:border-box;-moz-box-sizing:border-box;box-sizing:border-box}body{font-family:Merriweather,serif;font-size:1.2rem;-webkit-text-rendering:optimizeLegibility;text-rendering:optimizeLegibility;font-feature-settings:"kern";-webkit-font-feature-settings:"kern";-moz-font-feature-settings:"kern";-moz-font-feature-settings:"kern=1";margin:0;padding:0;line-height:2rem}h1,h2,h3,h4{font-family:'Merriweather Sans',sans-serif;font-weight:normal;margin:2rem 0}h1{font-size:2.4rem;font-weight:bold;text-align:center;line-height:4rem;padding:0 30px}p{margin:2rem 0}.start_block{font-size:1.4rem;font-weight:300}ul{padding:0}li{margin:1rem 0}#posts{list-style-type:none}#posts li:before{content:""}a{color:#000}h1 a{text-decoration:none}.date{font-size:1rem;font-style:italic;text-align:center}@media(min-width:960px){.container{width:900px}.content{padding:0 105px}html{font-size:16px}}@media(max-width:960px) and (min-width:600px){.content{padding:0 60px}html{font-size:14px}}@media(max-width:599px) and (min-width:320px){.content{padding:0 15px}}@media(max-width:599px){html{font-size:10px}}.container{margin:0 auto}.sans{font-family:'Merriweather Sans',sans-serif}body{background:#fff;color:#435359}a{-webkit-transition:color .25s ease;color:#186887}a:hover{color:#59b4dc}h1 a{color:#293033}h1 a:hover{color:#477e80}.twitter_link,.twitter_link:hover{color:#aab3ae;font-weight:normal}#social_header .twitter_link span,#rss_button,#header_status a{-webkit-transition:color .25s ease;color:#fff;text-decoration:none}#social_header .twitter_link:hover span,#rss_button:hover,#header_status a:hover{color:#53a9cf}#logo_link,#logo_link:hover{color:#000}#header_status{text-align:right}#header{text-align:center}#header .container{padding:2rem 0 2rem 0}#logo_link{text-decoration:none;display:inline-block}#logo_text,#logo_icon{display:inline-block}#logo_icon{width:32px;height:32px;line-height:4rem;vertical-align:top;background:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgAQMAAABJtOi3AAAABlBMVEUAAAD4+/0q9C1wAAAAAXRSTlMAQObYZgAAABpJREFUCNdj+P+fAQiJIBiIUwkExBFgtQQJAHyDR7kBtlCTAAAAAElFTkSuQmCC) no-repeat}#logo_text{font-size:3rem;font-weight:bold;line-height:4rem;color:#fff}#logo_text span{margin-left:-.22rem}#logo_status{display:inline-block;white-space:nowrap;font-style:italic;font-weight:300;color:#aab3ae}#social_header{text-align:right;padding-bottom:1rem}#social_header hr{background:#aab3ae;border:0;height:2px;padding:0}#header_wrapper{background:#000}.twitter_link{text-decoration:none;margin-right:60px}.twitter_link span{text-decoration:underline}.header_img{text-align:center;padding-top:2rem}.header_img img{padding:40px;border-radius:90px}.color1{background:#abc02b}.color2{background:#33a5a9}#posts li{overflow:hidden}
+        </style>
+
+        <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+        <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+        <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+        <![endif]-->
+    </head>
+    <body>
+        <!-- Main page -->
+        <div id="header_wrapper">
+            <div id="header_status">
+                <div class="container">
+                        <div id="nav" class="sans">
+                            <a href="/">Home</a>
+                        </div>
+                </div>
+            </div>
+            <div id="header">
+                <div class="container" itemscope itemtype="http://schema.org/Organization">
+                    <a itemprop="url" href="/" id="logo_link">
+                        <div id="logo_icon"></div>
+                        <div id="logo_text" class="sans">catchV<span>A</span>R</div>
+                    </a>
+                    <br />
+                    <span id="logo_status">
+                        A blog about indie mobile MMO game development
+                    </span>
+                </div>
+            </div>
+            <div id="social_header">
+                <hr class="container" />
+                <div id="social_container" class="container">
+                    <a class="twitter_link" href="https://twitter.com/intent/follow?original_referer=http%3A%2F%2Fcatchvar.com%2F&region=follow_link&screen_name=catchvar&tw_p=followbutton&variant=2.0">
+                        Follow me on <span class="sans">TWITTER</span>
+                    </a>
+                    <a class="sans" id="rss_button" href="/feed/index.xml">RSS</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="container">
+            <div class="content">
+                <div id="post_content">
+    
+    <div class="header_img">
+        <img class="color2" alt="voronoi noise and erlang nif port header image" src="/images/voronoi_noise_and_erlang_nif_port_comparison.png" />
+    </div>
+    
+<h1 class="post_link" id="voronoi-noise-and-erlang-nif-and-port-performance-comparison-voronoi-noise-and-erlang-nif-port-comparisonhtml-"><a href="/voronoi-noise-and-erlang-nif-port-comparison.html">Voronoi Noise and Erlang, Nif, and Port Performance Comparison</a></h1>
+
+<p class="date">- Apr 14, 2014 -</p>
+
+<p class="start_block">I wanted some Voronoi noise generated from Erlang. I needed to know how I should generate the noise, and what the most efficient way of doing this from Erlang was. <!-- excerpt --> I knew about Erlang NIFs already (Native Implemented Function). I was already using several through third party libraries. What I did not know is if I needed a NIF. </p>
+
+<p>If Erlang could get the job done, then using a NIF would be overkill. In order to help with future decisions, I first implemented a Voronoi noise algorithm in Erlang, then as a C NIF, then as a C Port. I measured the performance at each step of the way. Who knows, the communication overhead with C could be more expensive than the operation itself. I’ve experienced this before with V8, and JNI bindings.</p>
+
+<h2 id="voronoi-noise">Voronoi Noise</h2>
+
+<p>Voronoi noise is also called Worley noise. It creates these polygon-like patterns like the ones in the header image of this blog post. There are several algorithms for Voronoi noise in existence. I chose Steven Worley’s algorithm. I had the special case of wanting infinite Voronoi Noise, and it did not look like Fortune’s algorithm could support that. The added bonus is that the algorithm is simple.</p>
+
+<p>I won’t go into too much depth about how the algorithm works. There are many articles on this topic, such as <a href="http://aftbit.com/cell-noise-2/">here</a>. The basic idea is that the noise is generated in chunks. Each chunk randomly generates a number of points based on a poisson distribution. You also need to know the points for all neighboring chunks. Then at each pixel value, you calculate the distance to the closest point.</p>
+
+<h2 id="erlang-implementation">Erlang Implementation</h2>
+
+<p>For the Erlang implementation I first used arrays. Arrays in Erlang are supposed to have much more efficient random access than lists. It wasn’t until after I implemented the algorithm that I realized I could get away with sequential access. In which case, lists would have been much better. Good news, I implemented both. We can compare.</p>
+
+<p>In addition to the main algorithm, I also implemented Knuth’s hashing function, a linear congruential random generator, and a way to calculate the probability of X in a poisson distribution given an average. The poission results are cached in a lookup table based on an average of 3 points per cube.</p>
+
+<p>Here is the list version.</p>
+
+<div class="highlight"><pre><code class="erlang"><span class="c">%% @doc generate the voronoi noise at chunk CX, CY</span>
+<span class="p">-</span><span class="ni">spec</span> <span class="n">voronoi_chunk</span><span class="p">(</span><span class="nv">CX</span><span class="p">,</span> <span class="nv">CY</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nv">Distances</span> <span class="k">when</span>
+      <span class="nv">CX</span>        <span class="p">::</span> <span class="n">integer</span><span class="p">(),</span>
+      <span class="nv">CY</span>        <span class="p">::</span> <span class="n">integer</span><span class="p">(),</span>
+      <span class="nv">Distances</span> <span class="p">::</span> <span class="p">[[</span><span class="n">any</span><span class="p">()]].</span>
+<span class="nf">voronoi_chunk</span><span class="p">(</span><span class="nv">CX</span><span class="p">,</span> <span class="nv">CY</span><span class="p">)</span> <span class="o">-&gt;</span>
+    <span class="nv">Data</span> <span class="o">=</span> <span class="nn">lists</span><span class="p">:</span><span class="nf">duplicate</span><span class="p">(</span><span class="o">?</span><span class="nv">CHUNK_SIZE</span><span class="p">,</span> <span class="nn">lists</span><span class="p">:</span><span class="nf">duplicate</span><span class="p">(</span><span class="o">?</span><span class="nv">CHUNK_SIZE</span><span class="p">,</span> <span class="mi">7777</span><span class="p">)),</span>
+    <span class="nv">Coors</span> <span class="o">=</span> <span class="n">voronoi_neighbor_points</span><span class="p">(</span><span class="nv">CX</span><span class="p">,</span> <span class="nv">CY</span><span class="p">),</span>
+    <span class="n">map_voronoi_distances</span><span class="p">(</span><span class="nv">Coors</span><span class="p">,</span> <span class="nv">Data</span><span class="p">).</span>
+
+<span class="c">%% @doc generate voronoi coordinates for all neighbors and self chunk</span>
+<span class="p">-</span><span class="ni">spec</span> <span class="n">voronoi_neighbor_points</span><span class="p">(</span><span class="nv">CX</span><span class="p">,</span> <span class="nv">CY</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nv">Coordinates</span> <span class="k">when</span>
+      <span class="nv">CX</span>                <span class="p">::</span> <span class="n">integer</span><span class="p">(),</span>
+      <span class="nv">CY</span>                <span class="p">::</span> <span class="n">integer</span><span class="p">(),</span>
+      <span class="nv">Coordinates</span>       <span class="p">::</span> <span class="p">[{</span><span class="n">integer</span><span class="p">(),</span> <span class="n">integer</span><span class="p">()}].</span>
+<span class="nf">voronoi_neighbor_points</span><span class="p">(</span><span class="nv">CX</span><span class="p">,</span> <span class="nv">CY</span><span class="p">)</span> <span class="o">-&gt;</span>
+    <span class="c">%% for is a utility fn that performs an action over multiple lists.</span>
+    <span class="c">%% it gives you nested looping functionality.</span>
+    <span class="nv">CoorLists</span> <span class="o">=</span> <span class="nn">catchvar_util</span><span class="p">:</span><span class="nf">for</span><span class="p">(</span><span class="k">fun</span><span class="p">(</span><span class="nv">I</span><span class="p">,</span> <span class="nv">J</span><span class="p">)</span> <span class="o">-&gt;</span>
+                                   <span class="nn">lists</span><span class="p">:</span><span class="nf">map</span><span class="p">(</span><span class="k">fun</span><span class="p">({</span><span class="nv">X</span><span class="p">,</span> <span class="nv">Y</span><span class="p">})</span> <span class="o">-&gt;</span> 
+                                                 <span class="p">{</span><span class="nv">X</span> <span class="o">+</span> <span class="p">(</span><span class="nv">I</span> <span class="o">*</span> <span class="o">?</span><span class="nv">CHUNK_SIZE</span><span class="p">),</span>
+                                                  <span class="nv">Y</span> <span class="o">+</span> <span class="p">(</span><span class="nv">J</span> <span class="o">*</span> <span class="o">?</span><span class="nv">CHUNK_SIZE</span><span class="p">)}</span>
+                                             <span class="k">end</span><span class="p">,</span>
+                                             <span class="n">voronoi_points</span><span class="p">(</span><span class="nv">CX</span> <span class="o">+</span> <span class="nv">I</span><span class="p">,</span> <span class="nv">CY</span> <span class="o">+</span> <span class="nv">J</span><span class="p">))</span>
+                               <span class="k">end</span><span class="p">,</span>
+                               <span class="p">[</span><span class="nn">lists</span><span class="p">:</span><span class="nf">seq</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
+                                <span class="nn">lists</span><span class="p">:</span><span class="nf">seq</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)]),</span>
+    <span class="nn">lists</span><span class="p">:</span><span class="nf">flatten</span><span class="p">(</span><span class="nv">CoorLists</span><span class="p">).</span>
+
+<span class="c">%% @doc generate voronoi coordinates for a single chunk</span>
+<span class="p">-</span><span class="ni">spec</span> <span class="n">voronoi_points</span><span class="p">(</span><span class="nv">CX</span><span class="p">,</span> <span class="nv">CY</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nv">Coordinates</span> <span class="k">when</span>
+      <span class="nv">CX</span>                <span class="p">::</span> <span class="n">integer</span><span class="p">(),</span>
+      <span class="nv">CY</span>                <span class="p">::</span> <span class="n">integer</span><span class="p">(),</span>
+      <span class="nv">Coordinates</span>       <span class="p">::</span> <span class="p">[{</span><span class="n">integer</span><span class="p">(),</span> <span class="n">integer</span><span class="p">()}].</span>
+<span class="nf">voronoi_points</span><span class="p">(</span><span class="nv">CX</span><span class="p">,</span> <span class="nv">CY</span><span class="p">)</span> <span class="o">-&gt;</span>
+    <span class="nv">Hash</span> <span class="o">=</span> <span class="n">knuth_hash</span><span class="p">(</span><span class="nv">CX</span> <span class="o">*</span> <span class="mi">7</span> <span class="o">+</span> <span class="nv">CY</span> <span class="o">*</span> <span class="mi">13</span><span class="p">),</span>
+    <span class="nv">NumPoints</span> <span class="o">=</span> <span class="n">poisson_table</span><span class="p">(</span><span class="n">lcg_rand</span><span class="p">(</span><span class="nv">Hash</span><span class="p">)),</span>
+    <span class="nv">Coors</span> <span class="o">=</span> <span class="nn">lists</span><span class="p">:</span><span class="nf">map</span><span class="p">(</span><span class="k">fun</span><span class="p">(</span><span class="nv">X</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nv">X</span> <span class="o">/</span> <span class="o">?</span><span class="nv">LCG_M</span> <span class="o">*</span> <span class="o">?</span><span class="nv">CHUNK_SIZE</span> <span class="k">end</span><span class="p">,</span> 
+                      <span class="nn">catchvar_util</span><span class="p">:</span><span class="nf">iterate</span><span class="p">(</span><span class="k">fun</span> <span class="nn">catchvar_noise</span><span class="p">:</span><span class="n">lcg_rand</span><span class="o">/</span><span class="mi">1</span><span class="p">,</span> 
+                                         <span class="nv">Hash</span><span class="p">,</span> 
+                                         <span class="nv">NumPoints</span> <span class="o">*</span> <span class="mi">2</span><span class="p">)),</span>
+    <span class="n">list_to_coors</span><span class="p">(</span><span class="nv">Coors</span><span class="p">).</span>
+
+<span class="c">%% @doc convert flat list into coordinate tuples</span>
+<span class="p">-</span><span class="ni">spec</span> <span class="n">list_to_coors</span><span class="p">(</span><span class="nv">List</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nv">Coordinates</span> <span class="k">when</span>
+      <span class="nv">List</span>              <span class="p">::</span> <span class="p">[</span><span class="n">integer</span><span class="p">()],</span>
+      <span class="nv">Coordinates</span>       <span class="p">::</span> <span class="p">[{</span><span class="n">integer</span><span class="p">(),</span> <span class="n">integer</span><span class="p">()}].</span>
+<span class="nf">list_to_coors</span><span class="p">([])</span> <span class="o">-&gt;</span> <span class="p">[];</span>
+<span class="nf">list_to_coors</span><span class="p">([</span><span class="nv">X</span><span class="p">,</span> <span class="nv">Y</span> <span class="p">|</span> <span class="nv">Tail</span><span class="p">])</span> <span class="o">-&gt;</span>
+    <span class="p">[{</span><span class="nv">X</span><span class="p">,</span> <span class="nv">Y</span><span class="p">}</span> <span class="p">|</span> <span class="n">list_to_coors</span><span class="p">(</span><span class="nv">Tail</span><span class="p">)].</span>
+
+<span class="c">%% @doc calculates closest distance against coordinates</span>
+<span class="p">-</span><span class="ni">spec</span> <span class="n">map_voronoi_distances</span><span class="p">(</span><span class="nv">Coordinates</span><span class="p">,</span> <span class="nv">Data</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nv">UpdatedData</span> <span class="k">when</span>
+      <span class="nv">Coordinates</span>       <span class="p">::</span> <span class="p">[{</span><span class="n">integer</span><span class="p">(),</span> <span class="n">integer</span><span class="p">()}],</span>
+      <span class="nv">Data</span>              <span class="p">::</span> <span class="p">[[</span><span class="n">integer</span><span class="p">()]],</span>
+      <span class="nv">UpdatedData</span>       <span class="p">::</span> <span class="p">[[</span><span class="n">integer</span><span class="p">()]].</span>
+<span class="nf">map_voronoi_distances</span><span class="p">([],</span> <span class="nv">Data</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nv">Data</span><span class="p">;</span>
+<span class="nf">map_voronoi_distances</span><span class="p">([{</span><span class="nv">X</span><span class="p">,</span> <span class="nv">Y</span><span class="p">}</span> <span class="p">|</span> <span class="nv">Tail</span><span class="p">],</span> <span class="nv">Data</span><span class="p">)</span> <span class="o">-&gt;</span>
+    <span class="nv">Data2</span> <span class="o">=</span> <span class="n">vd</span><span class="p">({</span><span class="nv">X</span><span class="p">,</span> <span class="nv">Y</span><span class="p">},</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="nv">Data</span><span class="p">),</span>
+    <span class="n">map_voronoi_distances</span><span class="p">(</span><span class="nv">Tail</span><span class="p">,</span> <span class="nv">Data2</span><span class="p">).</span>
+
+<span class="nf">vd</span><span class="p">(_,</span> <span class="p">_,</span> <span class="p">_,</span> <span class="p">[])</span> <span class="o">-&gt;</span> <span class="p">[];</span>
+<span class="nf">vd</span><span class="p">(</span><span class="nv">P</span><span class="p">,</span> <span class="nv">I</span><span class="p">,</span> <span class="nv">J</span><span class="p">,</span> <span class="p">[</span><span class="nv">Head</span> <span class="p">|</span> <span class="nv">Tail</span><span class="p">])</span> <span class="o">-&gt;</span>
+    <span class="p">[</span><span class="n">sd</span><span class="p">(</span><span class="nv">P</span><span class="p">,</span> <span class="nv">I</span><span class="p">,</span> <span class="nv">J</span><span class="p">,</span> <span class="nv">Head</span><span class="p">)</span> <span class="p">|</span> <span class="n">vd</span><span class="p">(</span><span class="nv">P</span><span class="p">,</span> <span class="nv">I</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="nv">Tail</span><span class="p">)].</span>
+
+<span class="nf">sd</span><span class="p">(_,</span> <span class="p">_,</span> <span class="p">_,</span> <span class="p">[])</span> <span class="o">-&gt;</span> <span class="p">[];</span>
+<span class="nf">sd</span><span class="p">({</span><span class="nv">X</span><span class="p">,</span> <span class="nv">Y</span><span class="p">}</span> <span class="o">=</span> <span class="nv">P</span><span class="p">,</span> <span class="nv">I</span><span class="p">,</span> <span class="nv">J</span><span class="p">,</span> <span class="p">[</span><span class="nv">Head</span> <span class="p">|</span> <span class="nv">Tail</span><span class="p">])</span> <span class="o">-&gt;</span>
+    <span class="nv">Dist</span> <span class="o">=</span> <span class="nn">catchvar_util</span><span class="p">:</span><span class="nf">dist</span><span class="p">(</span><span class="nv">X</span><span class="p">,</span> <span class="nv">Y</span><span class="p">,</span> <span class="nv">I</span><span class="p">,</span> <span class="nv">J</span><span class="p">),</span>
+    <span class="k">if</span> <span class="nv">Dist</span> <span class="o">&lt;</span> <span class="nv">Head</span> <span class="o">-&gt;</span>
+           <span class="p">[</span><span class="nv">Dist</span> <span class="p">|</span> <span class="n">sd</span><span class="p">(</span><span class="nv">P</span><span class="p">,</span> <span class="nv">I</span><span class="p">,</span> <span class="nv">J</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="nv">Tail</span><span class="p">)];</span>
+       <span class="n">true</span> <span class="o">-&gt;</span>
+           <span class="p">[</span><span class="nv">Head</span> <span class="p">|</span> <span class="n">sd</span><span class="p">(</span><span class="nv">P</span><span class="p">,</span> <span class="nv">I</span><span class="p">,</span> <span class="nv">J</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="nv">Tail</span><span class="p">)]</span>
+    <span class="k">end</span><span class="p">.</span>
+</code></pre></div>
+
+<p>Calling <code>voronoi_chunk</code> with chunk coordinates creates a single chunk. The following image was created by generating 36 individual chunks (Larger in real life).</p>
+
+<p class="p_img"><img src="/images/noise.png" alt="Voronoi Noise" width="400" height="400" /></p>
+
+<p>Looks pretty good to me. I was satisfied. The only problem is that it was taking a long time. I thought that it might be the image library. A 600x600 image is a fair amount of pixels to generate. So I used <code>tc:timer</code> to measure the amount of time it took to generate the data, and then calculated min, max, mean, and average of 36 chunks being generated.  Here are the results.</p>
+
+<ul>
+  <li>Erlang Array Performance
+<code>
+Range:   161428 - 354945 mics
+Median:  226675 mics
+Average: 233696 mics
+</code></li>
+  <li>Erlang List Performance
+<code>
+Range:   83625 - 200815 mics
+Median:  125300 mics
+Average: 129581 mics
+</code></li>
+</ul>
+
+<p>It <em>is</em> true, that I am iterating over 360,000 elements. There are also inefficiencies in my algorithm, such as repeatedly generating neighboring points. But, ouch. Note that these measurements are in microseconds. On average it was taking 234ms per chunk with my Erlang array version. Luckily, it was much better with the list version. It only took 130ms on average. However, I wanted to do better. On to NIFs.</p>
+
+<h2 id="nif-implementation">NIF implementation</h2>
+
+<p>I would prefer to avoid using C if the situation suits it. But this seemed like a good opportunity to give NIFs a test drive. NIFs are the fastest way to interop with C through Erlang. They come with one big downside. A crash in a NIF means the Erlang emulator crashes. Lets see if they are worth it.</p>
+
+<p>First let’s look at the C code.</p>
+
+<div class="highlight"><pre><code class="c"><span class="cp">#include &quot;erl_nif.h&quot; </span><span class="c1">// need to include</span>
+
+<span class="k">static</span> <span class="kt">int</span> <span class="nf">load</span><span class="p">(</span><span class="n">ErlNifEnv</span><span class="o">*</span> <span class="n">env</span><span class="p">,</span> <span class="kt">void</span><span class="o">**</span> <span class="n">priv</span><span class="p">,</span> <span class="n">ERL_NIF_TERM</span> <span class="n">load_info</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="k">static</span> <span class="kt">int</span> <span class="nf">reload</span><span class="p">(</span><span class="n">ErlNifEnv</span><span class="o">*</span> <span class="n">env</span><span class="p">,</span> <span class="kt">void</span><span class="o">**</span> <span class="n">priv</span><span class="p">,</span> <span class="n">ERL_NIF_TERM</span> <span class="n">load_info</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="k">static</span> <span class="kt">int</span> <span class="nf">upgrade</span><span class="p">(</span><span class="n">ErlNifEnv</span><span class="o">*</span> <span class="n">env</span><span class="p">,</span> <span class="kt">void</span><span class="o">**</span> <span class="n">priv</span><span class="p">,</span> <span class="kt">void</span><span class="o">**</span> <span class="n">old_priv</span><span class="p">,</span> <span class="n">ERL_NIF_TERM</span> <span class="n">load_info</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="k">static</span> <span class="kt">void</span> <span class="nf">unload</span><span class="p">(</span><span class="n">ErlNifEnv</span><span class="o">*</span> <span class="n">env</span><span class="p">,</span> <span class="kt">void</span><span class="o">*</span> <span class="n">priv</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">return</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div>
+
+<p>This is a little bit of boiler plate code. The include file has lots of things we need to interface with Erlang. All the rest of the functions are not strictly needed, but they are used for code upgrading, etc.</p>
+
+<div class="highlight"><pre><code class="c"><span class="k">static</span> <span class="n">ErlNifFunc</span> <span class="n">nif_funcs</span><span class="p">[]</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="p">{</span><span class="s">&quot;voronoi_chunk&quot;</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">voronoi_nif</span><span class="p">}</span>
+<span class="p">};</span>
+</code></pre></div>
+
+<p>This specifies what functions are being exported to Erlang. Here I’m saying I want to access a function named <code>voronoi_chunk</code> with an arity of 2, and the C function is named <code>voronoi_nif</code>.</p>
+
+<div class="highlight"><pre><code class="c"><span class="k">static</span> <span class="n">ERL_NIF_TERM</span> <span class="nf">voronoi_nif</span><span class="p">(</span><span class="n">ErlNifEnv</span><span class="o">*</span> <span class="n">env</span><span class="p">,</span> <span class="kt">int</span> <span class="n">argc</span><span class="p">,</span> <span class="k">const</span> <span class="n">ERL_NIF_TERM</span> <span class="n">argv</span><span class="p">[])</span> <span class="p">{</span>
+    <span class="kt">int</span> <span class="n">cx</span><span class="p">,</span> <span class="n">cy</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">;</span>
+
+    <span class="c1">// read parameters</span>
+    <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">enif_get_int</span><span class="p">(</span><span class="n">env</span><span class="p">,</span> <span class="n">argv</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="o">&amp;</span><span class="n">cx</span><span class="p">))</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="n">enif_make_badarg</span><span class="p">(</span><span class="n">env</span><span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">enif_get_int</span><span class="p">(</span><span class="n">env</span><span class="p">,</span> <span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="o">&amp;</span><span class="n">cy</span><span class="p">))</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="n">enif_make_badarg</span><span class="p">(</span><span class="n">env</span><span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="c1">// voronoi chunk</span>
+    <span class="kt">unsigned</span> <span class="n">dists</span><span class="p">[</span><span class="mi">100</span><span class="p">][</span><span class="mi">100</span><span class="p">];</span>
+
+    <span class="k">for</span> <span class="p">(</span><span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="mi">100</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">for</span> <span class="p">(</span><span class="n">j</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">j</span> <span class="o">&lt;</span> <span class="mi">100</span><span class="p">;</span> <span class="n">j</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+            <span class="n">dists</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="mi">7777</span><span class="p">;</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="n">voronoi_chunk</span><span class="p">(</span><span class="n">dists</span><span class="p">,</span> <span class="n">cx</span><span class="p">,</span> <span class="n">cy</span><span class="p">);</span>
+
+    <span class="c1">// convert dists to erl term</span>
+    <span class="n">ERL_NIF_TERM</span> <span class="n">erl_dists</span><span class="p">[</span><span class="mi">100</span><span class="p">][</span><span class="mi">100</span><span class="p">];</span>
+    <span class="n">ERL_NIF_TERM</span> <span class="n">erl_dists_out</span><span class="p">[</span><span class="mi">100</span><span class="p">];</span>
+
+    <span class="k">for</span> <span class="p">(</span><span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="mi">100</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">for</span> <span class="p">(</span><span class="n">j</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">j</span> <span class="o">&lt;</span> <span class="mi">100</span><span class="p">;</span> <span class="n">j</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+            <span class="n">erl_dists</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">enif_make_uint</span><span class="p">(</span><span class="n">env</span><span class="p">,</span> <span class="n">dists</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]);</span>
+        <span class="p">}</span>
+
+        <span class="n">erl_dists_out</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">enif_make_list_from_array</span><span class="p">(</span><span class="n">env</span><span class="p">,</span> <span class="n">erl_dists</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="mi">100</span><span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="k">return</span> <span class="n">enif_make_list_from_array</span><span class="p">(</span><span class="n">env</span><span class="p">,</span> <span class="n">erl_dists_out</span><span class="p">,</span> <span class="mi">100</span><span class="p">);</span>
+<span class="p">}</span>
+
+
+<span class="n">ERL_NIF_INIT</span><span class="p">(</span><span class="n">catchvar_noise_nif</span><span class="p">,</span> <span class="n">nif_funcs</span><span class="p">,</span> <span class="n">load</span><span class="p">,</span> <span class="n">reload</span><span class="p">,</span> <span class="n">upgrade</span><span class="p">,</span> <span class="n">unload</span><span class="p">);</span>
+</code></pre></div>
+
+<p>This is the bulk of the erlang and C interfacing. First, I load two integer arguments into <code>cx</code>, and <code>cy</code>. Then, I execute my custom C voronoi noise. Next, I need to load the data into Erlang data structures. This is messy, but it was the only way I could get a multi-dimensional array to work. </p>
+
+<p>Next, I create two arrays of <code>ERL_NIF_TERM</code>. I load them with the data from the <code>dists</code> array, converting <code>unsigned ints</code> with <code>enif_make_unit</code>. The tricky part is that I have a separate single dimension array I use to represent the multi-dimensional array called <code>erl_dists_out</code>. Once I have <code>erl_dists_out</code> I can use <code>enif_make_list_from_array</code> as the return value. It’s not the most inviting interface, but you can figure it out through the <a href="http://www.erlang.org/doc/man/erl_nif.html#enif_make_list">documentation</a>.</p>
+
+<p>Next, you need to have an Erlang module that will load the C code as a <code>.so</code> file.</p>
+
+<div class="highlight"><pre><code class="erlang"><span class="p">-</span><span class="ni">module</span><span class="p">(</span><span class="n">catchvar_noise_nif</span><span class="p">).</span>
+<span class="p">-</span><span class="ni">export</span><span class="p">([</span><span class="n">voronoi_chunk</span><span class="o">/</span><span class="mi">2</span><span class="p">]).</span>
+<span class="p">-</span><span class="ni">on_load</span><span class="p">(</span><span class="n">init</span><span class="o">/</span><span class="mi">0</span><span class="p">).</span>
+
+<span class="p">-</span><span class="ni">define</span><span class="p">(</span><span class="no">LIBNAME</span><span class="p">,</span> <span class="n">noise</span><span class="p">).</span>
+
+<span class="nf">voronoi_chunk</span><span class="p">(_,</span> <span class="p">_)</span> <span class="o">-&gt;</span>
+    <span class="n">not_loaded</span><span class="p">(</span><span class="o">?</span><span class="nv">LINE</span><span class="p">).</span>
+
+<span class="nf">init</span><span class="p">()</span> <span class="o">-&gt;</span>
+    <span class="nv">SoName</span> <span class="o">=</span> <span class="nn">catchvar_util</span><span class="p">:</span><span class="nf">get_c_path</span><span class="p">(</span><span class="o">?</span><span class="nv">LIBNAME</span><span class="p">),</span>
+    <span class="nn">erlang</span><span class="p">:</span><span class="nf">load_nif</span><span class="p">(</span><span class="nv">SoName</span><span class="p">,</span> <span class="mi">0</span><span class="p">).</span>
+
+<span class="nf">not_loaded</span><span class="p">(</span><span class="nv">Line</span><span class="p">)</span> <span class="o">-&gt;</span>
+    <span class="nb">exit</span><span class="p">({</span><span class="n">not_loaded</span><span class="p">,</span> <span class="p">[{</span><span class="n">module</span><span class="p">,</span> <span class="o">?</span><span class="nv">MODULE</span><span class="p">},</span>
+                <span class="p">{</span><span class="n">line</span><span class="p">,</span> <span class="nv">Line</span><span class="p">}]}).</span>
+</code></pre></div>
+
+<p>Short, and sweet. I separated <code>get_c_path</code> out into a utility module. It looks like this.</p>
+
+<div class="highlight"><pre><code class="erlang"><span class="c">%% @doc get path to priv binaries</span>
+<span class="p">-</span><span class="ni">spec</span> <span class="n">get_c_path</span><span class="p">(</span><span class="nv">Name</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nv">Path</span> <span class="k">when</span>
+      <span class="nv">Name</span>      <span class="p">::</span> <span class="n">string</span><span class="p">()</span> <span class="p">|</span> <span class="n">atom</span><span class="p">,</span>
+      <span class="nv">Path</span>      <span class="p">::</span> <span class="n">string</span><span class="p">().</span>
+<span class="nf">get_c_path</span><span class="p">(</span><span class="nv">Name</span><span class="p">)</span> <span class="o">-&gt;</span>
+    <span class="k">case</span> <span class="nn">code</span><span class="p">:</span><span class="nf">priv_dir</span><span class="p">(</span><span class="n">catchvar</span><span class="p">)</span> <span class="k">of</span>
+        <span class="p">{</span><span class="n">error</span><span class="p">,</span> <span class="n">bad_name</span><span class="p">}</span> <span class="o">-&gt;</span>
+            <span class="k">case</span> <span class="nn">filelib</span><span class="p">:</span><span class="nf">is_dir</span><span class="p">(</span><span class="nn">filename</span><span class="p">:</span><span class="nf">join</span><span class="p">([</span><span class="s">&quot;..&quot;</span><span class="p">,</span> <span class="n">priv</span><span class="p">]))</span> <span class="k">of</span>
+                <span class="n">true</span> <span class="o">-&gt;</span>
+                    <span class="nn">filename</span><span class="p">:</span><span class="nf">join</span><span class="p">([</span><span class="s">&quot;..&quot;</span><span class="p">,</span> <span class="n">priv</span><span class="p">,</span> <span class="nv">Name</span><span class="p">]);</span>
+                <span class="p">_</span> <span class="o">-&gt;</span>
+                    <span class="nn">filename</span><span class="p">:</span><span class="nf">join</span><span class="p">([</span><span class="n">priv</span><span class="p">,</span> <span class="nv">Name</span><span class="p">])</span>
+            <span class="k">end</span><span class="p">;</span>
+        <span class="nv">Dir</span> <span class="o">-&gt;</span>
+            <span class="nn">filename</span><span class="p">:</span><span class="nf">join</span><span class="p">([</span><span class="nv">Dir</span><span class="p">,</span> <span class="nv">Name</span><span class="p">])</span>
+    <span class="k">end</span><span class="p">.</span>
+</code></pre></div>
+
+<p>Credit for this snippet goes to <a href="https://github.com/davisp/nif-examples">here</a>.</p>
+
+<p>If you are using rebar, add this to <code>rebar.config</code> in order to compile your c program with <code>rebar compile</code>.</p>
+
+<div class="highlight"><pre><code class="erlang"><span class="p">{</span><span class="n">port_specs</span><span class="p">,</span> <span class="p">[</span>
+    <span class="p">{</span><span class="s">&quot;priv/noise.so&quot;</span><span class="p">,</span> <span class="p">[</span><span class="s">&quot;c_src/noise.c&quot;</span><span class="p">]}</span>
+<span class="p">]}.</span>
+</code></pre></div>
+
+<p>Now to run it using the same test case, and see our results.</p>
+
+<ul>
+  <li>Erlang NIF
+<code>
+Range:   2053 - 14494 mics
+Median:  2740 mics
+Average: 3599 mics
+</code></li>
+</ul>
+
+<p>Hurray! The average time spent per chunk went down from 130ms to 4ms. We had one outlier that reached 14ms, but our median is less than 3ms. This is something I can work with. The only scary thing is that a crash will crash Erlang. I wanted to know what the performance would be like if I programmed in C, but in a safer manner. On to C ports.</p>
+
+<h2 id="c-port-implementation">C Port Implementation</h2>
+
+<p>With NIFs a crash will bring everything down. This is not the case with a C port. Erlang ports are not specific to C. They can interop with any language you want. The way it works is that you have an Erlang process that communicates to a separate process running your program in another language. The other process is not an Erlang process, but an OS process. Communication is done on the byte level. Erlang only provides facilities to help with the various protocols.</p>
+
+<p>First, the C code. Much of this comes from the Erlang <a href="http://www.erlang.org/doc/tutorial/c_port.html">tutorial</a>.</p>
+
+<div class="highlight"><pre><code class="c"><span class="k">typedef</span> <span class="kt">unsigned</span> <span class="kt">char</span> <span class="n">byte</span><span class="p">;</span>
+
+<span class="kt">int</span> <span class="nf">read_cmd</span><span class="p">(</span><span class="n">byte</span> <span class="o">*</span><span class="n">buf</span><span class="p">)</span> <span class="p">{</span>
+  <span class="kt">int</span> <span class="n">len</span><span class="p">;</span>
+
+  <span class="k">if</span> <span class="p">(</span><span class="n">read_exact</span><span class="p">(</span><span class="n">buf</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">2</span><span class="p">)</span>
+    <span class="k">return</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">);</span>
+  <span class="n">len</span> <span class="o">=</span> <span class="p">(</span><span class="n">buf</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&lt;&lt;</span> <span class="mi">8</span><span class="p">)</span> <span class="o">|</span> <span class="n">buf</span><span class="p">[</span><span class="mi">1</span><span class="p">];</span>
+  <span class="k">return</span> <span class="n">read_exact</span><span class="p">(</span><span class="n">buf</span><span class="p">,</span> <span class="n">len</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">int</span> <span class="nf">write_cmd</span><span class="p">(</span><span class="n">byte</span> <span class="o">*</span><span class="n">buf</span><span class="p">,</span> <span class="kt">int</span> <span class="n">len</span><span class="p">)</span> <span class="p">{</span>
+  <span class="n">byte</span> <span class="n">li</span><span class="p">;</span>
+
+  <span class="n">li</span> <span class="o">=</span> <span class="p">(</span><span class="n">len</span> <span class="o">&gt;&gt;</span> <span class="mi">8</span><span class="p">)</span> <span class="o">&amp;</span> <span class="mh">0xff</span><span class="p">;</span>
+  <span class="n">write_exact</span><span class="p">(</span><span class="o">&amp;</span><span class="n">li</span><span class="p">,</span> <span class="mi">1</span><span class="p">);</span>
+  
+  <span class="n">li</span> <span class="o">=</span> <span class="n">len</span> <span class="o">&amp;</span> <span class="mh">0xff</span><span class="p">;</span>
+  <span class="n">write_exact</span><span class="p">(</span><span class="o">&amp;</span><span class="n">li</span><span class="p">,</span> <span class="mi">1</span><span class="p">);</span>
+
+  <span class="k">return</span> <span class="n">write_exact</span><span class="p">(</span><span class="n">buf</span><span class="p">,</span> <span class="n">len</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">int</span> <span class="nf">read_exact</span><span class="p">(</span><span class="n">byte</span> <span class="o">*</span><span class="n">buf</span><span class="p">,</span> <span class="kt">int</span> <span class="n">len</span><span class="p">)</span> <span class="p">{</span>
+  <span class="kt">int</span> <span class="n">i</span><span class="p">,</span> <span class="n">got</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span>
+
+  <span class="k">do</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">((</span><span class="n">i</span> <span class="o">=</span> <span class="n">read</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">buf</span><span class="o">+</span><span class="n">got</span><span class="p">,</span> <span class="n">len</span><span class="o">-</span><span class="n">got</span><span class="p">))</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">)</span>
+      <span class="k">return</span><span class="p">(</span><span class="n">i</span><span class="p">);</span>
+    <span class="n">got</span> <span class="o">+=</span> <span class="n">i</span><span class="p">;</span>
+  <span class="p">}</span> <span class="k">while</span> <span class="p">(</span><span class="n">got</span><span class="o">&lt;</span><span class="n">len</span><span class="p">);</span>
+
+  <span class="k">return</span><span class="p">(</span><span class="n">len</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">int</span> <span class="nf">write_exact</span><span class="p">(</span><span class="n">byte</span> <span class="o">*</span><span class="n">buf</span><span class="p">,</span> <span class="kt">int</span> <span class="n">len</span><span class="p">)</span> <span class="p">{</span>
+  <span class="kt">int</span> <span class="n">i</span><span class="p">,</span> <span class="n">wrote</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+
+  <span class="k">do</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">((</span><span class="n">i</span> <span class="o">=</span> <span class="n">write</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">buf</span><span class="o">+</span><span class="n">wrote</span><span class="p">,</span> <span class="n">len</span><span class="o">-</span><span class="n">wrote</span><span class="p">))</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">)</span>
+      <span class="k">return</span> <span class="p">(</span><span class="n">i</span><span class="p">);</span>
+    <span class="n">wrote</span> <span class="o">+=</span> <span class="n">i</span><span class="p">;</span>
+  <span class="p">}</span> <span class="k">while</span> <span class="p">(</span><span class="n">wrote</span><span class="o">&lt;</span><span class="n">len</span><span class="p">);</span>
+
+  <span class="k">return</span> <span class="p">(</span><span class="n">len</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div>
+
+<p>This is boiler plate code. It provides methods for reading and writing bytes.</p>
+
+<div class="highlight"><pre><code class="c"><span class="kt">int</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+    <span class="kt">int</span> <span class="n">fn</span><span class="p">;</span>
+    <span class="kt">int</span> <span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">;</span>
+    <span class="n">byte</span> <span class="n">buf</span><span class="p">[</span><span class="mi">10000</span><span class="p">];</span>
+
+    <span class="k">while</span> <span class="p">(</span><span class="n">read_cmd</span><span class="p">(</span><span class="n">buf</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">fn</span> <span class="o">=</span> <span class="n">buf</span><span class="p">[</span><span class="mi">0</span><span class="p">];</span>
+
+        <span class="k">if</span> <span class="p">(</span><span class="n">fn</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
+            <span class="kt">unsigned</span> <span class="n">dists</span><span class="p">[</span><span class="mi">100</span><span class="p">][</span><span class="mi">100</span><span class="p">];</span>
+            <span class="kt">int</span> <span class="n">cx</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+            <span class="kt">int</span> <span class="n">cy</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+
+            <span class="n">cx</span> <span class="o">+=</span> <span class="n">buf</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">&lt;&lt;</span> <span class="mi">24</span><span class="p">;</span>
+            <span class="n">cx</span> <span class="o">+=</span> <span class="n">buf</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">&lt;&lt;</span> <span class="mi">16</span><span class="p">;</span>
+            <span class="n">cx</span> <span class="o">+=</span> <span class="n">buf</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="o">&lt;&lt;</span> <span class="mi">8</span><span class="p">;</span>
+            <span class="n">cx</span> <span class="o">+=</span> <span class="n">buf</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span> <span class="o">&lt;&lt;</span> <span class="mi">0</span><span class="p">;</span>
+
+            <span class="n">cy</span> <span class="o">+=</span> <span class="n">buf</span><span class="p">[</span><span class="mi">5</span><span class="p">]</span> <span class="o">&lt;&lt;</span> <span class="mi">24</span><span class="p">;</span>
+            <span class="n">cy</span> <span class="o">+=</span> <span class="n">buf</span><span class="p">[</span><span class="mi">6</span><span class="p">]</span> <span class="o">&lt;&lt;</span> <span class="mi">16</span><span class="p">;</span>
+            <span class="n">cy</span> <span class="o">+=</span> <span class="n">buf</span><span class="p">[</span><span class="mi">7</span><span class="p">]</span> <span class="o">&lt;&lt;</span> <span class="mi">8</span><span class="p">;</span>
+            <span class="n">cy</span> <span class="o">+=</span> <span class="n">buf</span><span class="p">[</span><span class="mi">8</span><span class="p">]</span> <span class="o">&lt;&lt;</span> <span class="mi">0</span><span class="p">;</span>
+
+            <span class="k">for</span> <span class="p">(</span><span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="mi">100</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+                <span class="k">for</span> <span class="p">(</span><span class="n">j</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">j</span> <span class="o">&lt;</span> <span class="mi">100</span><span class="p">;</span> <span class="n">j</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+                    <span class="n">dists</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="mi">7777</span><span class="p">;</span>
+                <span class="p">}</span> 
+            <span class="p">}</span>
+
+            <span class="n">voronoi_chunk</span><span class="p">(</span><span class="n">dists</span><span class="p">,</span> <span class="n">cx</span><span class="p">,</span> <span class="n">cy</span><span class="p">);</span>
+            <span class="k">for</span> <span class="p">(</span><span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="mi">100</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+                <span class="k">for</span> <span class="p">(</span><span class="n">j</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">j</span> <span class="o">&lt;</span> <span class="mi">100</span><span class="p">;</span> <span class="n">j</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+                    <span class="n">buf</span><span class="p">[</span><span class="n">i</span> <span class="o">*</span> <span class="mi">100</span> <span class="o">+</span> <span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">dists</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">];</span> 
+                <span class="p">}</span> 
+            <span class="p">}</span>
+        <span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="n">fn</span> <span class="o">==</span> <span class="mi">2</span><span class="p">)</span> <span class="p">{</span>
+            <span class="kt">unsigned</span> <span class="kt">int</span> <span class="n">hash</span> <span class="o">=</span> <span class="n">knuth_hash</span><span class="p">(</span><span class="mi">1</span> <span class="o">*</span> <span class="mi">7</span> <span class="o">+</span> <span class="mi">66</span> <span class="o">*</span> <span class="mi">13</span><span class="p">);</span>
+
+            <span class="c1">// big-endian</span>
+            <span class="n">buf</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">hash</span> <span class="o">&gt;&gt;</span> <span class="mi">24</span><span class="p">)</span> <span class="o">&amp;</span> <span class="mh">0xff</span><span class="p">;</span>
+            <span class="n">buf</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">hash</span> <span class="o">&gt;&gt;</span> <span class="mi">16</span><span class="p">)</span> <span class="o">&amp;</span> <span class="mh">0xff</span><span class="p">;</span>
+            <span class="n">buf</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">hash</span> <span class="o">&gt;&gt;</span> <span class="mi">8</span><span class="p">)</span>  <span class="o">&amp;</span> <span class="mh">0xff</span><span class="p">;</span>
+            <span class="n">buf</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">hash</span> <span class="o">&gt;&gt;</span> <span class="mi">0</span><span class="p">)</span>  <span class="o">&amp;</span> <span class="mh">0xff</span><span class="p">;</span>
+        <span class="p">}</span>
+
+        <span class="n">write_cmd</span><span class="p">(</span><span class="n">buf</span><span class="p">,</span> <span class="mi">10000</span><span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div>
+
+<p>This is the bulk of communication. If you cringed at the thought of converting types between Erlang and C in NIFs, then you’re probably not doing too well now. A single byte is read to indicate what function should be called. Next, you can read any arguments you passed along. In this case I am reading two 4 byte integers. Next I call <code>voronoi_chunk</code>, and store the data as a flattened multi-dimensional array in buffer. Then I use <code>write_cmd</code> to send it back to Erlang.</p>
+
+<div class="highlight"><pre><code class="erlang"><span class="p">-</span><span class="ni">module</span><span class="p">(</span><span class="n">catchvar_noise_port</span><span class="p">).</span>
+<span class="p">-</span><span class="ni">export</span><span class="p">([</span><span class="n">start</span><span class="o">/</span><span class="mi">1</span><span class="p">,</span> 
+         <span class="n">init</span><span class="o">/</span><span class="mi">1</span><span class="p">,</span> 
+         <span class="n">voronoi_chunk</span><span class="o">/</span><span class="mi">2</span><span class="p">]).</span>
+
+<span class="nf">start</span><span class="p">(</span><span class="nv">ExtPrg</span><span class="p">)</span> <span class="o">-&gt;</span>
+    <span class="nb">spawn</span><span class="p">(</span><span class="o">?</span><span class="nv">MODULE</span><span class="p">,</span> <span class="n">init</span><span class="p">,</span> <span class="p">[</span><span class="nv">ExtPrg</span><span class="p">]).</span>
+
+<span class="nf">init</span><span class="p">(</span><span class="nv">ExtPrg</span><span class="p">)</span> <span class="o">-&gt;</span>
+    <span class="nv">ExtPath</span> <span class="o">=</span> <span class="nn">catchvar_util</span><span class="p">:</span><span class="nf">get_c_path</span><span class="p">(</span><span class="nv">ExtPrg</span><span class="p">),</span>
+    <span class="nb">register</span><span class="p">(</span><span class="n">catchvar_noise_port_c</span><span class="p">,</span> <span class="n">self</span><span class="p">()),</span>
+    <span class="nb">process_flag</span><span class="p">(</span><span class="n">trap_exit</span><span class="p">,</span> <span class="n">true</span><span class="p">),</span>
+    <span class="nv">Port</span> <span class="o">=</span> <span class="nb">open_port</span><span class="p">({</span><span class="nb">spawn</span><span class="p">,</span> <span class="nv">ExtPath</span><span class="p">},</span>
+                     <span class="p">[{</span><span class="n">packet</span><span class="p">,</span> <span class="mi">2</span><span class="p">}]),</span>
+    <span class="n">loop</span><span class="p">(</span><span class="nv">Port</span><span class="p">).</span>
+
+<span class="nf">loop</span><span class="p">(</span><span class="nv">Port</span><span class="p">)</span> <span class="o">-&gt;</span>
+    <span class="k">receive</span>
+        <span class="p">{</span><span class="n">call</span><span class="p">,</span> <span class="nv">Caller</span><span class="p">,</span> <span class="nv">Msg</span><span class="p">}</span> <span class="o">-&gt;</span>
+            <span class="nv">Port</span> <span class="o">!</span> <span class="p">{</span><span class="n">self</span><span class="p">(),</span> <span class="p">{</span><span class="n">command</span><span class="p">,</span> <span class="n">encode</span><span class="p">(</span><span class="nv">Msg</span><span class="p">)}},</span>
+            <span class="k">receive</span>
+                <span class="p">{</span><span class="nv">Port</span><span class="p">,</span> <span class="p">{</span><span class="n">data</span><span class="p">,</span> <span class="nv">Data</span><span class="p">}}</span> <span class="o">-&gt;</span>
+                    <span class="nv">Caller</span> <span class="o">!</span> <span class="p">{</span><span class="n">catchvar_noise_port_c</span><span class="p">,</span> <span class="n">decode</span><span class="p">(</span><span class="nv">Data</span><span class="p">)}</span>
+            <span class="k">end</span><span class="p">,</span>
+            <span class="n">loop</span><span class="p">(</span><span class="nv">Port</span><span class="p">)</span>
+    <span class="k">end</span><span class="p">.</span>
+
+<span class="nf">call_port</span><span class="p">(</span><span class="nv">Msg</span><span class="p">)</span> <span class="o">-&gt;</span>
+    <span class="n">catchvar_noise_port_c</span> <span class="o">!</span> <span class="p">{</span><span class="n">call</span><span class="p">,</span> <span class="n">self</span><span class="p">(),</span> <span class="nv">Msg</span><span class="p">},</span>
+    <span class="k">receive</span>
+        <span class="p">{</span><span class="n">catchvar_noise_port_c</span><span class="p">,</span> <span class="nv">Result</span><span class="p">}</span> <span class="o">-&gt;</span>
+            <span class="nv">Result</span>
+    <span class="k">end</span><span class="p">.</span>
+
+<span class="nf">encode</span><span class="p">({</span><span class="n">voronoi_chunk</span><span class="p">,</span> <span class="nv">CX</span><span class="p">,</span> <span class="nv">CY</span><span class="p">})</span> <span class="o">-&gt;</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="o">&lt;&lt;</span><span class="nv">CX</span><span class="p">:</span><span class="mi">32</span><span class="o">/</span><span class="n">integer</span><span class="o">&gt;&gt;</span><span class="p">,</span> <span class="o">&lt;&lt;</span><span class="nv">CY</span><span class="p">:</span><span class="mi">32</span><span class="o">/</span><span class="n">integer</span><span class="o">&gt;&gt;</span><span class="p">];</span>
+
+<span class="nf">decode</span><span class="p">(</span><span class="nv">X</span><span class="p">)</span> <span class="k">when</span> <span class="nb">length</span><span class="p">(</span><span class="nv">X</span><span class="p">)</span> <span class="o">=:=</span> <span class="mi">10000</span> <span class="o">-&gt;</span>
+    <span class="nv">Result</span> <span class="o">=</span> <span class="nn">lists</span><span class="p">:</span><span class="nf">foldl</span><span class="p">(</span><span class="k">fun</span><span class="p">(</span><span class="nv">I</span><span class="p">,</span> <span class="nv">Acc</span><span class="p">)</span> <span class="o">-&gt;</span> 
+                    <span class="p">[</span><span class="nn">lists</span><span class="p">:</span><span class="nf">sublist</span><span class="p">(</span><span class="nv">X</span><span class="p">,</span> <span class="nv">I</span> <span class="o">*</span> <span class="mi">100</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span> <span class="p">|</span> <span class="nv">Acc</span><span class="p">]</span>
+                <span class="k">end</span><span class="p">,</span>
+                <span class="p">[],</span>
+                <span class="nn">lists</span><span class="p">:</span><span class="nf">seq</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">99</span><span class="p">)),</span>
+    <span class="nn">lists</span><span class="p">:</span><span class="nf">reverse</span><span class="p">(</span><span class="nv">Result</span><span class="p">);</span>
+<span class="nf">decode</span><span class="p">(</span><span class="nv">X</span><span class="p">)</span> <span class="k">when</span> <span class="nb">length</span><span class="p">(</span><span class="nv">X</span><span class="p">)</span> <span class="o">=:=</span> <span class="mi">4</span> <span class="o">-&gt;</span>
+    <span class="o">&lt;&lt;</span><span class="nv">Result</span><span class="p">:</span><span class="mi">32</span><span class="o">/</span><span class="n">integer</span><span class="o">&gt;&gt;</span> <span class="o">=</span> <span class="nb">list_to_binary</span><span class="p">(</span><span class="nv">X</span><span class="p">),</span>
+    <span class="nv">Result</span><span class="p">.</span>
+
+<span class="nf">voronoi_chunk</span><span class="p">(</span><span class="nv">CX</span><span class="p">,</span> <span class="nv">CY</span><span class="p">)</span> <span class="o">-&gt;</span>
+    <span class="n">call_port</span><span class="p">({</span><span class="n">voronoi_chunk</span><span class="p">,</span> <span class="nv">CX</span><span class="p">,</span> <span class="nv">CY</span><span class="p">}).</span>
+</code></pre></div>
+
+<p>This all starts off with a call like this. </p>
+
+<div class="highlight"><pre><code class="erlang"><span class="nn">catchvar_noise_port</span><span class="p">:</span><span class="nf">start</span><span class="p">(</span><span class="s">&quot;extprg&quot;</span><span class="p">).</span>
+</code></pre></div>
+
+<p>This spawns a process created from the <code>init</code> function. The new process sets itself as a system process, registers itself, and connects to the port at <code>ExtPath</code>. <code>{packet, 2}</code> specifies the protocol. In this case, it means the first 2 bytes will be the length of data. This is abstracted out in the above C code.</p>
+
+<p>After that we start listening for messages. When we call </p>
+
+<div class="highlight"><pre><code class="erlang"><span class="nn">catchvar_noise_port</span><span class="p">:</span><span class="nf">voronoi_chunk</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">65</span><span class="p">).</span>
+</code></pre></div>
+
+<p>from another process it sends a message to our newly create process. This process will in turn communicate with the C port. The <code>encode</code> and <code>decode</code> functions handle passing data. <code>encode</code> returns a list of integers. Each element is a single integer byte, but you can also pass in binaries. <code>decode</code> receives a normal list where each element is a byte.</p>
+
+<p>I did this quick and dirty. You could also use <code>gen_server</code> to clean this up. If you’re using rebar, add this to your <code>rebar.config</code> to build with <code>rebar compile</code>.</p>
+
+<div class="highlight"><pre><code class="erlang"><span class="p">{</span><span class="n">port_specs</span><span class="p">,</span> <span class="p">[</span>
+    <span class="p">{</span><span class="s">&quot;priv/extprg&quot;</span><span class="p">,</span> <span class="p">[</span><span class="s">&quot;c_src/foo.c&quot;</span><span class="p">]}</span>
+<span class="p">]}.</span>
+</code></pre></div>
+
+<p>Then we can run with the same test case, and see our results!</p>
+
+<ul>
+  <li>Erlang C Port
+<code>
+Range:   12392 - 86549 mics
+Median:  17515 mics
+Average: 20838 mics
+</code></li>
+</ul>
+
+<p>That’s not too shabby. We have protection since a C crash will only crash the linked process. Plus, we are still using C, so we get a speed up. 20ms vs 130ms. That is over a 6x speed up vs plain Erlang.</p>
+
+<h2 id="conclusion">Conclusion</h2>
+
+<p>All of these options have their trade-offs. By using Erlang you get to program in Erlang. This typically means much faster development times than when using C. The downside is speed. Most people are aware that Erlang is not the choice for number-crunching calculations.</p>
+
+<p>By using NIFs, you get speed. Really fast speed. The downside is a lack of fault-tolerance. We’re back to relying solely on defensive programming. Development time will also be slower, and we need to convert data between C and Erlang all the time. Also, word on the street is that NIFs can possibly be dangerous if execution is taking more a than a few milliseconds. It may be possible for the Erlang scheduler to start putting scheduled processes to sleep when they shouldn’t be. I’m unsure if these problems still persist in the latest Erlang version, but it’s something to be aware of.</p>
+
+<p>By using C Ports, you get an alternative somewhere in the middle. It’s pretty fast, but not blazing fast. Development time is still slow, but you get a little bit of fault-tolerance. Using this information should give you a better idea of which option is right for you.</p>
+
+<h3 id="additional-reading">Additional Reading</h3>
+<ul>
+  <li><a href="http://www-cs-students.stanford.edu/~amitp/game-programming/polygon-map-generation/#source">Polygon Map Generation</a></li>
+  <li><a href="http://www.gamasutra.com/blogs/MatthewKlingensmith/20130811/198049/How_we_Generate_Terrain_in_DwarfCorp.php">DwarfCore Terrain Generation</a></li>
+  <li><a href="http://aftbit.com/cell-noise-2/">Cell Noise</a></li>
+  <li><a href="https://erlangcentral.org/wiki/index.php/Measuring_Function_Execution_Time">Measuring Erlang Execution Time</a></li>
+  <li><a href="http://www.erlang.org/doc/tutorial/nif.html">Erlang NIFs</a></li>
+  <li><a href="http://www.gdmc.nl/ledoux/pdfs/_07isvd.pdf">Computing Voronoi Diagram Robustly</a></li>
+</ul>
+
+
+</div>
+
+<div id="share_buttons">
+    <div id="share_elements">
+    <div class="share_element">
+        <script type="IN/Share" data-url="http://catchvar.com/voronoi-noise-and-erlang-nif-port-comparison.html" data-counter="right"></script>
+    </div>
+    <div class="share_element">
+        <a href="https://twitter.com/share"
+            class="twitter-share-button"
+            data-url="http://catchvar.com/voronoi-noise-and-erlang-nif-port-comparison.html"
+            data-via="catchvar"
+            data-lang="en">
+        </a>
+    </div>
+    <div class="share_element">
+        <div class="google_plus">
+            <div class="g-plusone"
+            data-href="http://catchvar.com/voronoi-noise-and-erlang-nif-port-comparison.html"
+            data-size="medium"
+            data-annotation="bubble">
+            </div>
+        </div>
+    </div>
+    <div class="share_element">
+        <div class="fb-like" 
+            data-href="http://catchvar.com/voronoi-noise-and-erlang-nif-port-comparison.html" 
+            data-layout="button_count" 
+            data-action="like" 
+            data-show-faces="false" 
+            data-width="90"
+            data-share="false">
+        </div>
+    </div>
+    <div class="share_element">
+        <a href="http://bufferapp.com/add" class="buffer-add-button" data-count="horizontal" data-via="catchvar" >Buffer</a><script type="text/javascript" src="https://d389zggrogs7qo.cloudfront.net/js/button.js"></script>
+    </div>
+    </div>
+</div>
+
+
+<div id="email_subscriber">
+    <h2>Subscribe For Updates</h2>
+    <!-- Begin MailChimp Signup Form -->
+    <div id="mc_embed_signup">
+        <form action="http://catchvar.us8.list-manage1.com/subscribe/post?u=6bf07ccd5886d281ddf64cda3&amp;id=d90439d3b9" method="post" id="mc-embedded-subscribe-form" name="mc-embedded-subscribe-form" class="validate" target="_blank" novalidate>
+
+            <input type="email" value="" name="EMAIL" class="email" id="mce-EMAIL" placeholder="Your email address" required>
+
+            <!-- real people should not fill this in and expect good things - do not remove this or risk form bot signups-->
+            <div style="position: absolute; left: -5000px;">
+                <input type="text" name="b_6bf07ccd5886d281ddf64cda3_d90439d3b9" value="">
+            </div>
+
+            <input type="submit" value="Join the list" name="subscribe" id="mc-embedded-subscribe" class="button sans">
+        </form>
+    </div>
+    <!--End mc_embed_signup-->
+</div>
+
+
+
+
+<div id="disqus_thread"></div>
+<script type="text/javascript">
+    /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+    var disqus_shortname = 'catchvar'; // required: replace example with your forum shortname
+
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+
+
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) return;
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/en_US/all.js#xfbml=1&appId=604216856328704";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+<script type="text/javascript">
+(function(){
+    var twitterWidgets = document.createElement('script');
+    twitterWidgets.type = 'text/javascript';
+    twitterWidgets.async = true;
+    twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+    document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+</script>
+
+<script type="text/javascript">
+(function() {
+    var po = document.createElement('script');
+    po.type = 'text/javascript'; po.async = true;
+    po.src = 'https://apis.google.com/js/plusone.js';
+    var s = document.getElementsByTagName('script')[0];
+    s.parentNode.insertBefore(po, s);
+})();
+</script>
+
+<script src="//platform.linkedin.com/in.js" type="text/javascript">
+  lang: en_US
+</script>
+
+
+            </div>
+        </div>
+
+        <div id="footer">
+        </div>
+
+        <script>
+            (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+            m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+            })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+            ga('create', 'UA-48849049-1', 'catchvar.com');
+            ga('require', 'displayfeatures');
+            ga('send', 'pageview');
+
+        </script>
+
+        <link href="css/201404141825.min.css" rel="stylesheet" />
+        <link rel="shortcut icon" type="image/x-icon" href="/images/favicon.ico" />
+    </body>
+</html>

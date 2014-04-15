@@ -148,12 +148,11 @@ body {
 }
 
 a {
-    -webkit-transition: color 0.5s ease;
+    -webkit-transition: color 0.25s ease;
     color: #186887;
 }
 
-a:hover,
-.twitter_link:hover span {
+a:hover {
     color: #59B4DC;
 }
 
@@ -172,13 +171,16 @@ h1 a:hover {
 }
 
 #social_header .twitter_link span,
-#rss_button {
-    -webkit-transition: color 0.5s ease;
+#rss_button,
+#header_status a {
+    -webkit-transition: color 0.25s ease;
     color: #ffffff;
+    text-decoration: none;
 }
 
 #social_header .twitter_link:hover span,
-#rss_button:hover {
+#rss_button:hover,
+#header_status a:hover {
     color: #53a9cf;
 }
 
@@ -189,17 +191,6 @@ h1 a:hover {
 /** header **/
 #header_status {
     text-align: right;
-}
-
-#header_status .container {
-}
-
-#header_status a {
-    color: #ffffff;
-}
-
-#header_status a:hover {
-    color: #53a9cf;
 }
 
 /** logo **/
@@ -226,7 +217,7 @@ h1 a:hover {
     height: 32px;
     line-height: 4rem;
     vertical-align: top;
-    background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyJpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMC1jMDYwIDYxLjEzNDc3NywgMjAxMC8wMi8xMi0xNzozMjowMCAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENTNSBNYWNpbnRvc2giIHhtcE1NOkluc3RhbmNlSUQ9InhtcC5paWQ6N0EwMjMwNkVCNzc4MTFFMzlEMjBGQkI3OUNEQjQ0ODkiIHhtcE1NOkRvY3VtZW50SUQ9InhtcC5kaWQ6N0EwMjMwNkZCNzc4MTFFMzlEMjBGQkI3OUNEQjQ0ODkiPiA8eG1wTU06RGVyaXZlZEZyb20gc3RSZWY6aW5zdGFuY2VJRD0ieG1wLmlpZDo3QTAyMzA2Q0I3NzgxMUUzOUQyMEZCQjc5Q0RCNDQ4OSIgc3RSZWY6ZG9jdW1lbnRJRD0ieG1wLmRpZDo3QTAyMzA2REI3NzgxMUUzOUQyMEZCQjc5Q0RCNDQ4OSIvPiA8L3JkZjpEZXNjcmlwdGlvbj4gPC9yZGY6UkRGPiA8L3g6eG1wbWV0YT4gPD94cGFja2V0IGVuZD0iciI/PsVIPcMAAABWSURBVHjaYvzx++9/BsoAIwF5vOYzMQwwGHXAqANGHcBC63w+GgWjDhh1wKB3ACOlBgDbE4SUjLYHRh0w6oAhXg5Q2m/gYGVmHI2CUQeMOmBQOwAgwAA/yw4exwQdoQAAAABJRU5ErkJggg==);
+    background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgAQMAAABJtOi3AAAABlBMVEUAAAD4+/0q9C1wAAAAAXRSTlMAQObYZgAAABpJREFUCNdj+P+fAQiJIBiIUwkExBFgtQQJAHyDR7kBtlCTAAAAAElFTkSuQmCC) no-repeat;
 }
 
 #logo_text {
@@ -275,6 +266,26 @@ h1 a:hover {
 
 .twitter_link span {
     text-decoration: underline;
+}
+
+/** posts **/
+.header_img {
+    text-align: center;
+    padding-top: 2rem;
+}
+
+.header_img img {
+    padding: 40px;
+    border-radius: 90px;
+    /* assumes img size of 100x100 */
+}
+
+.color1 {
+    background: #ABC02B;
+}
+
+.color2 {
+    background: #33A5A9;
 }
 
 #posts li {
