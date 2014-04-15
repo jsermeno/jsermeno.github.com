@@ -112,6 +112,11 @@ h1 a {
     html {
         font-size: 14px;
     }
+
+    .p_img {
+        width: 200px; 
+        height: 200px;
+    }
 }
 
 @media (max-width: 599px) and (min-width: 320px) {
@@ -127,6 +132,11 @@ h1 a {
 @media (max-width: 599px) {
     html {
         font-size: 10px;
+    }
+
+    .p_img {
+        width: 100px; 
+        height: 100px;
     }
 }
 
