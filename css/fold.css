@@ -114,6 +114,7 @@ h1 a {
     }
 
     .p_img img {
+        padding: 20px !important;
         width: 200px; 
         height: 200px;
     }
@@ -135,6 +136,7 @@ h1 a {
     }
 
     .p_img img {
+        padding: 10px !important;
         width: 100px; 
         height: 100px;
     }
