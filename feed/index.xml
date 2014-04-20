@@ -4,13 +4,62 @@
 	<title type="text" xml:lang="en">Catchvar - Journey to a mobile indie game</title>
 	<link type="application/atom+xml" href="http://www.catchvar.com/feed/" rel="self"/>
  	<link type="text" href="http://www.catchvar.com" rel="alternate"/>
-	<updated>2014-04-14T18:43:46-07:00</updated>
+	<updated>2014-04-19T17:09:33-07:00</updated>
 	<id>http://catchvar.com</id>
 	<author>
 		<name>Catchvar</name>
 	</author>
 	<rights>Copyright (c) 2014, Catchvar; all rights reserved.</rights>
 
+	
+	<entry>
+		<title>On Skill Specialization and Personal Growth</title>
+                <link href="http://catchvar.com/specialization.html"/>
+		<updated>2014-04-19T00:00:00-07:00</updated>
+		<id>http://catchvar.com/specialization</id>
+                <content type="html">&lt;h1 class=&quot;post_link&quot; id=&quot;on-skill-specialization-and-personal-growth-specializationhtml-&quot;&gt;&lt;a href=&quot;/specialization.html&quot;&gt;On Skill Specialization and Personal Growth&lt;/a&gt;&lt;/h1&gt;
+
+&lt;p class=&quot;date&quot;&gt;- Apr 19, 2014-&lt;/p&gt;
+
+&lt;p class=&quot;start_block&quot;&gt;People often wonder what they should learn in life with respect to their career and goals. I’d like to offer one rather broad approach. &lt;/p&gt;
+&lt;!-- excerpt --&gt;
+&lt;p&gt;The internet offers an explosion of information. More than any one (wo)man could ever learn within a lifetime. It also offers more opportunity to learn than ever before. There just is &lt;em&gt;no&lt;/em&gt; reason why someone cannot pursue a field that interests them anymore. This is especially true in software and tech. I’ve been told that some people are not capable enough. However, the only limitation is one’s own motivation. People who know me, know that I’m the last person to have unconditional faith in the human race. And this is something even &lt;em&gt;I&lt;/em&gt;, believe that anyone can do.&lt;/p&gt;
+
+&lt;p&gt;Then what should you learn? You could ask what the most popular language is currently. There are people who have made careers solely as Java developers. Some of them are very good at what they do. Traditionally, broad spectrum knowledge indicates that specialists are good at large companies, and generalists are good at small startups. &lt;/p&gt;
+
+&lt;p&gt;I want to debunk this myth. In any situation, being exposed to only a single source of information can be dangeorous. Those that are accepting of new ideas prosper. Those that are set in their ways stagnate. The world is constantly changing, and you need to too.&lt;/p&gt;
+
+&lt;h3 id=&quot;software-engineering-specialization&quot;&gt;Software Engineering Specialization&lt;/h3&gt;
+
+&lt;p&gt;The same idea applies to learning how to be a software engineer. Every community around a single programming language has a set of best practices, and beliefs that they hold dear. Certain design patterns are more popular in one language than another. Different languages use different concurrency models, programming paradigms, type systems, data structures, and on and on. Learning a language from each programming paradigm will expand your toolbox, expose you to methodology pros and cons, and end up making you a better programmer in your first language than you were before.&lt;/p&gt;
+
+&lt;p&gt;When you are exposed to the multiple facets of software engineering, something happens. You are able to learn new languages faster. This is important today. Different problems will have a different best solution. By only knowing a single programming language you are restricting yourself to a limited set of problems, and limiting your flexibility to unforseen future changes.&lt;/p&gt;
+
+&lt;h3 id=&quot;product-development-specialization&quot;&gt;Product Development Specialization&lt;/h3&gt;
+
+&lt;p&gt;So great, learning multiple programming languages will make me a better programmer. However, just like specialization within software engineering may hold you back, so might specialization in just software engineering. I am of the opinion that every software engineer should learn a little bit of a field outside of engineering. What exactly depends. &lt;/p&gt;
+
+&lt;p&gt;For me, I’ve spent time learning product UI/UX. I cannot replace a UI/UX specialist. However, I did design this blog, chose the colors, and I drew the crappy beach pixel art (didn’t take very long) in the header. At the same time, I can put together a highly available, fault-tolerant server cluster, manage a database, write an api server, write a client, program a game, and mess around with html and css.&lt;/p&gt;
+
+&lt;p&gt;While I haven’t been the lead designer on a product (although I was a product manager for a short period of time), knowing a few design skills have been invaluable. It’s the difference between stopping work because art assets were exported incorrectly, versus opening up an image editor and fixing them yourself. It’s the difference between realizing that an app interaction sucks, versus the other guy not realizing the problem with blurry assets. In my opinion, every software engineer should know the differences between affordances and signifiers. If you do, you’ll find that code itself has usability, and you’ll write better software because of it.&lt;/p&gt;
+
+&lt;h3 id=&quot;experience-specialization&quot;&gt;Experience Specialization&lt;/h3&gt;
+
+&lt;p&gt;Travel. It’s important. I’ve always enjoyed traveling to other countries and gaining new experiences. My last trip was a bouldering trip to Spain, and France. Recently, I was asked&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;Why would you want to go someplace else?&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;The same reasons why engineering, and product development branching are good also apply to your location. It can be argued that how good it is depends on where you live. Certain locations are exposed to a much more diverse set of ideas and experiences. But, you can be absolutely sure of benefit by traveling to other countries. It exposes you to new ways of thinking, new languages, and what varies between people from different areas versus what stays the same. All of these are becoming more important as the markets become increasingly global.&lt;/p&gt;
+
+&lt;h3 id=&quot;conclusion&quot;&gt;Conclusion&lt;/h3&gt;
+
+&lt;p&gt;If you are content knowing only a single programming language, working in only one field, living in a small town 100 miles from the nearest city your entire life, and you have a choice, then there is nothing I can do. If you leave a comment, I may mail you a box of lawn darts to throw at small children while yelling, “Get off my lawn!”. &lt;/p&gt;
+
+&lt;p&gt;For me, I love building things. Building products today involves different parts working together, and it becomes useful to know a little bit about the parts adjacent to me. If your sole goal in life was to find a better algorithm for k-coloring, well, this advice is probably still useful.&lt;/p&gt;
+</content>
+	</entry>
 	
 	<entry>
 		<title>Voronoi Noise and Erlang, Nif, and Port performance comparison</title>
