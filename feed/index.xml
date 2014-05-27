@@ -4,13 +4,67 @@
 	<title type="text" xml:lang="en">Catchvar - Journey to a mobile indie game</title>
 	<link type="application/atom+xml" href="http://www.catchvar.com/feed/" rel="self"/>
  	<link type="text" href="http://www.catchvar.com" rel="alternate"/>
-	<updated>2014-04-19T17:09:33-07:00</updated>
+	<updated>2014-05-26T20:52:29-07:00</updated>
 	<id>http://catchvar.com</id>
 	<author>
 		<name>Catchvar</name>
 	</author>
 	<rights>Copyright (c) 2014, Catchvar; all rights reserved.</rights>
 
+	
+	<entry>
+		<title>UX is a Competitive Advantage</title>
+                <link href="http://catchvar.com/ux-is-a-competitive-advantage.html"/>
+		<updated>2014-05-26T00:00:00-07:00</updated>
+		<id>http://catchvar.com/ux-is-a-competitive-advantage</id>
+                <content type="html">&lt;h1 class=&quot;post_link&quot; id=&quot;ux-is-a-competitive-advantage-ux-is-a-competitive-advantagehtml-&quot;&gt;&lt;a href=&quot;/ux-is-a-competitive-advantage.html&quot;&gt;UX is a Competitive Advantage&lt;/a&gt;&lt;/h1&gt;
+
+&lt;p class=&quot;date&quot;&gt;- May 26, 2014-&lt;/p&gt;
+
+&lt;p class=&quot;start_block&quot;&gt;I’ve been thinking a lot lately about what makes a good product, and how it relates to creating a good business. Recently, I read the article &lt;a href=&quot;&quot;&gt;Design doesn’t deserve a seat at the table&lt;/a&gt;. It is an interesting article about who should be involved in the direction that leads to a successful business, but something just didn’t sit right with me. &lt;/p&gt;
+
+&lt;p&gt;For all I know it was written specifically to be controversial. But I’ll bite, in case people start to believe the article. Ironically, it is written by a product designer. I’ve dabbled in product management, but I am most certainly an engineer by trade. I want to defend why design does deserve a seat at the table.&lt;/p&gt;
+
+&lt;p&gt;The article speaks to two types of value. Real value and perceived value. The claim is that design can multiply real value, and create perceived value. However, it cannot create real value, and a business cannot survive without real value. One key point he mentions during that section of the article is:&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;Design can multiply utility that already exists, as it certainly did with the iPhone, but design isn’t the hero.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;Therefore designers should not be given the power to be a part of business decisions. I believe there are some fundamental disconnects that could lead to this conclusion. So I’ll look at these first, before addressing the individual arguments in the article.&lt;/p&gt;
+
+&lt;h3 id=&quot;what-qualifies-as-a-designer&quot;&gt;What qualifies as a designer?&lt;/h3&gt;
+
+&lt;p&gt;All to often, design and UI are conflated. UI design is a part of design. It is not design’s sole purpose. In software, the main areas of design are UI design, interaction design, and experience design. In order to avoid a detailed definition of each one, let’s approximate the difference as beauty vs utility. UI design and experience design contribute to beauty, and interaction design and experience design contribute to utility. If I were to hire someone as a designer they would need all three skillsets. An artist, therefore is not a designer.&lt;/p&gt;
+
+&lt;h3 id=&quot;technology-and-design-the-chicken-and-egg&quot;&gt;Technology and Design: The chicken and egg&lt;/h3&gt;
+
+&lt;p&gt;Imagine the invention of an algorithm that can find the answer to the human existence, but on current hardware it will take one trillion years to finish. If we wait one thousand years hardware will be powerful enough to finish the computations in only one million years. For the next one thousand years the technology to find the answer to the human existence is essentially useless. Now image a beautiful painting. Let’s say Monet’s Water Lilies.&lt;/p&gt;
+
+&lt;!-- excerpt --&gt;
+
+&lt;p&gt;Technology can exist without design. Design can exist without technology. I propose that a successful business absolutely cannot with no exceptions, exist without design. Let’s assume that a business cannot exist without real value. Real value is defined as solving a problem for which a consumer will give money or time in return. If there is a problem to be solved then the technology used to solve the problem must have utility. Technology does not innately have utility. Utility must be applied to technology via design. Therefore, real value cannot exist without design.&lt;/p&gt;
+
+&lt;p&gt;Unless a consumer is willing to pay for a technology they cannot use, there is some interaction design inherent to the product. You might argue, “Well okay, whatever. You didn’t need to get all technical. Some products can be successful with minimal design. Anyone can do it, so it isn’t important.”.&lt;/p&gt;
+
+&lt;p&gt;However, the point here is that design is the egg. Design gives technology value. As an engineer I am all too familiar with the sentiment of “Wow that technology is really cool, but how do I use it?”. A business without good design leaves itself open to displacement by a company that uses the same technology, but delivers greater utility.&lt;/p&gt;
+
+&lt;h3 id=&quot;rebuttal&quot;&gt;Rebuttal&lt;/h3&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Design cannot create real value: A key component of value that people often pay for, that I pay for is the saving of time. Products that are easier to use, and save people time can displace clunkier competitors without new technology. Technology is in play, but people don’t want technology. They want solutions. They want utility to be applied to technology so it can solve their problems. In order to refute this answer you would have to claim that it is impossible to save people time using interaction design. And claim that only technology can save people time.&lt;/li&gt;
+  &lt;li&gt;Design can multiply utility that already exists, but it is not the hero: Design is what gives utility to technology. Design can certainly use technology as a means to an end. Ask yourself why the screen technology used in the iPhone would contribute value. The only reason I can think of is that it gives the user a better experience. So then, do the engineers choose to use this technology because of some random reason that coincides with user experience? Or do they choose it because they’re told, and are even a part of trying to create the best possible product for their users?&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Many other claims in the article can also be traced back to design. Starbucks location, quality, and service? Sounds like something that affects the user experience.&lt;/p&gt;
+
+&lt;h2 id=&quot;conclusion&quot;&gt;Conclusion&lt;/h2&gt;
+
+&lt;p&gt;I am not claiming that design is the only useful component of a successful business. Likewise, neither is the article at the top of this one trying to claim that technology is the only useful component. It seems like sometimes we see that other components contribute heavily to the success of a particular company, whether that be technology, marketing, sales, or customer support. We also see that design is usually not involved in the high-level decisions in a company. However, it is design that drives the utility of a product. &lt;/p&gt;
+
+&lt;p&gt;If you believe in execution, design is a part of execution. If you believe people narrowly focused on design should not have C-level involvement that’s fine. An engineer who does not care about the other aspects of the business would probably be treated the same way. I believe that it is dangerous to actively preach that design should not be involved in business decisions. You just might end up with a product that no one can use, waiting until someone makes a product that someone can use.&lt;/p&gt;
+</content>
+	</entry>
 	
 	<entry>
 		<title>On Skill Specialization and Personal Growth</title>
@@ -22,7 +76,7 @@
 &lt;p class=&quot;date&quot;&gt;- Apr 19, 2014-&lt;/p&gt;
 
 &lt;p class=&quot;start_block&quot;&gt;People often wonder what they should learn in life with respect to their career and goals. I’d like to offer one rather broad approach. &lt;/p&gt;
-&lt;!-- excerpt --&gt;
+
 &lt;p&gt;The internet offers an explosion of information. More than any one (wo)man could ever learn within a lifetime. It also offers more opportunity to learn than ever before. There just is &lt;em&gt;no&lt;/em&gt; reason why someone cannot pursue a field that interests them anymore. This is especially true in software and tech. I’ve been told that some people are not capable enough. However, the only limitation is one’s own motivation. People who know me, know that I’m the last person to have unconditional faith in the human race. And this is something even &lt;em&gt;I&lt;/em&gt;, believe that anyone can do.&lt;/p&gt;
 
 &lt;p&gt;Then what should you learn? You could ask what the most popular language is currently. There are people who have made careers solely as Java developers. Some of them are very good at what they do. Traditionally, broad spectrum knowledge indicates that specialists are good at large companies, and generalists are good at small startups. &lt;/p&gt;
@@ -32,6 +86,8 @@
 &lt;h3 id=&quot;software-engineering-specialization&quot;&gt;Software Engineering Specialization&lt;/h3&gt;
 
 &lt;p&gt;The same idea applies to learning how to be a software engineer. Every community around a single programming language has a set of best practices, and beliefs that they hold dear. Certain design patterns are more popular in one language than another. Different languages use different concurrency models, programming paradigms, type systems, data structures, and on and on. Learning a language from each programming paradigm will expand your toolbox, expose you to methodology pros and cons, and end up making you a better programmer in your first language than you were before.&lt;/p&gt;
+
+&lt;!-- excerpt --&gt;
 
 &lt;p&gt;When you are exposed to the multiple facets of software engineering, something happens. You are able to learn new languages faster. This is important today. Different problems will have a different best solution. By only knowing a single programming language you are restricting yourself to a limited set of problems, and limiting your flexibility to unforseen future changes.&lt;/p&gt;
 
@@ -70,7 +126,7 @@
 
 &lt;p class=&quot;date&quot;&gt;- Apr 14, 2014 -&lt;/p&gt;
 
-&lt;p class=&quot;start_block&quot;&gt;I wanted some Voronoi noise generated from Erlang. I needed to know how I should generate the noise, and what the most efficient way of doing this from Erlang was. &lt;!-- excerpt --&gt; I knew about Erlang NIFs already (Native Implemented Function). I was already using several through third party libraries. What I did not know is if I needed a NIF. &lt;/p&gt;
+&lt;p class=&quot;start_block&quot;&gt;I wanted some Voronoi noise generated from Erlang. I needed to know how I should generate the noise, and what the most efficient way of doing this from Erlang was. I knew about Erlang NIFs already (Native Implemented Function). I was already using several through third party libraries. What I did not know is if I needed a NIF. &lt;/p&gt;
 
 &lt;p&gt;If Erlang could get the job done, then using a NIF would be overkill. In order to help with future decisions, I first implemented a Voronoi noise algorithm in Erlang, then as a C NIF, then as a C Port. I measured the performance at each step of the way. Who knows, the communication overhead with C could be more expensive than the operation itself. I’ve experienced this before with V8, and JNI bindings.&lt;/p&gt;
 
@@ -84,6 +140,7 @@
 
 &lt;p&gt;For the Erlang implementation I first used arrays. Arrays in Erlang are supposed to have much more efficient random access than lists. It wasn’t until after I implemented the algorithm that I realized I could get away with sequential access. In which case, lists would have been much better. Good news, I implemented both. We can compare.&lt;/p&gt;
 
+&lt;!-- excerpt --&gt;
 &lt;p&gt;In addition to the main algorithm, I also implemented Knuth’s hashing function, a linear congruential random generator, and a way to calculate the probability of X in a poisson distribution given an average. The poission results are cached in a lookup table based on an average of 3 points per cube.&lt;/p&gt;
 
 &lt;p&gt;Here is the list version.&lt;/p&gt;
@@ -555,8 +612,6 @@ Average: 20838 mics
 
 &lt;p class=&quot;start_block&quot;&gt;Programmers program errors. You need to handle errors. Every major language has constructs for handling errors. Two guidelines that many try to follow are defensive programming, and fail-fast programming. The problems are that everyone has a different definition, and our choice of error handling should depend on our goals. &lt;/p&gt;
 
-&lt;!-- excerpt --&gt;
-
 &lt;p&gt;I want to take a look at what each method means, and how they should be used. I’ll also try to examine each method from the perspective of multiple languages.&lt;/p&gt;
 
 &lt;p&gt;First, we need to define how we want our program will behave. In 2014 users have strong expections of their programs. The internet has created an &lt;em&gt;always on&lt;/em&gt; environment. Programs should always work. Users will not tolerate status 500 server error pages. They do not want cryptic error messages. This means no crashing. When a user is expecting a response from the program, errors should be handled gracefully. Make the user aware an error occured, then keep on chugging. We want to fix errors fast. So, we need to be aware of when they occur. If we can achieve all these goals, then we’ll be using &lt;em&gt;user focused programming&lt;/em&gt;. Let’s look at defensive programming first.&lt;/p&gt;
@@ -589,6 +644,8 @@ Average: 20838 mics
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;The problem above is that there are numerous opportunities for null pointer exceptions. In addition, we may get &lt;code&gt;null&lt;/code&gt;s in our return list. An incorrect attempt at defensive programming may look like this:&lt;/p&gt;
+
+&lt;!-- excerpt --&gt;
 
 &lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;java&quot;&gt;&lt;span class=&quot;c1&quot;&gt;// bad&lt;/span&gt;
 &lt;span class=&quot;kd&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;List&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;String&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;getFriendNames&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;User&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;user&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
@@ -744,7 +801,7 @@ Average: 20838 mics
 
 &lt;p class=&quot;date&quot;&gt;- Mar 25, 2014 -&lt;/p&gt;
 
-&lt;p&gt;Security in mobile games is usually left by the wayside. Usually, it’s just the lowest priority item on the list when it comes to getting a game out by a deadline. After the fact, you can ask anyone if the game should have security feature X and they’ll be shocked that it doesn’t already exist. &lt;!-- excerpt --&gt;Ask the same person before a deadline if you should have the same security feature, or a sparkling unicorn riding across the bottom of the settings page, and they’ll choose the sparking unicorn unless they’re a security nut.&lt;/p&gt;
+&lt;p&gt;Security in mobile games is usually left by the wayside. Usually, it’s just the lowest priority item on the list when it comes to getting a game out by a deadline. After the fact, you can ask anyone if the game should have security feature X and they’ll be shocked that it doesn’t already exist. Ask the same person before a deadline if you should have the same security feature, or a sparkling unicorn riding across the bottom of the settings page, and they’ll choose the sparking unicorn unless they’re a security nut.&lt;/p&gt;
 
 &lt;p&gt;This isn’t always entirely without merit. However, in the context of a real-time multiplayer game where players constantly interact with each other security becomes more important. You don’t want one bad seed ruining the experience for all the other players. Using HTTPS is one aspect that can improve the security of your game. We don’t need to buy an expensive certificate from a certificate authority either. If you’re distributing a mobile game you can distribute the certificate chain with the game.&lt;/p&gt;
 
@@ -756,6 +813,7 @@ Average: 20838 mics
 &lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;chmod a+x easycert
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
+&lt;!-- excerpt --&gt;
 &lt;p&gt;Then add this file to your path. You can edit your &lt;code&gt;~/.bash_profile&lt;/code&gt; and do something like this:&lt;/p&gt;
 
 &lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;sh&quot;&gt;&lt;span class=&quot;nb&quot;&gt;export &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;PATH&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$PATH&lt;/span&gt;:~/Workspace/path/easycert
@@ -1079,7 +1137,7 @@ ca-chain:          /Users/catchvar/.ca/intermediate/certs/ca-chain.cert.pem
 
 &lt;p class=&quot;start_block&quot;&gt;In the past I’ve been a big fan of PostgreSQL. It’s rock solid and performant. I’ve used it to scale to hundreds of thousands of users without even coming close to breaking a sweat. &lt;/p&gt;
 
-&lt;p&gt;The downside is that horizontal scaling is a pain. &lt;!-- excerpt --&gt;That typically means that you end up scaling vertically as long as you can. In addition, you don’t get availability and fault-tolerance for free. It requires extra time and work.&lt;/p&gt;
+&lt;p&gt;The downside is that horizontal scaling is a pain. That typically means that you end up scaling vertically as long as you can. In addition, you don’t get availability and fault-tolerance for free. It requires extra time and work.&lt;/p&gt;
 
 &lt;p&gt;I wanted a database that emphasized availability, fault-tolerance, and scalability with little cost to the developer. As an indie game developer this may lead to reduced costs since an equivalent larger machine is usually much more expensive than several smaller machines. Riak’s masterless design was appealing to me, and it looked like it fit my needs better than anything else out there. Of course, when choosing a new technology there is always a chance you’ll regret it, but there is only one way to find out!&lt;/p&gt;
 
@@ -1095,7 +1153,8 @@ tar zxvf riak-1.4.8.tar.gz
 
 &lt;h2 id=&quot;build-erlang&quot;&gt;Build Erlang&lt;/h2&gt;
 
-&lt;p&gt;Now we need to build it. This is where we’ll add a few additional steps. First, you need a specific version of Erlang (R15B01), and it also needs to be built as 64-bit. I’m using kerl to manage my erlang versions and it has been working out pretty great so far. It’s a simple version manager similar to nvm or rbenv for node and ruby respectively, if you have ever used those.&lt;/p&gt;
+&lt;p&gt;Now we need to build it. This is where we’ll add a few additional steps. First, you need a specific version of Erlang (R15B01), and it also needs to be built as 64-bit. I’m using kerl to manage my erlang versions and it has been working out pretty great so far. It’s a simple version manager similar to nvm or rbenv for node and ruby respectively, if you have ever used those.
+&lt;!-- excerpt --&gt;&lt;/p&gt;
 
 &lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;sh&quot;&gt;curl -O https://raw.github.com/spawngrid/kerl/master/kerl
 chmod a+x kerl
@@ -1264,7 +1323,7 @@ cat dev1/etc/app.config
 
 &lt;p class=&quot;start_block&quot;&gt;I don’t believe that people ask &lt;strong&gt;why&lt;/strong&gt; people play games often enough.&lt;/p&gt;
 
-&lt;p&gt;There is an extensive amount of material related to game design on the internet. Most of this material I have found falls broadly into one of two categories. &lt;!-- excerpt --&gt;The first category is bullet-point lists. These typically are one-size fits all recommendations based on observations from a successful game. These can be useful. We should always study and learn from the successes and failures around us. However, general recommendations usually fail to capture the complicated context in which they apply.&lt;/p&gt;
+&lt;p&gt;There is an extensive amount of material related to game design on the internet. Most of this material I have found falls broadly into one of two categories. The first category is bullet-point lists. These typically are one-size fits all recommendations based on observations from a successful game. These can be useful. We should always study and learn from the successes and failures around us. However, general recommendations usually fail to capture the complicated context in which they apply.&lt;/p&gt;
 
 &lt;p&gt;The second category is more useful and consists of in depth analysis about &lt;strong&gt;what&lt;/strong&gt; design should be like, and how we can further improve the gaming experience for users. I personally want games to be of benefit to players, and find myself in disagreement with many of the mechanics that make it into today’s casual social games. However, much of the material that falls into this category fails to account for both what gamers consider a good game and why so many people also love casual social games. The explanation is often that casual social games are just plain manipulative. They are. But maybe there is something deeper that explains why people play these games.&lt;/p&gt;
 
@@ -1282,6 +1341,7 @@ cat dev1/etc/app.config
 
 &lt;p&gt;Challenge is one of the most obvious aspects to any game. Even in the most vapid and humdrum games you must endure the mental challenge of patience. Otherwise the game would end instanteously. The challenge can also take on many other forms. It could be figuring out where to go next, solving a puzzle, finding out how fast you can button mash, or showing emotional resilience in the game that kills you 70 times a minute.&lt;/p&gt;
 
+&lt;!-- excerpt --&gt;
 &lt;p&gt;People &lt;strong&gt;need&lt;/strong&gt; challenge. Maybe not 24/7. But, whether it is due to evolution, divine will, coded into our genes, or all three, people need challenge. Without a challenge you get boredom. Johnathan Blow, the creator of braid, said in one of his talks:&lt;/p&gt;
 
 &lt;blockquote&gt;
