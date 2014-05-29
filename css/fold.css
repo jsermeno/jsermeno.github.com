@@ -40,7 +40,7 @@ h1 {
     font-weight: bold;
     text-align: center;
     line-height: 4rem;
-    padding: 0 30px;
+    padding: 0;
 }
 
 p {
@@ -205,6 +205,11 @@ h1 a:hover {
     text-align: right;
 }
 
+#header_status .container {
+    overflow: hidden;
+    padding-top: 16px;
+}
+
 /** logo **/
 #header {
     text-align: center;
@@ -215,32 +220,48 @@ h1 a:hover {
 }
 
 #logo_link {
+    float: left;
     text-decoration: none;
-    display: inline-block;
+    display: block;
+    padding: 0;
+}
+
+#nav {
+    float: right;
+    line-height: 2rem;
+}
+
+#nav a {
+    vertical-align: top;
+    line-height: 2rem;
+    padding: 0 !important;
 }
 
 #logo_text,
 #logo_icon {
     display: inline-block;
+    vertical-align: middle;
 }
 
 #logo_icon {
     width: 32px;
     height: 32px;
-    line-height: 4rem;
-    vertical-align: top;
+    line-height: 2rem;
+    /*vertical-align: top;*/
     background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgAQMAAABJtOi3AAAABlBMVEUAAAD4+/0q9C1wAAAAAXRSTlMAQObYZgAAABpJREFUCNdj+P+fAQiJIBiIUwkExBFgtQQJAHyDR7kBtlCTAAAAAElFTkSuQmCC) no-repeat;
 }
 
 #logo_text {
-    font-size: 3rem;
+    font-size: 2rem;
     font-weight: bold;
-    line-height: 4rem;
+    line-height: 2rem;
     color: #ffffff;
+    vertical-align: bottom;
 }
 
 #logo_text span {
     margin-left: -.22rem; 
+    vertical-align: bottom;
 }
 
 #logo_status {
