@@ -401,6 +401,7 @@ h1.header_img_bar {
     position: relative;
     display: inline-block;
     padding: 8px 12px;
+    font-weight: normal;
 }
 
 .header_date {
@@ -426,7 +427,7 @@ h1.header_img_bar {
 }
 
 .color1 {
-    background: #8E779C;
+    background: #53a9cf;
 }
 
 .color2 {
