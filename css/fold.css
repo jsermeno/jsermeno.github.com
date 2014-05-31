@@ -437,3 +437,7 @@ h1.header_img_bar {
 .color4 {
     background: #FF6A67;
 }
+
+.color1, .color3, .color2, .color4 {
+    background: #EEF0F3;
+}
