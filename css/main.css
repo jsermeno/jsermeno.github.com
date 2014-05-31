@@ -72,8 +72,8 @@ a:hover {
 
 #email_subscriber {
     padding: 2rem 0;
-    border-top: 2px #293033 solid;
-    border-bottom: 5px #293033 solid;
+    border-top: 1px #293033 solid;
+    border-bottom: 1px #293033 solid;
     margin: 2rem 0;
 }
 
@@ -118,6 +118,9 @@ a:hover {
     color: #ffffff;
 
     cursor: pointer;
+
+    -moz-box-shadow:    0px 2px 0px 0px rgba(0,0,0,0.50);
+    box-shadow:         0px 2px 0px 0px rgba(0,0,0,0.50);
 }
 
 #mc-embedded-subscribe:hover {

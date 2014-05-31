@@ -391,6 +391,8 @@ h1.header_img_bar {
     width: 100%;
     display: inline-block;
     position: absolute;
+    -webkit-transition: opacity 0.3s ease;
+            transition: opacity 0.3s ease;
 }
 
 .header_img_text {
