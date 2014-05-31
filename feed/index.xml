@@ -4,7 +4,7 @@
 	<title type="text" xml:lang="en">Catchvar - Journey to a mobile indie game</title>
 	<link type="application/atom+xml" href="http://www.catchvar.com/feed/" rel="self"/>
  	<link type="text" href="http://www.catchvar.com" rel="alternate"/>
-	<updated>2014-05-30T17:01:22-07:00</updated>
+	<updated>2014-05-30T17:39:38-07:00</updated>
 	<id>http://catchvar.com</id>
 	<author>
 		<name>Catchvar</name>
@@ -114,6 +114,8 @@
 &lt;p&gt;If you are content knowing only a single programming language, working in only one field, living in a small town 100 miles from the nearest city your entire life, and you have a choice, then there is nothing I can do. If you leave a comment, I may mail you a box of lawn darts to throw at small children while yelling, “Get off my lawn!”. &lt;/p&gt;
 
 &lt;p&gt;For me, I love building things. Building products today involves different parts working together, and it becomes useful to know a little bit about the parts adjacent to me. If your sole goal in life was to find a better algorithm for k-coloring, well, this advice is probably still useful.&lt;/p&gt;
+
+&lt;p&gt;photo credit: &lt;a href=&quot;http://www.flickr.com/photos/bestrated1/52666376/&quot;&gt;Creativity+ Timothy K Hamilton&lt;/a&gt; via &lt;a href=&quot;http://photopin.com&quot;&gt;photopin&lt;/a&gt; &lt;a href=&quot;http://creativecommons.org/licenses/by-nc-nd/2.0/&quot;&gt;cc&lt;/a&gt;&lt;/p&gt;
 </content>
 	</entry>
 	
@@ -789,6 +791,9 @@ Average: 20838 mics
   &lt;li&gt;&lt;a href=&quot;http://www.captaindebug.com/2013/04/does-defensive-programming-deserve-such.html#.Uz3PD61dU34&quot;&gt;Does defensive programming deserve&lt;/a&gt;&lt;/li&gt;
   &lt;li&gt;&lt;a href=&quot;http://www.eetindia.co.in/ARTICLES/1999DEC/PDF/EEIOL_1999DEC01_EMS_TA_1.pdf?SOURCES=DOWNLOAD&quot;&gt;Rules for defensive C programming&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
+
+&lt;p&gt;photo credit: &lt;a href=&quot;http://www.flickr.com/photos/dunechaser/4918193188/&quot;&gt;Dunechaser&lt;/a&gt; via &lt;a href=&quot;http://photopin.com&quot;&gt;photopin&lt;/a&gt; &lt;a href=&quot;http://creativecommons.org/licenses/by-nc-sa/2.0/&quot;&gt;cc&lt;/a&gt;&lt;/p&gt;
+
 </content>
 	</entry>
 	
@@ -1123,6 +1128,8 @@ ca-chain:          /Users/catchvar/.ca/intermediate/certs/ca-chain.cert.pem
 
 &lt;p&gt;&lt;strong&gt;P.S.&lt;/strong&gt; If you do not want to create your own certificate authority, and just want to access &lt;code&gt;https://www.google.com&lt;/code&gt;, you can use the ca bundle provided from the &lt;a href=&quot;http://curl.haxx.se/docs/caextract.html&quot;&gt;curl website&lt;/a&gt;. &lt;a href=&quot;http://curl.haxx.se/ca/cacert.pem&quot;&gt;Here&lt;/a&gt; is where you can download &lt;code&gt;cacert.pem&lt;/code&gt;. This bundle is converted from Mozilla’s CA cert bundle.&lt;/p&gt;
 
+&lt;p&gt;photo credit: &lt;a href=&quot;http://www.flickr.com/photos/danielsphotography/466435567/&quot;&gt;DanielSTL&lt;/a&gt; via &lt;a href=&quot;http://photopin.com&quot;&gt;photopin&lt;/a&gt; &lt;a href=&quot;http://creativecommons.org/licenses/by/2.0/&quot;&gt;cc&lt;/a&gt;&lt;/p&gt;
+
 </content>
 	</entry>
 	
@@ -1309,6 +1316,8 @@ cat dev1/etc/app.config
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;That’s it. I hope that was helpful to someone.&lt;/p&gt;
+
+&lt;p&gt;photo credit: &lt;a href=&quot;http://www.flickr.com/photos/chrischabot/10818465403/&quot;&gt;chris.chabot&lt;/a&gt; via &lt;a href=&quot;http://photopin.com&quot;&gt;photopin&lt;/a&gt; &lt;a href=&quot;http://creativecommons.org/licenses/by-nc/2.0/&quot;&gt;cc&lt;/a&gt;&lt;/p&gt;
 </content>
 	</entry>
 	
