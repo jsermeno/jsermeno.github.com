@@ -166,10 +166,10 @@ ul li:before {
 
 .p_img img {
     text-align: center;
-    background: #59B4DC;
-    padding: 40px;
+    /*background: #59B4DC;
+    padding: 40px;*/
     box-shadow: 3px 3px rgba(0, 0, 0, 0.1);
-    border: 1px #589dc4 solid;
+    /*border: 1px #589dc4 solid;*/
 }
 
 /**

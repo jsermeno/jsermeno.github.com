@@ -4,13 +4,170 @@
 	<title type="text" xml:lang="en">Catchvar - Journey to a mobile indie game</title>
 	<link type="application/atom+xml" href="http://www.catchvar.com/feed/" rel="self"/>
  	<link type="text" href="http://www.catchvar.com" rel="alternate"/>
-	<updated>2014-05-30T21:48:31-07:00</updated>
+	<updated>2014-06-02T12:46:37-07:00</updated>
 	<id>http://catchvar.com</id>
 	<author>
 		<name>Catchvar</name>
 	</author>
 	<rights>Copyright (c) 2014, Catchvar; all rights reserved.</rights>
 
+	
+	<entry>
+		<title>Optimizing Static Websites on S3</title>
+                <link href="http://catchvar.com/optimizing-static-websites-on-s3.html"/>
+		<updated>2014-06-02T00:00:00-07:00</updated>
+		<id>http://catchvar.com/optimizing-static-websites-on-s3</id>
+                <content type="html">&lt;h1 class=&quot;post_link&quot; id=&quot;optimizing-static-websites-on-s3-optimizing-static-websites-on-s3html-&quot;&gt;&lt;a href=&quot;/optimizing-static-websites-on-s3.html&quot;&gt;Optimizing Static Websites on S3&lt;/a&gt;&lt;/h1&gt;
+
+&lt;p class=&quot;date&quot;&gt;- Jun 2, 2014-&lt;/p&gt;
+
+&lt;p class=&quot;start_block&quot;&gt;Did you know that Jellyfish are one of the most &lt;a href=&quot;http://io9.com/the-secret-to-the-jellyfishs-ecosystem-conquering-succ-1442318275&quot;&gt;efficent&lt;/a&gt; swimmers? As part of gauging interest in various startup ideas I’ve been deploying more static websites than usual. These include landing pages for &lt;a href=&quot;http://shelfninja.com&quot;&gt;Shelfninja&lt;/a&gt;, &lt;a href=&quot;http://epilr.com&quot;&gt;Epilr&lt;/a&gt;, and this blog. This got me in gear for optimizing these sites. &lt;/p&gt;
+
+&lt;p&gt;No, this is not premature optimization. These tips will probably add an hour or two to your work after you have done them once, and take up to a second of load time off your pages. I recently tweeted a stat from &lt;a href=&quot;http://blog.kissmetrics.com/loading-time/?utm_content=buffer8f698&amp;amp;utm_medium=social&amp;amp;utm_source=twitter.com&amp;amp;utm_campaign=buffer&quot;&gt;Mixpanel’s blog&lt;/a&gt; that a 1-second delay in response time can lead to a 7% reduction in conversions. I don’t want that. You shouldn’t either. Planning on watching an hour of TV tonight? Get a 7% increase in conversions instead.&lt;/p&gt;
+
+&lt;h2 id=&quot;the-plan&quot;&gt;The Plan&lt;/h2&gt;
+
+&lt;p&gt;Most of these techniques can be applied after the fact. However, for the best results there are a couple of things you need to plan for from the very beginning in order to save time. First, special consideration needs to applied to which resources are required for above the fold content, and which resources are not required. Initially, you always want to only load the resources needed to render the above the fold content. That way the user sees the page render as fast as possible, and the rest of the page can load in later.&lt;/p&gt;
+
+&lt;p&gt;In order to do that you cannot put all of your CSS in one massive file. Many styles you probably do not need to render above the fold content. I split my files into global above fold, page specific above fold, global below fold, and page specific below fold. JavaScript is always loaded after the fold has been rendered.&lt;/p&gt;
+
+&lt;p class=&quot;p_img&quot;&gt;&lt;img src=&quot;/images/shelfninja_landing.jpg&quot; alt=&quot;Shelfninja&quot; width=&quot;720&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;In addition to these basic tenets, you should not be including resources that you are not using. Seems like on obvious idea, but can be overlooked. For example, when building the landing page for Shelfninja I used &lt;a href=&quot;http://getbootstrap.com/&quot;&gt;bootstrap&lt;/a&gt;. Bootstrap is great, but initially comes with CSS styles for many different layouts that I did not need. I only included the five to ten basic styles that I really needed.&lt;/p&gt;
+
+&lt;h2 id=&quot;optimizing&quot;&gt;Optimizing&lt;/h2&gt;
+
+&lt;h3 id=&quot;images&quot;&gt;Images&lt;/h3&gt;
+
+&lt;p&gt;Most of the easy wins when optimizing a webpage can be boiled down to either reducing http requests or increasing the speed of the http requests. Optimizing and compressing images can reduce the amount of data that needs to transfered over the wire. This speeds up http requests. The best part is that you can achieve these gains without any changes to your page.&lt;/p&gt;
+
+&lt;p&gt;You’ll most likely be working with two types of image formats: JPEG, and PNG. In general, JPEG is a lossy format that should be used for photos. PNG is lossless, and should be used for images that need to be crisp, such as icons. There are many articles that go in depth on how to optimize each of these image types. I’ll just briefly go over how to batch optimize these image types.&lt;/p&gt;
+
+&lt;p&gt;For JPEGs you can play with the quality level. I’ve found that 60 works for most cases. Sometimes you can get away with lower, sometimes you need higher. Use the lowest setting where the image still looks good. For PNGs, most are saved as PNG-32s. This means that the PNG can store one of 2^24 colors for each pixel, with 2^8 degrees of alpha. Unless you’re going really heavy on gradients, you probaby don’t need this. Even if you don’t need it, a PNG-32 will still use all that extra space. What I do is use pngquant to batch convert all my images to use only 256 colors.&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;sh&quot;&gt;&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;pngquant --force --ext .png --speed 1 256 *.png
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;If you’re converting a purely black and white image (no grey), you can use this:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;sh&quot;&gt;&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;pngquant --force --ext .png --speed 1 2 *.png
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;If you don’t have pngquant you can &lt;a href=&quot;http://pngquant.org/&quot;&gt;download&lt;/a&gt; it for free. Note that this command will replace your current PNGs with new PNGs. Make sure you know what you’re doing, or you have backups.&lt;/p&gt;
+
+&lt;p&gt;The final step to optimizing your images is to run every single one of them through &lt;a href=&quot;http://imageoptim.com/&quot;&gt;ImageOptim&lt;/a&gt;. This losslessly optimizes your images. That means savings with absolutely no quality loss. After you have these steps down, it will only take a few seconds of work to optimize your images.&lt;/p&gt;
+
+&lt;h3 id=&quot;inlining&quot;&gt;Inlining&lt;/h3&gt;
+
+&lt;p&gt;Inlining is a technique that can completely eliminate an http request. Instead of making an http request, you embed the resource directly in the html page. This won’t always be a good idea. When you inline a resource you lose out on a very important benefit: caching. If a resource will be used across several pages, or a user is likely to visit a page several times it might be better to not inline. In this case, the user would download the resource once and never again. You need to weigh the tradeoffs of an initial quick experience vs a better long-term experience.&lt;/p&gt;
+
+&lt;p&gt;If you’ve decided to inline resources, we need to decide what to inline. Above the fold resources gain the most benefit. If you can remove all http requests above the fold your page will render as fast as it takes your server to return the html file. CSS files, and small images and prime candidates for inlining. Large images like backgrounds are usually better left as external resources. The reason is that if your html file gets too big, it will take longer to download it, and longer until the user sees anything. By inlining above the fold CSS you increase the html file by a negible amount, and can instantly render content without an extra http request.&lt;/p&gt;
+
+&lt;h3 id=&quot;minification-and-concatenation&quot;&gt;Minification and Concatenation&lt;/h3&gt;
+
+&lt;p&gt;These methods can reduce the amount of http requests, and speed them up by decreasing the download size. You’ll probably want some good tools. These methods would be very tedious otherwise. I built my most recent sites using &lt;a href=&quot;http://jekyllrb.com/&quot;&gt;Jekyll&lt;/a&gt;. There are several good tools that can be used as plugins. I used &lt;a href=&quot;https://github.com/matthodan/jekyll-asset-pipeline&quot;&gt;jekyll-asset-pipeline&lt;/a&gt;, and &lt;a href=&quot;https://github.com/donaldducky/jekyll-cssminify&quot;&gt;jekyll-cssminify&lt;/a&gt;. These are great tools, but I had to make a few custom changes to make them work for me. Most web frameworks should also have tools for achieving minification and concatenation.&lt;/p&gt;
+
+&lt;p&gt;For concatenation, the basic idea is to combine all your JavaScript or CSS into as few files as possible. If you have global resources, and page-specific resources maybe this means two JavaScript, and two CSS files per page.&lt;/p&gt;
+
+&lt;p&gt;Minification is the process of making the resulting code as short as possible while still retaining the same results. This means removing all white-space, replacing variable names with shorter names, and other advanced techniques. The JavaScript or CSS will be unreadable afterwards, but your page will load faster.&lt;/p&gt;
+
+&lt;p&gt;Many tools that deal with minification and concatenation also attach a timestamp to the resulting file. This way the file can be cached with &lt;code&gt;expires&lt;/code&gt;, or &lt;code&gt;cache-control: max-page&lt;/code&gt; headers. These cache headers can be used to ensure that no GET requests are ever issued once the file has been downloaded. When the file changes, the name also changes, so the browser knows to download the new version. This is as opposed to using &lt;code&gt;Last-Modified or ETag&lt;/code&gt; headers that still require a round-trip to the server.&lt;/p&gt;
+
+&lt;h3 id=&quot;compression&quot;&gt;Compression&lt;/h3&gt;
+
+&lt;p&gt;Now, you have an optimized website with minimal http requests. We can further decrease download size by using gzip compression. You need to be careful here. This may not always be a good idea, depending upon your situation. The way it works is that the browser typically sends a header like &lt;code&gt;Accept-Encoding:gzip,deflate,sdch&lt;/code&gt;. A webserver will see this header. If gzip is enabled it will gzip the resource on the fly. Then, the resource is returned with the response header: &lt;code&gt;Content-Encoding: gzip&lt;/code&gt;. Since it sees the header, the browser knows it needs to decompress the content before rendering.&lt;/p&gt;
+
+&lt;p&gt;The problem is that if you have a static website, there is no webserver to smartly choose whether to compress or not. We can choose to return compressed files, but if a browser does not support gzip the user will see garbage. A while ago, people were concerned with various mobile browsers not supporting gzip. However, most modern devices seem to support gzip. &lt;/p&gt;
+
+&lt;p&gt;Another consideration is that decompressing takes a little time. If the savings are less than the amount of time it takes to gzip, then there is no point.&lt;/p&gt;
+
+&lt;p&gt;In order to support gzip, I gzip my files during the deploy script. &lt;a href=&quot;http://sukharevd.net/gzipping-website-in-amazon-s3-bucket.html&quot;&gt;This&lt;/a&gt; blog post provided the inspiration. I wrote a quick-n-dirty simplified version of his script in order to better fit my needs.&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;python&quot;&gt;&lt;span class=&quot;c&quot;&gt;#!/usr/bin/env python&lt;/span&gt;
+&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;sys&lt;/span&gt;
+&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;os&lt;/span&gt;
+&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;re&lt;/span&gt;
+&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;gzip&lt;/span&gt;
+&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;subprocess&lt;/span&gt;
+
+&lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;main&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;():&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;for&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;folder&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;sub_folders&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;files&lt;/span&gt; &lt;span class=&quot;ow&quot;&gt;in&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;os&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;walk&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;#39;./_site&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;for&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;filename&lt;/span&gt; &lt;span class=&quot;ow&quot;&gt;in&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;files&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;
+            &lt;span class=&quot;n&quot;&gt;path&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;os&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;path&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;join&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;folder&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;filename&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+            &lt;span class=&quot;n&quot;&gt;site_path&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;#39;/&amp;#39;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;join&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;os&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;path&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;normpath&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;path&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;split&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;#39;/&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:])&lt;/span&gt;
+
+            &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;re&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;search&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;quot;\.css|\.js|\.html&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;filename&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
+                &lt;span class=&quot;k&quot;&gt;with&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;gzip&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;open&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;path&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;#39;.gz&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;#39;w+&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;as&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;fw&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;
+                    &lt;span class=&quot;k&quot;&gt;with&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;open&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;path&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;as&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;fr&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;
+                        &lt;span class=&quot;n&quot;&gt;blocksize&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;65536&lt;/span&gt;
+                        &lt;span class=&quot;n&quot;&gt;buf&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;fr&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;read&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;blocksize&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+                        &lt;span class=&quot;k&quot;&gt;while&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;len&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;buf&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;
+                            &lt;span class=&quot;n&quot;&gt;fw&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;write&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;buf&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+                            &lt;span class=&quot;n&quot;&gt;buf&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;fr&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;read&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;blocksize&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+
+
+                &lt;span class=&quot;n&quot;&gt;arg_arr&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;#39;aws&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;#39;--region&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;#39;us-west-1&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;#39;s3&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;#39;cp&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+                           &lt;span class=&quot;n&quot;&gt;path&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;#39;.gz&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;#39;s3://yourbucket/&amp;#39;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;site_path&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+                           &lt;span class=&quot;s&quot;&gt;&amp;#39;--content-encoding&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;#39;gzip&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;
+
+                &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;re&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;search&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;quot;\.css|\.js&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;filename&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
+                    &lt;span class=&quot;n&quot;&gt;arg_arr&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;append&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;#39;--cache-control&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+                    &lt;span class=&quot;n&quot;&gt;arg_arr&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;append&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;#39;max-age 86400&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+
+                &lt;span class=&quot;n&quot;&gt;subprocess&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;check_output&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;arg_arr&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+            &lt;span class=&quot;k&quot;&gt;elif&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;re&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;search&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;quot;\.woff&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;filename&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
+                &lt;span class=&quot;n&quot;&gt;arg_arr&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;#39;aws&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;#39;--region&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;#39;us-west-1&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;#39;s3&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;#39;cp&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+                           &lt;span class=&quot;n&quot;&gt;path&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;#39;s3://yourbucket&amp;#39;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;site_path&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+                           &lt;span class=&quot;s&quot;&gt;&amp;#39;--cache-control&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;#39;max-age 86400&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;
+                &lt;span class=&quot;n&quot;&gt;subprocess&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;check_output&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;arg_arr&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+
+    &lt;span class=&quot;k&quot;&gt;print&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;subprocess&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;check_output&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;([&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;#39;aws&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+                             &lt;span class=&quot;s&quot;&gt;&amp;#39;--region&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;#39;us-west-1&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+                             &lt;span class=&quot;s&quot;&gt;&amp;#39;s3&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;#39;sync&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+                             &lt;span class=&quot;s&quot;&gt;&amp;#39;_site&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;#39;s3://yourbucket&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+                             &lt;span class=&quot;s&quot;&gt;&amp;#39;--exclude&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;#39;*.js&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+                             &lt;span class=&quot;s&quot;&gt;&amp;#39;--exclude&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;#39;*.html&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+                             &lt;span class=&quot;s&quot;&gt;&amp;#39;--exclude&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;#39;*.woff&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+                             &lt;span class=&quot;s&quot;&gt;&amp;#39;--exclude&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;#39;*.css&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;])&lt;/span&gt;
+
+&lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;__name__&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;==&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;#39;__main__&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;sys&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;exit&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;main&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;())&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;hosting&quot;&gt;Hosting&lt;/h2&gt;
+
+&lt;p&gt;I intially hosted my blog using github pages. This is great. It’s super-fast, reliable, hosting using Github’s CDN. However, I’ve switched over to S3 for all my sites. You have a little more control over the details. Domain configuration is less of a pain for email support, you can setup 301s, and control your caching.&lt;/p&gt;
+
+&lt;p&gt;Of course, the downside is that S3 is geographically located in a single location. A bucket in us-east-1 has anywhere from 150ms - 200ms more round-trip latency from the Silicon Valley. This also applies to any normal server you’re hosting too. But, it is a powerful feature that Github takes care of for no cost. &lt;/p&gt;
+
+&lt;p&gt;One option if you have a very focused audience, is to host your website in a bucket close to your audience. If you have decided you need to host your site on S3, but you still need to have low global latency, you can use &lt;a href=&quot;https://aws.amazon.com/cloudfront/&quot;&gt;AWS CloudFront&lt;/a&gt;. The great thing is that if you setup your static website with S3, it takes thirty seconds to setup.&lt;/p&gt;
+
+&lt;p&gt;Lastly, I want to mention that if you have a service that absolutely needs to be up I would be cautious about using your domain provider’s default nameservers. I’ve had terrible experiences with a popular, but cheap domain provider when it comes to reliability. One time we were preparing for a launch. We had done extensive testing to ensure that our servers could handle expected usage. We had servers across multiple regions, latency based routing, fail-over slave databases, and just about anything else you could want. I was briefly satisfied, only to have the domain provider die for 6 hours! Since then, I’ve used &lt;a href=&quot;http://aws.amazon.com/route53/&quot;&gt;Route53&lt;/a&gt; for everything. Extremely quick updates, integrates well with other AWS services, and I’ve never had any problems with reliability or uptime.&lt;/p&gt;
+
+&lt;h3 id=&quot;conclusion&quot;&gt;Conclusion&lt;/h3&gt;
+
+&lt;p&gt;This has just been a brief overview of how to approach optimizing a static website. There are a few tools you use to measure your progress. The Chrome Dev Tools are a great first step. Go to the network tab to find data transfer, number of requests, and a detailed timeline of when what loaded when.&lt;/p&gt;
+
+&lt;p&gt;Curl can also be very useful for &lt;a href=&quot;http://stackoverflow.com/questions/18215389/how-do-i-measure-request-and-response-times-at-once-using-curl&quot;&gt;measuring response time&lt;/a&gt;.&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;sh&quot;&gt;&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;cat &amp;gt; curl-format.txt &lt;span class=&quot;s&quot;&gt;&amp;lt;&amp;lt; EOF&lt;/span&gt;
+&lt;span class=&quot;s&quot;&gt;    time_namelookup:  %{time_namelookup}\n&lt;/span&gt;
+&lt;span class=&quot;s&quot;&gt;       time_connect:  %{time_connect}\n&lt;/span&gt;
+&lt;span class=&quot;s&quot;&gt;    time_appconnect:  %{time_appconnect}\n&lt;/span&gt;
+&lt;span class=&quot;s&quot;&gt;   time_pretransfer:  %{time_pretransfer}\n&lt;/span&gt;
+&lt;span class=&quot;s&quot;&gt;      time_redirect:  %{time_redirect}\n&lt;/span&gt;
+&lt;span class=&quot;s&quot;&gt; time_starttransfer:  %{time_starttransfer}\n&lt;/span&gt;
+&lt;span class=&quot;s&quot;&gt;                    ----------\n&lt;/span&gt;
+&lt;span class=&quot;s&quot;&gt;         time_total:  %{time_total}\n&lt;/span&gt;
+&lt;span class=&quot;s&quot;&gt;EOF&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;curl -w &lt;span class=&quot;s2&quot;&gt;&amp;quot;@curl-format.txt&amp;quot;&lt;/span&gt; -o /dev/null -s http://google.com
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Also, make sure you check out &lt;a href=&quot;http://developers.google.com/speed/pagespeed/insights/&quot;&gt;google page speed&lt;/a&gt;. It ranks your page performance and usability on a scale of 1-100. The performance bit isn’t perfect. Sometimes it will tell you to do something that will slow your site down, and it doesn’t seem to correctly recognize certain cache headers. The difference between 96/100 and 98/100 can be somewhat arbitrary. It will give you a good general idea of how you’re doing. If you have a 54/100 there is a pretty good chance you’re doing something wrong. In addition, the usability section is great to make sure your site is displaying reasonably on all device sizes.&lt;/p&gt;
+
+&lt;p&gt;photo credit: &lt;a href=&quot;http://www.flickr.com/photos/princessreader/1517330718/&quot;&gt;ilovepics11&lt;/a&gt; via &lt;a href=&quot;http://photopin.com&quot;&gt;photopin&lt;/a&gt; &lt;a href=&quot;http://creativecommons.org/licenses/by-nc-nd/2.0/&quot;&gt;cc&lt;/a&gt;&lt;/p&gt;
+</content>
+	</entry>
 	
 	<entry>
 		<title>UX is a Competitive Advantage</title>
@@ -21,7 +178,7 @@
 
 &lt;p class=&quot;date&quot;&gt;- May 26, 2014-&lt;/p&gt;
 
-&lt;p class=&quot;start_block&quot;&gt;I’ve been thinking a lot lately about what makes a good product, and how it relates to creating a good business. Recently, I read the article &lt;a href=&quot;&quot;&gt;Design doesn’t deserve a seat at the table&lt;/a&gt;. It is an interesting article about who should be involved in the direction that leads to a successful business, but something just didn’t sit right with me. &lt;/p&gt;
+&lt;p class=&quot;start_block&quot;&gt;I’ve been thinking a lot lately about what makes a good product, and how it relates to creating a good business. Recently, I read the article &lt;a href=&quot;http://schloss.quora.com/Design-doesnt-deserve-a-seat-at-the-table&quot;&gt;Design doesn’t deserve a seat at the table&lt;/a&gt;. It is an interesting article about who should be involved in the direction that leads to a successful business, but something just didn’t sit right with me. &lt;/p&gt;
 
 &lt;p&gt;For all I know it was written specifically to be controversial. But I’ll bite, in case people start to believe the article. Ironically, it is written by a product designer. I’ve dabbled in product management, but I am most certainly an engineer by trade. I want to defend why design does deserve a seat at the table.&lt;/p&gt;
 

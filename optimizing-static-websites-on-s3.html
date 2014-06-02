@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="Description" content="Engineering, product development, and startups">
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <title>Optimizing Static Websites on S3</title>
+
+        <!-- Bootstrap -->
+        <style>
+            @font-face{font-family:'Merriweather';font-style:normal;font-weight:300;src:local('Merriweather Light'),local('Merriweather-Light'),url(http://themes.googleusercontent.com/static/fonts/merriweather/v6/ZvcMqxEwPfh2qDWBPxn6nmB7wJ9CoPCp9n30ZBThZ1I.woff) format('woff')}@font-face{font-family:'Merriweather';font-style:normal;font-weight:400;src:local('Merriweather'),url(http://themes.googleusercontent.com/static/fonts/merriweather/v6/RFda8w1V0eDZheqfcyQ4EKRDOzjiPcYnFooOUGCOsRk.woff) format('woff')}@font-face{font-family:'Merriweather';font-style:normal;font-weight:700;src:local('Merriweather Bold'),local('Merriweather-Bold'),url(http://themes.googleusercontent.com/static/fonts/merriweather/v6/ZvcMqxEwPfh2qDWBPxn6nhAPw1J91axKNXP_-QX9CC8.woff) format('woff')}@font-face{font-family:'Merriweather Sans';font-style:normal;font-weight:400;src:url(http://themes.googleusercontent.com/static/fonts/merriweathersans/v3/AKu1CjQ4qnV8MUltkAX3sM2kigAIKUS7C8wDj9A45hI.ttf) format('truetype')}@font-face{font-family:'Merriweather Sans';font-style:normal;font-weight:800;src:url(http://themes.googleusercontent.com/static/fonts/merriweathersans/v3/6LmGj5dOJopQKEkt88Gowf5_oG7m85YQnBYEZ7uTa3L3rGVtsTkPsbDajuO5ueQw.ttf) format('truetype')}*{-webkit-box-sizing:border-box;-moz-box-sizing:border-box;box-sizing:border-box}*:before,*:after{-webkit-box-sizing:border-box;-moz-box-sizing:border-box;box-sizing:border-box}body{font-family:Merriweather,serif;font-size:1.2rem;-webkit-text-rendering:optimizeLegibility;text-rendering:optimizeLegibility;font-feature-settings:"kern";-webkit-font-feature-settings:"kern";-moz-font-feature-settings:"kern";-moz-font-feature-settings:"kern=1";margin:0;padding:0;line-height:2rem}h1,h2,h3,h4{font-family:'Merriweather Sans',sans-serif;font-weight:normal;margin:2rem 0}h1{font-size:2.4rem;font-weight:bold;text-align:center;line-height:4rem;padding:0}p{margin:2rem 0}.start_block{font-size:1.4rem;font-weight:300}ul{padding:0}li{margin:1rem 0}#posts{list-style-type:none;overflow:hidden;margin:0 auto}li.post_list_item{overflow:hidden;float:left;padding:0;margin:0}.post_list_item:before{content:""}a{color:#000}h1 a{text-decoration:none}.date{font-size:1rem;font-style:italic;text-align:center}#post_content{margin:0 auto}@media(min-width:960px){.container{width:940px}.content{padding:0}html{font-size:16px}#post_content{width:720px}li.col_1,li.col_2,li.col_4,li.col_5{padding-right:35px}}@media(max-width:960px) and (min-width:600px){.content{padding:0 20px}html{font-size:14px}#post_content{max-width:720px}#post_content .header_img_large img{width:600px}.p_img img{padding:20px!important;width:200px;height:200px}}@media(max-width:960px) and (min-width:645px){#posts{width:625px}li.col_1,li.col_3,li.col_5{padding-right:35px}}@media(max-width:599px) and (min-width:320px){.content{padding:0 15px}}@media(max-width:599px){html{font-size:10px}.p_img img{padding:10px!important;width:100px;height:100px}#post_content .header_img_large img{width:290px}}@media(max-width:643px){#posts{width:290px}}.container{margin:0 auto}.sans{font-family:'Merriweather Sans',sans-serif}body{background:#fff;color:#435359}a{-webkit-transition:color .25s ease;color:#186887}a:hover{color:#59b4dc}h1 a{color:#293033}h1 a:hover{color:#477e80}.twitter_link,.twitter_link:hover{color:#aab3ae;font-weight:normal}#social_header .twitter_link span,#rss_button,#header_status a{-webkit-transition:color .25s ease;color:#fff;text-decoration:none}#social_header .twitter_link:hover span,#rss_button:hover,#header_status a:hover{color:#53a9cf}#logo_link,#logo_link:hover{color:#000}#header_status{text-align:right}#header_status .container{overflow:hidden;padding-top:16px}#header{text-align:center}#header .container{padding:2rem 0 2rem 0}#logo_link{float:left;text-decoration:none;display:block;padding:0}#nav{float:right;line-height:2rem}#nav a{vertical-align:top;line-height:2rem;padding:0!important}#logo_icon{line-height:2rem}#logo_icon{width:138px;height:22px;background:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAARQAAAAsCAMAAACT8Lc/AAAB4FBMVEUAAAD//////////////////////////////////////////////wD///////8A///////g//////8A///////f//////P///////////Xj/////////////////////////wDf//8A/////9z//+X//////93d/////////////97//9///+L//wAA///X/////9/1///////i///h///c///f///////f/////+v//wD//+D//+HE/////+zg/////+r//+vr///l/////9vs/////9vb/////8T///re/////+z//+P//+Dm///p///h/////+b//+j///n//93l/////+ne///G/////8bz///d//////H///3r/////+X//+Tq/////////9jj///s///6//8A///b//////T//wDn///h/////+3///nt/////9////i0///l///p//////f9//////fr/////+H///Xa/////+36/////+PW///Y///k/////+f//+z//+X0//////T//9/Z//////r//96d///P///x///l//////////v7///y//////fp/////+D//+ng/////+7///L//+Xu///3///l/////9zc//99rDCnAAAAj3RSTlMACjwbagIRIAF10IwBDRUBB3WZAi1qLWDvG+9NBCaApgcgB9AKVu+ZRN+MwdACBC1gGzTQNNBgs8FNBN+ADUTfJmpNCrNg36YNNFZgpnUVdbMVs++ZPICMGxst7++mwTyZJsHBpkSZCt91CoyAVlZWINAR36bB0GBqNGpN0DTv0O+ZjJnBdd9qRDxWFVamwcDaXyUAAAY3SURBVHhe7Zr5V1PHG8ZvFu4lXBJjiCQCISgGQUURrbiAW1GsdWvV+v1q69LW1tbadd/3fXlvEsC17b9aw80s9zmTOXMcCsdzeH58Yp5wP3nnnXcmOmZa0YpIIdWrSwzArfQuqJJYgcK1mpqaXIHCtYZBOWkQsAJlVToWKt0X8du43xka2eF4U8MuZDyMcBNefny4t1JIplL9hXzs8YbyMzG9FPE3cn8sNN4g+JdcXQ8IRWeT2ccYytYag3KnU/ZvM7s+AAbR3dFosd0nlfzR5YISK5VKXmnUoqecIaaDkvsudwdDYztJ2m8CheqZZYLyVfg4FlC2EdM5yd3F3V9C4wJJGjSCQncHlgXKq1VqyLPZfWYZlHuSuQOXyl+RGhgwgkJblgXKabKBgjWwVnQa3junQ2MdRbTHDAp9AlAMmq+9ZhcByilieo57X2Cj+SY0gqZ7VA0ll8+kY6UJ4tq8hFDwWddaDW89DMAct15m1jx7bsakGsLZoITy/9DweJ3dGV0UKG486ff7fnI8LZmxfMEvlyfKfiGflewKS6uk3YZaxCCUtnwyl8ul8m1IjFzsM7SJdWPQ0wAlWrHXiDv2UFy/Slz1VGjmy9XIWBRv0ktVCeSpY2QovzpumZiaH/AkDzrk4P6biVZO8o+mP6SFIorPHsorsM+POk62v0qozxdq8mtCkdcqRkDJ+yTp+5DBDYJHPc2ML0Ojq8YY/Y5FpYbyxGJB2cprVoyYLqk0xD8XoahjOJRAuHKL+YwZwbEQwiUonZ086jf+ziWBsvU+gY7y4Rq1pzUUdcwa8EQjjG7AY831BJB2i6GNIZ9bEigHCHWCH8NQf7PxCqCoYzRQ6IoY9cVWe5gF7IPVc8txZqDbKKF0MccSynlC0Ul5iAiKJMltfHtVYRSDICgGmVYxCAUH9ovRUXU3zGjXpY/dCUONEsoRPg/vtYLSQ0IvpvrLRaLuhv8PUbE/H2tv3GgUiKk7Oot72hiA0uHncBBfNcsxyIVR3xtdDHPyUruHUMS8FCcoNa2UUHCMfiG87UnnMgvQc1KfvymKCFeuPkZA+SDdMGtw3rkpj6DbovOos55xOIffBEJJxmLZbKZMXGNWUMQB5DWjwRSh6GMElO9C4zic97aLepful55yeIsR9fkWMUQABcTSLaAcgFFboba+9h80ULQxa2CPPYV/9m3pwW/DrdONSIOY4ieATg0URtUGSldNl9PmJSeKJAuhaGKgxNhzAJSPef8UG/JVdj0h+g/y00P51FkkKM84qOEPCaSBAjHGUKbEYHgeUnfx8w4s0Wk9FPrIsYOyDi5KhRIPiEygYIwxFFh49baNsL28R6GC10Pjf2Ly00IZc+ygiJLF1lQiMoOCMeZQoJvG2a4+CTVEw+PxhxqviJahhVLfYF0pHArCEurorxlUyqNACecPkCvxVGszQil4XqYgZiArKGIUwPuiGWJ6x+sUy1sNBWPMoUhjbBFPzD2klNiO8JLpiBgx7aCsqkE3w8J8VjunvK2JMYWyU90SXNJov3LMv4RcH/USsgdaJK6eg1oo3ZoYQyjYGYIBuFpRaQtCAbyeHZQZEjUhNMWhdGuhTGpiDKGwQRZ/2sG7CyAHUOAyc7MdlG3E9fxCdHvCf5NVCjuvYk/ZweuicXPblyqpYwyhbIeVwfZfnW4BFMR7zAIK/NgUdHQUiWhQ6hF1t/Hpl6NQzhCX748QbVLHGEARRQH+Bc7dSwjxUtgHUBDvVTsoxwlF851y8eYqOZxTcLfc1yLGEMpqEprG7+qE8r8kBMcQCv46bwFFvfW5zhHSDW/XFbexqhhDKFMk1I1XEVfUi/0ngIKzzSY7KOtrqh1vVgcFR0laq44xgAI3ovNYEvUB9VFtCKDAGZKdDcyhIJVZxS9Ong6KsxqhqGMMoMAS/rbJTm4esnaLMtRfXNO0ARStfJIVDDe8jFQNd3qrUSjO+yTpx0yLGAWUGkBRD8QXoTS5DhPTZBgGUK5J1WsJxckWRljWRJyNX4Xmn3q213H+xMEkzt4wknI1Mfy67BCUwHynqgDmRG/AR8P1MShVSiAuLC4TdGgrtacTnpfJRry055USoZUpeQ1Jr/dlPC+RbtfFmKu9Kec/1or+Bbb1TtO3FEHUAAAAAElFTkSuQmCC) no-repeat;background-size:138px 22px;vertical-align:middle;display:inline-block}#logo_text{font-size:2rem;font-weight:bold;line-height:2rem;color:#fff;vertical-align:bottom}#logo_text span{margin-left:-.22rem;vertical-align:bottom}#logo_status{display:inline-block;white-space:nowrap;font-style:italic;font-weight:300;color:#aab3ae}#social_header{text-align:right;padding-bottom:1rem}#social_header hr{background:#aab3ae;border:0;height:2px;padding:0}#header_wrapper{background:#000}.twitter_link{text-decoration:none;margin-right:60px}.twitter_link span{text-decoration:underline}.header_img{width:290px;display:block;position:relative;padding:0;cursor:pointer}.header_img_large{padding-top:2rem;text-align:center}.header_img,.header_img:hover{color:#111}.header_img:hover .header_date{text-decoration:none}h1.header_img_bar{width:290px;top:0;margin:0;padding:0;line-height:2rem;text-align:left}.header_img_bar_color{opacity:.90;height:100%;width:100%;display:inline-block;position:absolute;-webkit-transition:opacity .3s ease;transition:opacity .3s ease}.header_img_text{position:relative;display:inline-block;padding:8px 12px;font-weight:bold;font-size:2rem;line-height:2rem}.header_date{font-size:1rem;font-style:italic;font-family:Merriweather,serif;font-weight:normal;color:#333;position:relative;padding:8px 12px;text-decoration:underline}.header_description{position:relative;display:inline-block;font-family:'Merriweather',Georgia,serif;font-weight:300;padding:8px 12px;margin-top:2rem;font-size:1rem}.header_img:hover .header_img_bar_color{opacity:1.0}.color1{background:#53a9cf}.color2{background:#b2c36f}.color3{background:#e2873d}.color4{background:#ff6a67}.color1,.color3,.color2,.color4{background:#eef0f3;background:transparent}
+        </style>
+
+        <link rel="shortcut icon" type="image/x-icon" href="/images/favicon.ico" />
+
+        <script>
+            (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+            m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+            })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+            ga('create', 'UA-48849049-1', 'catchvar.com');
+            ga('require', 'displayfeatures');
+            ga('send', 'pageview');
+        </script>
+        <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+        <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+        <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+        <![endif]-->
+    </head>
+    <body>
+        <!-- Main page -->
+        <div id="header_wrapper">
+            <div id="header_status">
+                <div class="container">
+                    <a itemprop="url" href="/" id="logo_link">
+                        <div id="logo_icon"></div>
+                    </a>
+                    <div id="nav" class="sans">
+                        <a href="/">Home</a>
+                    </div>
+                </div>
+            </div>
+            <div id="header">
+                <div class="container" itemscope itemtype="http://schema.org/Organization">
+                    <span id="logo_status">
+                        Engineering, product development, and startups
+                    </span>
+                </div>
+            </div>
+            <div id="social_header">
+                <hr class="container" />
+                <div id="social_container" class="container">
+                    <a class="twitter_link" href="https://twitter.com/intent/follow?original_referer=http%3A%2F%2Fcatchvar.com%2F&region=follow_link&screen_name=catchvar&tw_p=followbutton&variant=2.0">
+                        Follow me on <span class="sans">TWITTER</span>
+                    </a>
+                    <a class="sans" id="rss_button" href="/feed/index.xml">RSS</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="container">
+            <div class="content">
+                <div id="post_content">
+    
+    <div class="p_img header_img_large">
+        <img class="color4" alt="Optimizing static websites header image" src="/images/optimize_s3_large.jpg" 
+            
+             />
+    </div>
+    
+<h1 class="post_link" id="optimizing-static-websites-on-s3-optimizing-static-websites-on-s3html-"><a href="/optimizing-static-websites-on-s3.html">Optimizing Static Websites on S3</a></h1>
+
+<p class="date">- Jun 2, 2014-</p>
+
+<p class="start_block">Did you know that Jellyfish are one of the most <a href="http://io9.com/the-secret-to-the-jellyfishs-ecosystem-conquering-succ-1442318275">efficent</a> swimmers? As part of gauging interest in various startup ideas I’ve been deploying more static websites than usual. These include landing pages for <a href="http://shelfninja.com">Shelfninja</a>, <a href="http://epilr.com">Epilr</a>, and this blog. This got me in gear for optimizing these sites. </p>
+
+<p>No, this is not premature optimization. These tips will probably add an hour or two to your work after you have done them once, and take up to a second of load time off your pages. I recently tweeted a stat from <a href="http://blog.kissmetrics.com/loading-time/?utm_content=buffer8f698&amp;utm_medium=social&amp;utm_source=twitter.com&amp;utm_campaign=buffer">Mixpanel’s blog</a> that a 1-second delay in response time can lead to a 7% reduction in conversions. I don’t want that. You shouldn’t either. Planning on watching an hour of TV tonight? Get a 7% increase in conversions instead.</p>
+
+<h2 id="the-plan">The Plan</h2>
+
+<p>Most of these techniques can be applied after the fact. However, for the best results there are a couple of things you need to plan for from the very beginning in order to save time. First, special consideration needs to applied to which resources are required for above the fold content, and which resources are not required. Initially, you always want to only load the resources needed to render the above the fold content. That way the user sees the page render as fast as possible, and the rest of the page can load in later.</p>
+
+<p>In order to do that you cannot put all of your CSS in one massive file. Many styles you probably do not need to render above the fold content. I split my files into global above fold, page specific above fold, global below fold, and page specific below fold. JavaScript is always loaded after the fold has been rendered.</p>
+
+<p class="p_img"><img src="/images/shelfninja_landing.jpg" alt="Shelfninja" width="720" /></p>
+
+<p>In addition to these basic tenets, you should not be including resources that you are not using. Seems like on obvious idea, but can be overlooked. For example, when building the landing page for Shelfninja I used <a href="http://getbootstrap.com/">bootstrap</a>. Bootstrap is great, but initially comes with CSS styles for many different layouts that I did not need. I only included the five to ten basic styles that I really needed.</p>
+
+<h2 id="optimizing">Optimizing</h2>
+
+<h3 id="images">Images</h3>
+
+<p>Most of the easy wins when optimizing a webpage can be boiled down to either reducing http requests or increasing the speed of the http requests. Optimizing and compressing images can reduce the amount of data that needs to transfered over the wire. This speeds up http requests. The best part is that you can achieve these gains without any changes to your page.</p>
+
+<p>You’ll most likely be working with two types of image formats: JPEG, and PNG. In general, JPEG is a lossy format that should be used for photos. PNG is lossless, and should be used for images that need to be crisp, such as icons. There are many articles that go in depth on how to optimize each of these image types. I’ll just briefly go over how to batch optimize these image types.</p>
+
+<p>For JPEGs you can play with the quality level. I’ve found that 60 works for most cases. Sometimes you can get away with lower, sometimes you need higher. Use the lowest setting where the image still looks good. For PNGs, most are saved as PNG-32s. This means that the PNG can store one of 2^24 colors for each pixel, with 2^8 degrees of alpha. Unless you’re going really heavy on gradients, you probaby don’t need this. Even if you don’t need it, a PNG-32 will still use all that extra space. What I do is use pngquant to batch convert all my images to use only 256 colors.</p>
+
+<div class="highlight"><pre><code class="sh"><span class="nv">$ </span>pngquant --force --ext .png --speed 1 256 *.png
+</code></pre></div>
+
+<p>If you’re converting a purely black and white image (no grey), you can use this:</p>
+
+<div class="highlight"><pre><code class="sh"><span class="nv">$ </span>pngquant --force --ext .png --speed 1 2 *.png
+</code></pre></div>
+
+<p>If you don’t have pngquant you can <a href="http://pngquant.org/">download</a> it for free. Note that this command will replace your current PNGs with new PNGs. Make sure you know what you’re doing, or you have backups.</p>
+
+<p>The final step to optimizing your images is to run every single one of them through <a href="http://imageoptim.com/">ImageOptim</a>. This losslessly optimizes your images. That means savings with absolutely no quality loss. After you have these steps down, it will only take a few seconds of work to optimize your images.</p>
+
+<h3 id="inlining">Inlining</h3>
+
+<p>Inlining is a technique that can completely eliminate an http request. Instead of making an http request, you embed the resource directly in the html page. This won’t always be a good idea. When you inline a resource you lose out on a very important benefit: caching. If a resource will be used across several pages, or a user is likely to visit a page several times it might be better to not inline. In this case, the user would download the resource once and never again. You need to weigh the tradeoffs of an initial quick experience vs a better long-term experience.</p>
+
+<p>If you’ve decided to inline resources, we need to decide what to inline. Above the fold resources gain the most benefit. If you can remove all http requests above the fold your page will render as fast as it takes your server to return the html file. CSS files, and small images and prime candidates for inlining. Large images like backgrounds are usually better left as external resources. The reason is that if your html file gets too big, it will take longer to download it, and longer until the user sees anything. By inlining above the fold CSS you increase the html file by a negible amount, and can instantly render content without an extra http request.</p>
+
+<h3 id="minification-and-concatenation">Minification and Concatenation</h3>
+
+<p>These methods can reduce the amount of http requests, and speed them up by decreasing the download size. You’ll probably want some good tools. These methods would be very tedious otherwise. I built my most recent sites using <a href="http://jekyllrb.com/">Jekyll</a>. There are several good tools that can be used as plugins. I used <a href="https://github.com/matthodan/jekyll-asset-pipeline">jekyll-asset-pipeline</a>, and <a href="https://github.com/donaldducky/jekyll-cssminify">jekyll-cssminify</a>. These are great tools, but I had to make a few custom changes to make them work for me. Most web frameworks should also have tools for achieving minification and concatenation.</p>
+
+<p>For concatenation, the basic idea is to combine all your JavaScript or CSS into as few files as possible. If you have global resources, and page-specific resources maybe this means two JavaScript, and two CSS files per page.</p>
+
+<p>Minification is the process of making the resulting code as short as possible while still retaining the same results. This means removing all white-space, replacing variable names with shorter names, and other advanced techniques. The JavaScript or CSS will be unreadable afterwards, but your page will load faster.</p>
+
+<p>Many tools that deal with minification and concatenation also attach a timestamp to the resulting file. This way the file can be cached with <code>expires</code>, or <code>cache-control: max-page</code> headers. These cache headers can be used to ensure that no GET requests are ever issued once the file has been downloaded. When the file changes, the name also changes, so the browser knows to download the new version. This is as opposed to using <code>Last-Modified or ETag</code> headers that still require a round-trip to the server.</p>
+
+<h3 id="compression">Compression</h3>
+
+<p>Now, you have an optimized website with minimal http requests. We can further decrease download size by using gzip compression. You need to be careful here. This may not always be a good idea, depending upon your situation. The way it works is that the browser typically sends a header like <code>Accept-Encoding:gzip,deflate,sdch</code>. A webserver will see this header. If gzip is enabled it will gzip the resource on the fly. Then, the resource is returned with the response header: <code>Content-Encoding: gzip</code>. Since it sees the header, the browser knows it needs to decompress the content before rendering.</p>
+
+<p>The problem is that if you have a static website, there is no webserver to smartly choose whether to compress or not. We can choose to return compressed files, but if a browser does not support gzip the user will see garbage. A while ago, people were concerned with various mobile browsers not supporting gzip. However, most modern devices seem to support gzip. </p>
+
+<p>Another consideration is that decompressing takes a little time. If the savings are less than the amount of time it takes to gzip, then there is no point.</p>
+
+<p>In order to support gzip, I gzip my files during the deploy script. <a href="http://sukharevd.net/gzipping-website-in-amazon-s3-bucket.html">This</a> blog post provided the inspiration. I wrote a quick-n-dirty simplified version of his script in order to better fit my needs.</p>
+
+<div class="highlight"><pre><code class="python"><span class="c">#!/usr/bin/env python</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">re</span>
+<span class="kn">import</span> <span class="nn">gzip</span>
+<span class="kn">import</span> <span class="nn">subprocess</span>
+
+<span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
+    <span class="k">for</span> <span class="n">folder</span><span class="p">,</span> <span class="n">sub_folders</span><span class="p">,</span> <span class="n">files</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">walk</span><span class="p">(</span><span class="s">&#39;./_site&#39;</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">filename</span> <span class="ow">in</span> <span class="n">files</span><span class="p">:</span>
+            <span class="n">path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">folder</span><span class="p">,</span> <span class="n">filename</span><span class="p">)</span>
+            <span class="n">site_path</span> <span class="o">=</span> <span class="s">&#39;/&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">normpath</span><span class="p">(</span><span class="n">path</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&#39;/&#39;</span><span class="p">)[</span><span class="mi">1</span><span class="p">:])</span>
+
+            <span class="k">if</span> <span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="s">&quot;\.css|\.js|\.html&quot;</span><span class="p">,</span> <span class="n">filename</span><span class="p">):</span>
+                <span class="k">with</span> <span class="n">gzip</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">path</span> <span class="o">+</span> <span class="s">&#39;.gz&#39;</span><span class="p">,</span> <span class="s">&#39;w+&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">fw</span><span class="p">:</span>
+                    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">path</span><span class="p">)</span> <span class="k">as</span> <span class="n">fr</span><span class="p">:</span>
+                        <span class="n">blocksize</span> <span class="o">=</span> <span class="mi">65536</span>
+                        <span class="n">buf</span> <span class="o">=</span> <span class="n">fr</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">blocksize</span><span class="p">)</span>
+                        <span class="k">while</span> <span class="nb">len</span><span class="p">(</span><span class="n">buf</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                            <span class="n">fw</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">buf</span><span class="p">)</span>
+                            <span class="n">buf</span> <span class="o">=</span> <span class="n">fr</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">blocksize</span><span class="p">)</span>
+
+
+                <span class="n">arg_arr</span> <span class="o">=</span> <span class="p">[</span><span class="s">&#39;aws&#39;</span><span class="p">,</span> <span class="s">&#39;--region&#39;</span><span class="p">,</span> <span class="s">&#39;us-west-1&#39;</span><span class="p">,</span> <span class="s">&#39;s3&#39;</span><span class="p">,</span> <span class="s">&#39;cp&#39;</span><span class="p">,</span>
+                           <span class="n">path</span> <span class="o">+</span> <span class="s">&#39;.gz&#39;</span><span class="p">,</span> <span class="s">&#39;s3://yourbucket/&#39;</span> <span class="o">+</span> <span class="n">site_path</span><span class="p">,</span>
+                           <span class="s">&#39;--content-encoding&#39;</span><span class="p">,</span> <span class="s">&#39;gzip&#39;</span><span class="p">]</span>
+
+                <span class="k">if</span> <span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="s">&quot;\.css|\.js&quot;</span><span class="p">,</span> <span class="n">filename</span><span class="p">):</span>
+                    <span class="n">arg_arr</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s">&#39;--cache-control&#39;</span><span class="p">)</span>
+                    <span class="n">arg_arr</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s">&#39;max-age 86400&#39;</span><span class="p">)</span>
+
+                <span class="n">subprocess</span><span class="o">.</span><span class="n">check_output</span><span class="p">(</span><span class="n">arg_arr</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="s">&quot;\.woff&quot;</span><span class="p">,</span> <span class="n">filename</span><span class="p">):</span>
+                <span class="n">arg_arr</span> <span class="o">=</span> <span class="p">[</span><span class="s">&#39;aws&#39;</span><span class="p">,</span> <span class="s">&#39;--region&#39;</span><span class="p">,</span> <span class="s">&#39;us-west-1&#39;</span><span class="p">,</span> <span class="s">&#39;s3&#39;</span><span class="p">,</span> <span class="s">&#39;cp&#39;</span><span class="p">,</span>
+                           <span class="n">path</span><span class="p">,</span> <span class="s">&#39;s3://yourbucket&#39;</span> <span class="o">+</span> <span class="n">site_path</span><span class="p">,</span>
+                           <span class="s">&#39;--cache-control&#39;</span><span class="p">,</span> <span class="s">&#39;max-age 86400&#39;</span><span class="p">]</span>
+                <span class="n">subprocess</span><span class="o">.</span><span class="n">check_output</span><span class="p">(</span><span class="n">arg_arr</span><span class="p">)</span>
+
+    <span class="k">print</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">check_output</span><span class="p">([</span><span class="s">&#39;aws&#39;</span><span class="p">,</span>
+                             <span class="s">&#39;--region&#39;</span><span class="p">,</span> <span class="s">&#39;us-west-1&#39;</span><span class="p">,</span>
+                             <span class="s">&#39;s3&#39;</span><span class="p">,</span> <span class="s">&#39;sync&#39;</span><span class="p">,</span>
+                             <span class="s">&#39;_site&#39;</span><span class="p">,</span> <span class="s">&#39;s3://yourbucket&#39;</span><span class="p">,</span>
+                             <span class="s">&#39;--exclude&#39;</span><span class="p">,</span> <span class="s">&#39;*.js&#39;</span><span class="p">,</span>
+                             <span class="s">&#39;--exclude&#39;</span><span class="p">,</span> <span class="s">&#39;*.html&#39;</span><span class="p">,</span>
+                             <span class="s">&#39;--exclude&#39;</span><span class="p">,</span> <span class="s">&#39;*.woff&#39;</span><span class="p">,</span>
+                             <span class="s">&#39;--exclude&#39;</span><span class="p">,</span> <span class="s">&#39;*.css&#39;</span><span class="p">])</span>
+
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">&#39;__main__&#39;</span><span class="p">:</span>
+    <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="n">main</span><span class="p">())</span>
+</code></pre></div>
+
+<h2 id="hosting">Hosting</h2>
+
+<p>I intially hosted my blog using github pages. This is great. It’s super-fast, reliable, hosting using Github’s CDN. However, I’ve switched over to S3 for all my sites. You have a little more control over the details. Domain configuration is less of a pain for email support, you can setup 301s, and control your caching.</p>
+
+<p>Of course, the downside is that S3 is geographically located in a single location. A bucket in us-east-1 has anywhere from 150ms - 200ms more round-trip latency from the Silicon Valley. This also applies to any normal server you’re hosting too. But, it is a powerful feature that Github takes care of for no cost. </p>
+
+<p>One option if you have a very focused audience, is to host your website in a bucket close to your audience. If you have decided you need to host your site on S3, but you still need to have low global latency, you can use <a href="https://aws.amazon.com/cloudfront/">AWS CloudFront</a>. The great thing is that if you setup your static website with S3, it takes thirty seconds to setup.</p>
+
+<p>Lastly, I want to mention that if you have a service that absolutely needs to be up I would be cautious about using your domain provider’s default nameservers. I’ve had terrible experiences with a popular, but cheap domain provider when it comes to reliability. One time we were preparing for a launch. We had done extensive testing to ensure that our servers could handle expected usage. We had servers across multiple regions, latency based routing, fail-over slave databases, and just about anything else you could want. I was briefly satisfied, only to have the domain provider die for 6 hours! Since then, I’ve used <a href="http://aws.amazon.com/route53/">Route53</a> for everything. Extremely quick updates, integrates well with other AWS services, and I’ve never had any problems with reliability or uptime.</p>
+
+<h3 id="conclusion">Conclusion</h3>
+
+<p>This has just been a brief overview of how to approach optimizing a static website. There are a few tools you use to measure your progress. The Chrome Dev Tools are a great first step. Go to the network tab to find data transfer, number of requests, and a detailed timeline of when what loaded when.</p>
+
+<p>Curl can also be very useful for <a href="http://stackoverflow.com/questions/18215389/how-do-i-measure-request-and-response-times-at-once-using-curl">measuring response time</a>.</p>
+
+<div class="highlight"><pre><code class="sh"><span class="nv">$ </span>cat &gt; curl-format.txt <span class="s">&lt;&lt; EOF</span>
+<span class="s">    time_namelookup:  %{time_namelookup}\n</span>
+<span class="s">       time_connect:  %{time_connect}\n</span>
+<span class="s">    time_appconnect:  %{time_appconnect}\n</span>
+<span class="s">   time_pretransfer:  %{time_pretransfer}\n</span>
+<span class="s">      time_redirect:  %{time_redirect}\n</span>
+<span class="s"> time_starttransfer:  %{time_starttransfer}\n</span>
+<span class="s">                    ----------\n</span>
+<span class="s">         time_total:  %{time_total}\n</span>
+<span class="s">EOF</span>
+<span class="nv">$ </span>curl -w <span class="s2">&quot;@curl-format.txt&quot;</span> -o /dev/null -s http://google.com
+</code></pre></div>
+
+<p>Also, make sure you check out <a href="http://developers.google.com/speed/pagespeed/insights/">google page speed</a>. It ranks your page performance and usability on a scale of 1-100. The performance bit isn’t perfect. Sometimes it will tell you to do something that will slow your site down, and it doesn’t seem to correctly recognize certain cache headers. The difference between 96/100 and 98/100 can be somewhat arbitrary. It will give you a good general idea of how you’re doing. If you have a 54/100 there is a pretty good chance you’re doing something wrong. In addition, the usability section is great to make sure your site is displaying reasonably on all device sizes.</p>
+
+<p>photo credit: <a href="http://www.flickr.com/photos/princessreader/1517330718/">ilovepics11</a> via <a href="http://photopin.com">photopin</a> <a href="http://creativecommons.org/licenses/by-nc-nd/2.0/">cc</a></p>
+
+</div>
+
+<div id="share_buttons">
+    <div id="share_elements">
+    <div class="share_element">
+        <script type="IN/Share" data-url="http://catchvar.com/optimizing-static-websites-on-s3.html" data-counter="right"></script>
+    </div>
+    <div class="share_element">
+        <a href="https://twitter.com/share"
+            class="twitter-share-button"
+            data-url="http://catchvar.com/optimizing-static-websites-on-s3.html"
+            data-via="catchvar"
+            data-lang="en">
+        </a>
+    </div>
+    <div class="share_element">
+        <div class="google_plus">
+            <div class="g-plusone"
+            data-href="http://catchvar.com/optimizing-static-websites-on-s3.html"
+            data-size="medium"
+            data-annotation="bubble">
+            </div>
+        </div>
+    </div>
+    <div class="share_element">
+        <div class="fb-like" 
+            data-href="http://catchvar.com/optimizing-static-websites-on-s3.html" 
+            data-layout="button_count" 
+            data-action="like" 
+            data-show-faces="false" 
+            data-width="90"
+            data-share="false">
+        </div>
+    </div>
+    <div class="share_element">
+        <a href="http://bufferapp.com/add" class="buffer-add-button" data-count="horizontal" data-via="catchvar" >Buffer</a><script type="text/javascript" src="https://d389zggrogs7qo.cloudfront.net/js/button.js"></script>
+    </div>
+    </div>
+</div>
+
+
+<div id="email_subscriber">
+    <h2>Subscribe For Updates</h2>
+    <!-- Begin MailChimp Signup Form -->
+    <div id="mc_embed_signup">
+        <form action="http://catchvar.us8.list-manage1.com/subscribe/post?u=6bf07ccd5886d281ddf64cda3&amp;id=d90439d3b9" method="post" id="mc-embedded-subscribe-form" name="mc-embedded-subscribe-form" class="validate" target="_blank" novalidate>
+
+            <input type="email" value="" name="EMAIL" class="email" id="mce-EMAIL" placeholder="Your email address" required>
+
+            <!-- real people should not fill this in and expect good things - do not remove this or risk form bot signups-->
+            <div style="position: absolute; left: -5000px;">
+                <input type="text" name="b_6bf07ccd5886d281ddf64cda3_d90439d3b9" value="">
+            </div>
+
+            <input type="submit" value="Join the list" name="subscribe" id="mc-embedded-subscribe" class="button sans">
+        </form>
+    </div>
+    <!--End mc_embed_signup-->
+</div>
+
+
+
+
+<div id="disqus_thread"></div>
+<script type="text/javascript">
+    /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+    var disqus_shortname = 'catchvar'; // required: replace example with your forum shortname
+
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+
+
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) return;
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/en_US/all.js#xfbml=1&appId=604216856328704";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+<script type="text/javascript">
+(function(){
+    var twitterWidgets = document.createElement('script');
+    twitterWidgets.type = 'text/javascript';
+    twitterWidgets.async = true;
+    twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+    document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+</script>
+
+<script type="text/javascript">
+(function() {
+    var po = document.createElement('script');
+    po.type = 'text/javascript'; po.async = true;
+    po.src = 'https://apis.google.com/js/plusone.js';
+    var s = document.getElementsByTagName('script')[0];
+    s.parentNode.insertBefore(po, s);
+})();
+</script>
+
+<script src="//platform.linkedin.com/in.js" type="text/javascript">
+  lang: en_US
+</script>
+
+
+            </div>
+        </div>
+
+        <div id="footer">
+        </div>
+        <link href="css/201406021211.min.css" rel="stylesheet" />
+    </body>
+</html>
